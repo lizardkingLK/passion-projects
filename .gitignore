@@ -1,0 +1,7 @@
+# ignore node_modules
+node_modules
+./node_modules
+/node_modules
+
+# C:\Users\MALLI\Desktop\diagramtool
+# C:\Users\MALLI\Desktop\dgt

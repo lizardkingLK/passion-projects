@@ -1,0 +1,68 @@
+:root {
+  --light: var(#ffffff);
+  --light-dark: var(#f3f3f3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Roboto Mono";
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.w-full {
+  width: 100%;
+}
+
+nav {
+  min-height: 5vh;
+  background-color: var(--light-dark);
+}
+
+.px-2 {
+  padding: 0 10px;
+}
+
+.p-2 {
+  padding: 10px;
+}
+
+footer {
+  height: 5vh;
+  background-color: var(--light-dark);
+}
+
+.treeVisual {
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.treeInput {
+  width: 100%;
+  max-width: 100%;
+  border: none;
+  outline: none;
+  font-size: x-large;
+  border: 1px solid black;
+}
+
+.bg-light {
+  background-color: var(--light-dark);
+}
+
+.txtSmall {
+  font-size: medium;
+}
