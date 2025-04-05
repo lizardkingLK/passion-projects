@@ -1,23 +1,22 @@
 {
   "name": "treevisualizer",
+  "private": true,
   "version": "1.0.0",
+  "type": "module",
   "description": "visualize tree structure",
-  "scripts": {
-    "build": "npm run lint && npm run build-tsc",
-    "build-tsc": "tsc",
-    "lint": "eslint . --ext .ts"
-  },
   "keywords": [
     "tree",
     "visualizer"
   ],
   "author": "lizardkinglk",
   "license": "ISC",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
   "devDependencies": {
-    "@eslint/js": "^9.22.0",
-    "eslint": "^9.22.0",
-    "globals": "^16.0.0",
-    "typescript": "^5.8.2",
-    "typescript-eslint": "^8.26.0"
+    "typescript": "~5.7.2",
+    "vite": "^6.2.0"
   }
 }
