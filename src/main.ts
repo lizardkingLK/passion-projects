@@ -1,5 +1,7 @@
 import "./style.css";
-import { drawCanvas } from ".";
+import { TREE_INPUT } from "./modules/constants";
+import { Canvas } from "./modules/canvas";
+import { Listener } from "./modules/listener";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
     <nav class="flex px-2">
@@ -7,11 +9,17 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
     </nav>
     <main class="px-2">
       <textarea
-        class="treeInput bg-light p-2"
+        id="treeInput"
+        class="treeInput p-2"
         placeholder="Enter tree info here..."
       ></textarea>
       <canvas id="treeVisual" class="center treeVisual"></canvas>
     </main>
   `;
 
-drawCanvas();
+const canvas = new Canvas();
+const listener = new Listener();
+
+document
+  .querySelector(TREE_INPUT)!
+  .addEventListener("input", (event: Event) => listener.listen(event, canvas));
