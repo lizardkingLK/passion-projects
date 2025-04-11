@@ -3,6 +3,7 @@ import {
   CANVAS_HEIGHT as cHeight,
   TREE_VISUAL,
 } from "./constants";
+import { Circle } from "./types";
 
 export class Canvas {
   #canvas: HTMLCanvasElement;
@@ -26,28 +27,18 @@ export class Canvas {
     this.#context.imageSmoothingQuality = "high";
   }
 
-  drawCircle() {
-    // move to 0,0
-    this.#context.moveTo(0, 0);
-
-    // line to center
-    this.#context.lineTo(cWidth, cHeight);
-
+  drawCircle({ centerX, centerY, radius }: Circle) {
     // add stroke style
     this.#context.strokeStyle = "black";
 
-    // draw with stroke
-    this.#context.stroke();
-
-    // move to center
-    this.#context.moveTo(cWidth / 2, cHeight / 2);
+    // set starting angle
+    const startAngle = Math.atan(centerY / centerX);
 
     // draw a circle
-    const startAngle = Math.atan(cHeight / cWidth);
     this.#context.arc(
-      cWidth / 2,
-      cHeight / 2,
-      500,
+      centerX,
+      centerY,
+      radius,
       startAngle,
       2 * Math.PI + startAngle
     );

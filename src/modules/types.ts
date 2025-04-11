@@ -7,3 +7,11 @@ export type Result<T> = {
   data: T | null;
   message: string | null;
 };
+
+export interface Shape {}
+
+export interface Circle extends Shape {
+  centerX: number;
+  centerY: number;
+  radius: number;
+}
