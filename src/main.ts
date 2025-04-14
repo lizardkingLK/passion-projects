@@ -4,15 +4,15 @@ import { Canvas } from "./modules/canvas";
 import { Listener } from "./modules/listener";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-    <nav class="flex px-2">
+    <nav class="flex p-2">
       <h1 class="txtSmall">Tree Visualizer</h1>
-    </nav>
-    <main class="px-2">
       <textarea
         id="treeInput"
         class="treeInput p-2"
         placeholder="Enter tree info here..."
-      ></textarea>
+        ></textarea>
+    </nav>
+    <main class="px-2 flex">
       <canvas id="treeVisual" class="center treeVisual"></canvas>
     </main>
   `;

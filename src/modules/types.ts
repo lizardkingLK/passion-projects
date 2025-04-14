@@ -11,7 +11,7 @@ export type Result<T> = {
 export interface Shape {}
 
 export interface Circle extends Shape {
-  centerX: number;
-  centerY: number;
+  cordinateX: number;
+  cordinateY: number;
   radius: number;
 }

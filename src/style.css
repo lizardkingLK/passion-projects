@@ -31,7 +31,6 @@ body {
 
 .flex {
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
 }
 
@@ -53,7 +52,6 @@ nav {
 
 .treeInput {
 	width: 100%;
-	height: 25vh;
 	max-width: 100%;
 	border: none;
 	outline: none;
@@ -61,13 +59,15 @@ nav {
 	border: 1px solid black;
 }
 
-.treeVisual {
-	width: 100%;
-	height: 100%;
-	border: 1px solid black;
+main {
+	height: 90vh;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+.treeVisual {
+	border: 1px solid black;
 }
 
 .txtSmall {
