@@ -1,19 +1,27 @@
+import { CircleShape } from "../shapes/circle";
+import { Circle } from "../types";
 import {
+  TREE_VISUAL,
   CANVAS_WIDTH as cWidth,
   CANVAS_HEIGHT as cHeight,
-  TREE_VISUAL,
-} from "./constants";
-import { Circle } from "./types";
+} from "../constants";
 
 export class Canvas {
   #canvas: HTMLCanvasElement;
   #context: CanvasRenderingContext2D;
+  #circle: CircleShape;
 
   constructor() {
+    // initialize canvas
     this.#canvas = document.querySelector(TREE_VISUAL)!;
     this.#initializeCanvas();
+
+    // initialize context
     this.#context = this.#canvas.getContext("2d")!;
     this.#initializeContext();
+
+    // initialize circle
+    this.#circle = new CircleShape(this.#context);
   }
 
   #initializeCanvas() {
@@ -23,26 +31,17 @@ export class Canvas {
 
   #initializeContext() {
     this.#context.lineWidth = 1;
+    this.#context.strokeStyle = "black";
     this.#context.imageSmoothingEnabled = true;
     this.#context.imageSmoothingQuality = "high";
   }
 
-  drawCircle({ centerX, centerY, radius }: Circle) {
-    // add stroke style
-    this.#context.strokeStyle = "black";
+  // circle methods
+  drawCircle(circleConfig: Circle) {
+    this.#circle.drawCircle(circleConfig);
+  }
 
-    // set starting angle
-    const startAngle = Math.atan(centerY / centerX);
-
-    // draw a circle
-    this.#context.arc(
-      centerX,
-      centerY,
-      radius,
-      startAngle,
-      2 * Math.PI + startAngle
-    );
-
-    this.#context.stroke();
+  clearCircle(circleConfig: Circle) {
+    this.#circle.clearCircle(circleConfig);    
   }
 }
