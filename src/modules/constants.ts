@@ -1,6 +1,5 @@
-// screen sizes
-export const CANVAS_WIDTH = 800;
-export const CANVAS_HEIGHT = 800;
+export const CANVAS_WIDTH = window.screen.width;
+export const CANVAS_HEIGHT = window.screen.height;
 
 // element ids
 export const TREE_INPUT = "#treeInput";

@@ -1,9 +1,7 @@
 import { CircleShape } from "../shapes/circle";
-import { Circle } from "../types";
+import { CircleNode } from "../types";
 import {
   TREE_VISUAL,
-  CANVAS_WIDTH as cWidth,
-  CANVAS_HEIGHT as cHeight,
 } from "../constants";
 
 export class Canvas {
@@ -25,8 +23,8 @@ export class Canvas {
   }
 
   #initializeCanvas() {
-    this.#canvas.height = cHeight;
-    this.#canvas.width = cWidth;
+    this.#canvas.width = window.screen.width;
+    this.#canvas.height = window.screen.height;
   }
 
   #initializeContext() {
@@ -37,11 +35,11 @@ export class Canvas {
   }
 
   // circle methods
-  drawCircle(circleConfig: Circle) {
+  drawCircle(circleConfig: CircleNode) {
     this.#circle.drawCircle(circleConfig);
   }
 
-  clearCircle(circleConfig: Circle) {
-    this.#circle.clearCircle(circleConfig);    
+  clearCircle(circleConfig: CircleNode) {
+    this.#circle.clearCircle(circleConfig);
   }
 }

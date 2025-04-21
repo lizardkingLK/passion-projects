@@ -8,9 +8,7 @@ export type Result<T> = {
   message: string | null;
 };
 
-export interface Shape {}
-
-export interface Circle extends Shape {
+export interface CircleNode {
   cordinateX: number;
   cordinateY: number;
   radius: number;

@@ -1,12 +1,11 @@
 import { Canvas } from "./canvas";
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants";
-import { Circle, Json, Result, Shape } from "./types";
+import { CircleNode, Json, Result } from "./types";
 
 export class Listener {
-  #shapes: Shape[];
+  #nodes: CircleNode[];
 
   constructor() {
-    this.#shapes = [];
+    this.#nodes = [];
   }
 
   validate(input: string): Result<Json> {
@@ -34,28 +33,18 @@ export class Listener {
       (<HTMLTextAreaElement>event.target).value
     );
 
-    if (!isSuccess) {
+    if (!isSuccess || !(treeStructure instanceof Object)) {
       return;
     }
 
-    this.handle(treeStructure, canvas);
-    console.log(this.#shapes);
+    this.handleObject(treeStructure, canvas);
+
+    console.log(this.#nodes);
   }
 
-  handle(treeStructure: Json | null, canvas: Canvas) {
-    if (treeStructure instanceof Array) {
-      this.handleArray(treeStructure, canvas);
-    } else if (treeStructure instanceof Object) {
-      this.handleObject(treeStructure, canvas);
-    }
-  }
-
-  handleArray(array: Json[], canvas: Canvas) {
-    array.forEach((element) => {
-      this.handle(element, canvas);
-    });
-  }
-
+  // TODO: set hLevel
+  // TODO: set wLevel
+  // TODO: set visitor
   handleObject(object: Json, canvas: Canvas, level: number = 0) {
     if (object === null) {
       return;
@@ -68,32 +57,44 @@ export class Listener {
     if (!(object instanceof Object)) {
       console.log(object, level);
 
-      this.insertShape(canvas, level);
+      this.insertNode(canvas, level);
     }
   }
 
-  insertShape(canvas: Canvas, level: number | null) {
-    const config: Circle = {
-      cordinateX: Math.random() * CANVAS_WIDTH,
-      cordinateY: Math.random() * CANVAS_HEIGHT,
-      radius: 20,
-    };
+  insertNode(canvas: Canvas, level: number | null) {
+    const config: CircleNode = this.getCircleConfig(level);
 
-    this.#shapes.push(config);
+    this.#nodes.push(config);
 
     console.log(config);
+
+    console.log(level);
 
     canvas.drawCircle(config);
   }
 
+  getCircleConfig(level: number | null): CircleNode {
+    // TODO: set cordinateX and cordinateY actuals
+    let config:CircleNode = {
+      cordinateX: 0,
+      cordinateY: 0,
+      radius: 20,
+    };
+
+    
+    
+
+    return config;
+  }
+
   clearShapes(canvas: Canvas) {
-    this.#shapes.forEach((shape) => {
-      if (shape as Circle satisfies Shape) {
-        console.log(shape);
-        canvas.clearCircle(shape as Circle);
+    this.#nodes.forEach((node) => {
+      if (node as CircleNode) {
+        console.log(node);
+        canvas.clearCircle(node as CircleNode);
       }
     });
 
-    this.#shapes = [];
+    this.#nodes = [];
   }
 }
