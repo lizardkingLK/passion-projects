@@ -1,19 +1,15 @@
 import "./style.css";
-import { TREE_INPUT } from "./modules/constants";
-import { Canvas } from "./modules/canvas";
-import { Listener } from "./modules/listener";
+import { Events } from "./modules/events";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-    <textarea
-      id="treeInput"
-      placeholder="Enter tree info here..."
-    ></textarea>
+    <section id="treeInputContainer" draggable="true">
+      <div id="treeInputHeading"></div>
+      <textarea
+        id="treeInput"
+        placeholder="Enter tree info here..."
+      ></textarea>
+    </section>
     <canvas id="treeVisual"></canvas>
   `;
 
-const canvas = new Canvas();
-const listener = new Listener();
-
-document
-  .querySelector(TREE_INPUT)!
-  .addEventListener("input", (event: Event) => listener.listen(event, canvas));
+Events.registerEvents();

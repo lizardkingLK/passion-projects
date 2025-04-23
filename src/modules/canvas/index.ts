@@ -1,4 +1,4 @@
-import { CircleShape } from "../shapes/circle";
+import { CircleShape } from "../drawing/circle";
 import { CircleNode } from "../types";
 import {
   TREE_VISUAL,
@@ -10,21 +10,18 @@ export class Canvas {
   #circle: CircleShape;
 
   constructor() {
-    // initialize canvas
     this.#canvas = document.querySelector(TREE_VISUAL)!;
     this.#initializeCanvas();
 
-    // initialize context
     this.#context = this.#canvas.getContext("2d")!;
     this.#initializeContext();
 
-    // initialize circle
     this.#circle = new CircleShape(this.#context);
   }
 
   #initializeCanvas() {
-    this.#canvas.width = window.screen.width;
-    this.#canvas.height = window.screen.height;
+    this.#canvas.width = window.innerWidth;
+    this.#canvas.height = window.innerHeight;
   }
 
   #initializeContext() {
@@ -34,7 +31,6 @@ export class Canvas {
     this.#context.imageSmoothingQuality = "high";
   }
 
-  // circle methods
   drawCircle(circleConfig: CircleNode) {
     this.#circle.drawCircle(circleConfig);
   }

@@ -4,14 +4,32 @@
 	box-sizing: border-box;
 }
 
-#treeInput {
+#treeInputContainer {
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	border: 1px black solid;
+	width: 30vw;
+	height: 20vh;
+	min-height: max-content;
+}
+
+#treeInputHeading {
+	height: 40px;
+	background-color: black;
+	color: white;
+	cursor: move;
+}
+
+#treeInput {
+	border-top: none;
+	width: 100%;
+	height: 100%;
 	padding: 20px;
-	width: 200px;
+	resize: none;
+	outline: none;
+	background-color: transparent;
+	backdrop-filter: blur(5px);
 }
 
 #treeVisual {

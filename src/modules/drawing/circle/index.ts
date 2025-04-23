@@ -8,13 +8,10 @@ export class CircleShape {
   }
 
   drawCircle({ cordinateX, cordinateY, radius }: CircleNode) {
-    // stroke as a new path
     this.#context.beginPath();
 
-    // set starting angle
     const startAngle = Math.atan(cordinateY / cordinateX);
 
-    // draw a circle
     this.#context.arc(
       cordinateX,
       cordinateY,
