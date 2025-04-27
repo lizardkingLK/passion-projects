@@ -2,6 +2,7 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	font-family: 'Roboto Mono';
 }
 
 #treeInputContainer {
@@ -15,10 +16,14 @@
 }
 
 #treeInputHeading {
-	height: 40px;
+	height: 5vh;
 	background-color: black;
 	color: white;
 	cursor: move;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	padding-left: 20px;
 }
 
 #treeInput {
@@ -32,7 +37,26 @@
 	backdrop-filter: blur(5px);
 }
 
+#treeVisualContainer {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: -1;
+	cursor: move;
+}
+
+#treeVisualHeading {
+	height: 5vh;
+	background-color: #f3f3f3;
+	color: black;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	padding-left: 20px;
+}
+
 #treeVisual {
 	display: block;
-	border: 1px red solid;
+	border: 1px #f3f3f3 solid;
 }

@@ -1,13 +1,15 @@
 import { CircleShape } from "../drawing/circle";
-import { CircleNode } from "../types";
-import {
-  TREE_VISUAL,
-} from "../constants";
+import { Grid } from "../drawing/grid";
+import { CircleNode, EdgeNode } from "../types";
+import { TREE_VISUAL } from "../constants";
+import { LineShape } from "../drawing/line";
 
 export class Canvas {
   #canvas: HTMLCanvasElement;
   #context: CanvasRenderingContext2D;
+  #grid: Grid;
   #circle: CircleShape;
+  #line: LineShape;
 
   constructor() {
     this.#canvas = document.querySelector(TREE_VISUAL)!;
@@ -17,11 +19,15 @@ export class Canvas {
     this.#initializeContext();
 
     this.#circle = new CircleShape(this.#context);
+
+    this.#grid = new Grid(this.#context);
+
+    this.#line = new LineShape(this.#context);
   }
 
   #initializeCanvas() {
-    this.#canvas.width = window.innerWidth;
-    this.#canvas.height = window.innerHeight;
+    // this.#canvas.width = window.innerWidth;
+    // this.#canvas.height = window.innerHeight;
   }
 
   #initializeContext() {
@@ -37,5 +43,15 @@ export class Canvas {
 
   clearCircle(circleConfig: CircleNode) {
     this.#circle.clearCircle(circleConfig);
+  }
+
+  drawGrid(maxVLevel: number, maxNodesInLine: number) {
+    this.#grid.drawGrid(maxVLevel, maxNodesInLine);
+  }
+
+  clearEdges(edges: EdgeNode[]) {
+    edges.forEach((edge) => {
+      this.#line.clearLine(edge);
+    });
   }
 }

@@ -3,13 +3,16 @@ import { Events } from "./modules/events";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
     <section id="treeInputContainer" draggable="true">
-      <div id="treeInputHeading"></div>
+      <div id="treeInputHeading">Input</div>
       <textarea
         id="treeInput"
         placeholder="Enter tree info here..."
       ></textarea>
     </section>
-    <canvas id="treeVisual"></canvas>
+    <section id="treeVisualContainer" draggable="true">
+      <div id="treeVisualHeading">Visual</div>
+      <canvas id="treeVisual"></canvas>
+    </section>
   `;
 
 Events.registerEvents();

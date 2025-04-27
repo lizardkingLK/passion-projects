@@ -1,6 +1,4 @@
-export type Json =
-  | { [keyType: string]: number | string | null | object }
-  | Json[];
+export type Json = { [keyType: string]: number | string | null | object };
 
 export type Result<T> = {
   isSuccess: boolean;
@@ -10,13 +8,30 @@ export type Result<T> = {
 
 export type TNode = {
   value: number;
-  edges: EdgeNode[];
-}
+  id?: number;
+  vLevel?: number;
+  hLevel?: number;
+  parent?: TNode | null;
+  left: TNode | null;
+  right: TNode | null;
+};
 
-export interface CircleNode {
+export type TNodeAnalyzed = {
+  maxVLevel: number;
+  maxNodesInLine: number;
+  nodes: TNode[];
+};
+
+export type TEdge = {
+  parentId: number;
+  childId: number;
+};
+
+export interface CircleNode extends TNode {
   cordinateX: number;
   cordinateY: number;
   radius: number;
+  edges: EdgeNode[]
 }
 
 export interface EdgeNode {

@@ -1,50 +1,45 @@
-import { Canvas } from "../canvas";
-import { TREE_INPUT, TREE_INPUT_CONTAINER } from "../constants";
+import {
+  TREE_INPUT,
+  TREE_INPUT_CONTAINER,
+  TREE_VISUAL_CONTAINER,
+} from "../constants";
 import { Handler } from "./handler";
 
 export class Events {
+  #handler: Handler;
+
+  constructor() {
+    this.#handler = new Handler();
+  }
+
   static registerEvents() {
     const events = new Events();
     events.#registerTreeInputChangeListener();
-    events.#registerTreeInputDragListener();
+    events.#registerDragListeners();
   }
 
   #registerTreeInputChangeListener() {
-    const canvas = new Canvas();
-    const handler = new Handler();
-
     document
       .querySelector(TREE_INPUT)!
       .addEventListener(
         "input",
-        (event: Event) => handler.inputChanged(event, canvas),
+        (event) => this.#handler.inputChanged(event),
         false
       );
   }
 
-  #registerTreeInputDragListener() {
-    const treeInputContainer: HTMLElement =
-      document.querySelector(TREE_INPUT_CONTAINER)!;
+  #registerDragListeners() {
+    [TREE_INPUT_CONTAINER, TREE_VISUAL_CONTAINER].forEach((container) => {
+      let left: number = 0;
+      let top: number = 0;
 
-    let left: number;
-    let top: number;
+      const { dragOver, dragEnd } = this.#handler.elementDragged(left, top);
 
-    document.addEventListener(
-      "dragover",
-      (event: DragEvent) => {
-        left = event.pageX;
-        top = event.pageY;
-      },
-      false
-    );
+      document.addEventListener("dragover", dragOver, false);
 
-    treeInputContainer.addEventListener(
-      "dragend",
-      () => {
-        treeInputContainer.style.left = `${left}px`;
-        treeInputContainer.style.top = `${top}px`;
-      },
-      false
-    );
+      const elementContainer: HTMLElement = document.querySelector(container)!;
+
+      elementContainer.addEventListener("dragend", dragEnd, false);
+    });
   }
 }

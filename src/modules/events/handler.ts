@@ -1,16 +1,15 @@
-import { Canvas } from "../canvas";
 import { Tracker } from "../drawing/tracker";
 import { validateJson } from "../utility";
 
 export class Handler {
-  #tracker: Tracker;
+  #tracker: Tracker = new Tracker();
 
   constructor() {
     this.#tracker = new Tracker();
   }
 
-  inputChanged(event: Event, canvas: Canvas) {
-    this.#tracker.clearNodes(canvas);
+  inputChanged(event: Event) {
+    this.#tracker.clearNodes();
 
     const { isSuccess, data } = validateJson(
       (<HTMLTextAreaElement>event.target).value
@@ -20,6 +19,21 @@ export class Handler {
       return;
     }
 
-    this.#tracker.setNodes(data, canvas);
+    this.#tracker.setNodes(data);
+  }
+
+  elementDragged(left: number, top: number) {
+    return {
+      dragOver: (event: DragEvent) => {
+        left = event.pageX;
+        top = event.pageY;
+      },
+      dragEnd: (event: DragEvent) => {
+        const target = event.target as HTMLElement;
+
+        target.style.left = `${left}px`;
+        target.style.top = `${top}px`;
+      },
+    };
   }
 }

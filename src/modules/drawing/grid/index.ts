@@ -1,13 +1,11 @@
-import { EdgeNode } from "../../types";
-
-export class LineShape {
+export class Grid {
   #context: CanvasRenderingContext2D;
 
   constructor(context: CanvasRenderingContext2D) {
     this.#context = context;
   }
 
-  clearLine(edge: EdgeNode) {
-    
+  drawGrid(maxVLevel: number, maxNodesInLine: number) {
+
   }
 }
