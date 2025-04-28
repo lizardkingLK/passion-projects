@@ -1,32 +1,33 @@
-import { CircleShape } from "../shapes/circle";
-import { Circle } from "../types";
-import {
-  TREE_VISUAL,
-  CANVAS_WIDTH as cWidth,
-  CANVAS_HEIGHT as cHeight,
-} from "../constants";
+import { CircleShape } from "../drawing/circle";
+import { Grid } from "../drawing/grid";
+import { CircleNode, EdgeNode } from "../types";
+import { TREE_VISUAL } from "../constants";
+import { LineShape } from "../drawing/line";
 
 export class Canvas {
   #canvas: HTMLCanvasElement;
   #context: CanvasRenderingContext2D;
+  #grid: Grid;
   #circle: CircleShape;
+  #line: LineShape;
 
   constructor() {
-    // initialize canvas
     this.#canvas = document.querySelector(TREE_VISUAL)!;
     this.#initializeCanvas();
 
-    // initialize context
     this.#context = this.#canvas.getContext("2d")!;
     this.#initializeContext();
 
-    // initialize circle
     this.#circle = new CircleShape(this.#context);
+
+    this.#grid = new Grid(this.#context);
+
+    this.#line = new LineShape(this.#context);
   }
 
   #initializeCanvas() {
-    this.#canvas.height = cHeight;
-    this.#canvas.width = cWidth;
+    // this.#canvas.width = window.innerWidth;
+    // this.#canvas.height = window.innerHeight;
   }
 
   #initializeContext() {
@@ -36,12 +37,21 @@ export class Canvas {
     this.#context.imageSmoothingQuality = "high";
   }
 
-  // circle methods
-  drawCircle(circleConfig: Circle) {
+  drawCircle(circleConfig: CircleNode) {
     this.#circle.drawCircle(circleConfig);
   }
 
-  clearCircle(circleConfig: Circle) {
-    this.#circle.clearCircle(circleConfig);    
+  clearCircle(circleConfig: CircleNode) {
+    this.#circle.clearCircle(circleConfig);
+  }
+
+  drawGrid(maxVLevel: number, maxNodesInLine: number) {
+    this.#grid.drawGrid(maxVLevel, maxNodesInLine);
+  }
+
+  clearEdges(edges: EdgeNode[]) {
+    edges.forEach((edge) => {
+      this.#line.clearLine(edge);
+    });
   }
 }

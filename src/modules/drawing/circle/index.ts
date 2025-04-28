@@ -1,4 +1,4 @@
-import { Circle } from "../../types";
+import { CircleNode } from "../../types";
 
 export class CircleShape {
   #context: CanvasRenderingContext2D;
@@ -7,14 +7,11 @@ export class CircleShape {
     this.#context = context;
   }
 
-  drawCircle({ cordinateX, cordinateY, radius }: Circle) {
-    // stroke as a new path
+  drawCircle({ cordinateX, cordinateY, radius }: CircleNode) {
     this.#context.beginPath();
 
-    // set starting angle
     const startAngle = Math.atan(cordinateY / cordinateX);
 
-    // draw a circle
     this.#context.arc(
       cordinateX,
       cordinateY,
@@ -26,7 +23,7 @@ export class CircleShape {
     this.#context.stroke();
   }
 
-  clearCircle({ cordinateX, cordinateY, radius }: Circle) {
+  clearCircle({ cordinateX, cordinateY, radius }: CircleNode) {
     this.#context.clearRect(
       cordinateX - radius - 1,
       cordinateY - radius - 1,
