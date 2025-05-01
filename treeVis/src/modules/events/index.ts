@@ -1,8 +1,4 @@
-import {
-  TREE_INPUT,
-  TREE_INPUT_CONTAINER,
-  TREE_VISUAL_CONTAINER,
-} from "../constants";
+import { TREE_INPUT, TREE_INPUT_CONTAINER } from "../constants";
 import { Handler } from "./handler";
 
 export class Events {
@@ -29,7 +25,7 @@ export class Events {
   }
 
   #registerDragListeners() {
-    [TREE_INPUT_CONTAINER, TREE_VISUAL_CONTAINER].forEach((container) => {
+    [TREE_INPUT_CONTAINER].forEach((container) => {
       let left: number = 0;
       let top: number = 0;
 

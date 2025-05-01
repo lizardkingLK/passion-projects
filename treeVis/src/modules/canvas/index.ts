@@ -1,7 +1,7 @@
 import { CircleShape } from "../drawing/circle";
 import { Grid } from "../drawing/grid";
-import { CircleNode, EdgeNode } from "../types";
-import { TREE_VISUAL } from "../constants";
+import { CircleNode, LineNode } from "../types";
+import { SCREEN_UNIT, TREE_VISUAL } from "../constants";
 import { LineShape } from "../drawing/line";
 
 export class Canvas {
@@ -13,7 +13,7 @@ export class Canvas {
 
   constructor() {
     this.#canvas = document.querySelector(TREE_VISUAL)!;
-    this.#initializeCanvas();
+    this.#setCanvasSize(0, 0);
 
     this.#context = this.#canvas.getContext("2d")!;
     this.#initializeContext();
@@ -25,9 +25,9 @@ export class Canvas {
     this.#line = new LineShape(this.#context);
   }
 
-  #initializeCanvas() {
-    // this.#canvas.width = window.innerWidth;
-    // this.#canvas.height = window.innerHeight;
+  #setCanvasSize(width: number, height: number) {
+    this.#canvas.width = width;
+    this.#canvas.height = height;
   }
 
   #initializeContext() {
@@ -45,11 +45,24 @@ export class Canvas {
     this.#circle.clearCircle(circleConfig);
   }
 
-  drawGrid(maxVLevel: number, maxNodesInLine: number) {
-    this.#grid.drawGrid(maxVLevel, maxNodesInLine);
+  drawGrid(height: number, width: number) {
+    this.#setCanvasSize(width * SCREEN_UNIT, height * SCREEN_UNIT);
+    this.#grid.drawGrid(
+      height,
+      width,
+      height * SCREEN_UNIT,
+      width * SCREEN_UNIT
+    );
   }
 
-  clearEdges(edges: EdgeNode[]) {
+  clearGrid() {
+    // this.#setCanvasSize(10 * SCREEN_UNIT, 10 * SCREEN_UNIT);
+    this.#grid.clearGrid();
+  }
+
+  drawEdge() {}
+
+  clearEdges(edges: LineNode[]) {
     edges.forEach((edge) => {
       this.#line.clearLine(edge);
     });

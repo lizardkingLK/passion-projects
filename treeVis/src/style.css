@@ -38,12 +38,13 @@
 }
 
 #treeVisualContainer {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+	/* position: absolute; */
+	/* top: 50%; */
+	/* left: 50%; */
+	/* transform: translate(-50%, -50%); */
 	z-index: -1;
-	cursor: move;
+	/* cursor: move; */
+	/* background-color: #f4f4f4; */
 }
 
 #treeVisualHeading {
@@ -59,4 +60,5 @@
 #treeVisual {
 	display: block;
 	border: 1px #f3f3f3 solid;
+	overflow: scroll;
 }

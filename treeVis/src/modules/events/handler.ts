@@ -1,4 +1,4 @@
-import { Tracker } from "../drawing/tracker";
+import { Tracker } from "../observer/tracker";
 import { validateJson } from "../utility";
 
 export class Handler {
@@ -9,7 +9,7 @@ export class Handler {
   }
 
   inputChanged(event: Event) {
-    this.#tracker.clearNodes();
+    this.#tracker.resetNodes();
 
     const { isSuccess, data } = validateJson(
       (<HTMLTextAreaElement>event.target).value

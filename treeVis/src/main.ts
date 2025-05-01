@@ -9,7 +9,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
         placeholder="Enter tree info here..."
       ></textarea>
     </section>
-    <section id="treeVisualContainer" draggable="true">
+    <section id="treeVisualContainer">
       <div id="treeVisualHeading">Visual</div>
       <canvas id="treeVisual"></canvas>
     </section>

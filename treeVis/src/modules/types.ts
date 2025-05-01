@@ -17,8 +17,8 @@ export type TNode = {
 };
 
 export type TNodeAnalyzed = {
-  maxVLevel: number;
-  maxNodesInLine: number;
+  height: number;
+  width: number;
   nodes: TNode[];
 };
 
@@ -31,11 +31,13 @@ export interface CircleNode extends TNode {
   cordinateX: number;
   cordinateY: number;
   radius: number;
-  edges: EdgeNode[]
+  edges: LineNode[]
 }
 
-export interface EdgeNode {
+export interface LineNode {
   startX: number;
   endX: number;
-  width: number;
+  startY: number;
+  endY: number;
+  lineWidth: number;
 }
