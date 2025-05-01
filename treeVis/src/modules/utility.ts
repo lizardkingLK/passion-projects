@@ -26,7 +26,7 @@ export function validateJson(input: string): Result<Json> {
 }
 
 export function inDepthAnalyze(object: Json): Result<TNodeAnalyzed> {
-  let maxVLevel = Number.MIN_VALUE;
+  let height = Number.MIN_VALUE;
 
   const nodes: TNode[] = [];
   const tracker = [];
@@ -48,10 +48,9 @@ export function inDepthAnalyze(object: Json): Result<TNodeAnalyzed> {
       parentId: current.parent?.id ?? null,
     });
     nodes.push(current);
-    // console.log(current);
 
-    if (current.vLevel && current.vLevel > maxVLevel) {
-      maxVLevel = current.vLevel;
+    if (current.vLevel && current.vLevel > height) {
+      height = current.vLevel;
     }
 
     if (current.right) {
@@ -78,7 +77,7 @@ export function inDepthAnalyze(object: Json): Result<TNodeAnalyzed> {
   // console.log("Max v level", maxVLevel);
   // console.log("Maximum nodes per line", 2 ** maxVLevel);
   return {
-    data: { nodes, maxVLevel, maxNodesInLine: 2 ** maxVLevel },
+    data: { nodes, height: height + 1, width: 2 ** (height + 1) - 1 },
     isSuccess: true,
     message: null,
   };
