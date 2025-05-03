@@ -26,15 +26,20 @@ export class Events {
 
   #registerDragListeners() {
     [TREE_INPUT_CONTAINER].forEach((container) => {
-      let left: number = 0;
-      let top: number = 0;
+      let previousLeft: number = 0;
+      let currentLeft: number = 0;
+      let previousTop: number = 0;
+      let currentTop: number = 0;
 
-      const { dragOver, dragEnd } = this.#handler.elementDragged(left, top);
-
-      document.addEventListener("dragover", dragOver, false);
-
+      const { dragStart, dragEnd } = this.#handler.elementDragged(
+        previousLeft,
+        currentLeft,
+        previousTop,
+        currentTop
+      );
+      
       const elementContainer: HTMLElement = document.querySelector(container)!;
-
+      elementContainer.addEventListener("dragstart", dragStart, false);
       elementContainer.addEventListener("dragend", dragEnd, false);
     });
   }
