@@ -22,17 +22,31 @@ export class Handler {
     this.#tracker.setNodes(data);
   }
 
-  elementDragged(left: number, top: number) {
+  elementDragged(
+    previousLeft: number,
+    currentLeft: number,
+    previousTop: number,
+    currentTop: number
+  ) {
     return {
-      dragOver: (event: DragEvent) => {
-        left = event.pageX;
-        top = event.pageY;
+      dragStart: (event: DragEvent) => {
+        previousLeft = event.pageX;
+        previousTop = event.pageY;
       },
       dragEnd: (event: DragEvent) => {
-        const target = event.target as HTMLElement;
+        currentLeft = event.pageX;
+        currentTop = event.pageY;
 
-        target.style.left = `${left}px`;
-        target.style.top = `${top}px`;
+        const target = event.currentTarget as HTMLElement;
+        const bcr = target.getBoundingClientRect();
+
+        const newCenterX =
+          bcr.left + bcr.width / 2 + (currentLeft - previousLeft) + "px";
+        target.style.left = newCenterX;
+
+        const newCenterY =
+          bcr.top + bcr.height / 2 + (currentTop - previousTop) + "px";
+        target.style.top = newCenterY;
       },
     };
   }

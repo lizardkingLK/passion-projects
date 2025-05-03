@@ -13,6 +13,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
       <div id="treeVisualHeading">Visual</div>
       <canvas id="treeVisual"></canvas>
     </section>
+    <section id="treeVisualStatusContainer"></section>
   `;
 
 Events.registerEvents();
