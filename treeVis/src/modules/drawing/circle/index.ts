@@ -1,4 +1,4 @@
-import { CircleNode } from "../../types";
+import { CircleNode, TDrawCircleNode } from "../../types";
 
 export class CircleShape {
   #context: CanvasRenderingContext2D;
@@ -7,7 +7,7 @@ export class CircleShape {
     this.#context = context;
   }
 
-  drawCircle({ cordinateX, cordinateY, radius }: CircleNode) {
+  drawCircle({ cordinateX, cordinateY, radius }: TDrawCircleNode) {
     this.#context.beginPath();
 
     const startAngle = Math.atan(cordinateY / cordinateX);

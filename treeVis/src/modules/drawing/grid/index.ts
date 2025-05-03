@@ -2,7 +2,7 @@ import { SCREEN_UNIT } from "../../constants";
 import { LineNode } from "../../types";
 import { LineShape } from "../line";
 
-export class Grid {
+export class GridShape {
   #context: CanvasRenderingContext2D;
   #line: LineShape;
   #grid: LineNode[];

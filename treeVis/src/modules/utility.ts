@@ -28,10 +28,11 @@ export function validateJson(input: string): Result<Json> {
 export function inDepthAnalyze(object: Json): Result<TNodeAnalyzed> {
   let height = Number.MIN_VALUE;
 
-  const nodes: TNode[] = [];
+  const nodes: Map<number, TNode> = new Map<number, TNode>();
   const tracker = [];
   let id = 1;
   let current: TNode = {
+    id,
     left: object["left"] as TNode,
     right: object["right"] as TNode,
     value: object["value"] as number,
@@ -47,7 +48,7 @@ export function inDepthAnalyze(object: Json): Result<TNodeAnalyzed> {
       hLevel: current.hLevel,
       parentId: current.parent?.id ?? null,
     });
-    nodes.push(current);
+    nodes.set(current.id,current);
 
     if (current.vLevel && current.vLevel > height) {
       height = current.vLevel;

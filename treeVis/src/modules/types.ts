@@ -8,7 +8,7 @@ export type Result<T> = {
 
 export type TNode = {
   value: number;
-  id?: number;
+  id: number;
   vLevel?: number;
   hLevel?: number;
   parent?: TNode | null;
@@ -19,7 +19,7 @@ export type TNode = {
 export type TNodeAnalyzed = {
   height: number;
   width: number;
-  nodes: TNode[];
+  nodes: Map<number, TNode>;
 };
 
 export type TEdge = {
@@ -31,8 +31,13 @@ export interface CircleNode extends TNode {
   cordinateX: number;
   cordinateY: number;
   radius: number;
-  edges: LineNode[]
+  edges: LineNode[];
 }
+
+export type TDrawCircleNode = Pick<
+  CircleNode,
+  "cordinateY" | "cordinateX" | "radius"
+>;
 
 export interface LineNode {
   startX: number;

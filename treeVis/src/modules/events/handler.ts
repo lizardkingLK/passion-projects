@@ -1,26 +1,53 @@
-import { Tracker } from "../observer/tracker";
-import { validateJson } from "../utility";
+import { inDepthAnalyze, validateJson } from "../utility";
+import { Canvas } from "../canvas";
 
 export class Handler {
-  #tracker: Tracker = new Tracker();
+  #canvas: Canvas;
 
   constructor() {
-    this.#tracker = new Tracker();
+    this.#canvas = new Canvas();
   }
 
   inputChanged(event: Event) {
-    this.#tracker.resetNodes();
+    this.#canvas.clearGrid();
+    this.#canvas.clearNodes();
 
-    const { isSuccess, data } = validateJson(
-      (<HTMLTextAreaElement>event.target).value
-    );
-
-    if (!isSuccess || !data) {
+    const {
+      isSuccess: isValidObject,
+      data: validData,
+      message: validationErrorMessage,
+    } = validateJson((<HTMLTextAreaElement>event.target).value);
+    if (!isValidObject) {
+      console.error(validationErrorMessage);
       return;
     }
 
-    this.#tracker.setNodes(data);
+    const {
+      isSuccess: isValidAnalyze,
+      data: analizedData,
+      message: analizeErrorMessage,
+    } = inDepthAnalyze(validData!);
+    if (!isValidAnalyze) {
+      console.error(analizeErrorMessage);
+      return;
+    }
+
+    const { width, height, nodes } = analizedData!;
+
+    this.#canvas.drawGrid(height, width);
+    this.#canvas.drawNodes(width, height, nodes);
   }
+
+  // getCircleConfig(level: number | null): CircleNode {
+  //   // TODO: set cordinateX and cordinateY actuals
+  //   let config: CircleNode = {
+  //     cordinateX: Math.random() * window.innerWidth,
+  //     cordinateY: Math.random() * window.innerHeight,
+  //     radius: 20,
+  //   };
+
+  //   return config;
+  // }
 
   elementDragged(
     previousLeft: number,
