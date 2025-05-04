@@ -50,6 +50,8 @@ export class Canvas {
     const rootY = 0;
 
     nodes.forEach(({ hLevel, vLevel }) => {
+      console.log(hLevel);
+      
       this.drawCircle({
         cordinateX: rootX + hLevel! * SCREEN_UNIT,
         cordinateY: 1 + rootY + radius + vLevel! * SCREEN_UNIT,

@@ -68,11 +68,11 @@ export class Handler {
         const bcr = target.getBoundingClientRect();
 
         const newCenterX =
-          bcr.left + bcr.width / 2 + (currentLeft - previousLeft) + "px";
+          window.scrollX + bcr.left + bcr.width / 2 + (currentLeft - previousLeft) + "px";
         target.style.left = newCenterX;
 
         const newCenterY =
-          bcr.top + bcr.height / 2 + (currentTop - previousTop) + "px";
+        window.scrollY + bcr.top + bcr.height / 2 + (currentTop - previousTop) + "px";
         target.style.top = newCenterY;
       },
     };
