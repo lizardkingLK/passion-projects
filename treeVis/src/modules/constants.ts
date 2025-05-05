@@ -4,10 +4,17 @@ export const CANVAS_HEIGHT = window.screen.height;
 export const SCREEN_UNIT = window.screen.availHeight / 10;
 
 // canvas context configurations
-export const LINE_WIDTH = 1;
+export const LINE_WIDTH = 2;
 export const STROKE_STYLE = "black";
 export const SMOOTHING_ENABLED = true;
 export const SMOOTHING_QUALITY = "high";
+export const TEXT_ALIGN = "center";
+export const TEXT_BASELINE = "middle";
+export const TEXT_RENDERING = "optimizeLegibility";
+export const FONT_KERNING = "auto";
+export const FONT_STRETCH = "ultra-expanded";
+export const FONT_VARIANT_CAPS = "titling-caps";
+export const FONT_FAMILY = "16px Roboto Mono";
 
 // element ids
 export const TREE_INPUT_CONTAINER = "#treeInputContainer";

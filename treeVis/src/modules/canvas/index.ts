@@ -16,6 +16,7 @@ import {
 } from "../constants";
 import { LineShape } from "../drawing/line";
 import { GridShape } from "../drawing/grid";
+import { TextShape } from "../drawing/text";
 
 export class Canvas {
   // canvas elements
@@ -26,9 +27,10 @@ export class Canvas {
   #grid: GridShape;
   #circle: CircleShape;
   #line: LineShape;
+  #text: TextShape;
 
-  // nodes map
-  #nodes: Map<number, TNode>;
+  // nodes tree
+  #rootNode: TNode | null;
 
   constructor() {
     this.#canvas = document.querySelector(TREE_VISUAL)!;
@@ -40,8 +42,9 @@ export class Canvas {
     this.#grid = new GridShape(this.#context);
     this.#circle = new CircleShape(this.#context);
     this.#line = new LineShape(this.#context);
+    this.#text = new TextShape(this.#context);
 
-    this.#nodes = new Map<number, TNode>();
+    this.#rootNode = null;
   }
 
   #setCanvasSize(width: number, height: number) {
@@ -81,6 +84,7 @@ export class Canvas {
     };
 
     this.drawCircle(circleConfig);
+    this.drawValue(circleConfig, value);
 
     if (left) {
       const leftBoxConfig: TBoxConfiguration = {
@@ -101,13 +105,16 @@ export class Canvas {
     }
   }
 
+  drawValue({ cordinateX, cordinateY }: TDrawCircleNode, value: number) {
+    this.#text.drawText(cordinateX, cordinateY, value.toString());
+  }
+
   clearNodes() {
-    let circleNode;
-    for (let index = 0; index < this.#nodes.size; index++) {
-      circleNode = this.#nodes.get(index + 1) as CircleNode;
-      this.clearCircle(circleNode);
-      this.clearEdges(circleNode.edges);
+    let current: TNode | null = this.#rootNode;
+    if (!current) {
+      return;
     }
+    // TODO: clear nodes function implement
   }
 
   // circles

@@ -1,4 +1,3 @@
-import { LINE_WIDTH } from "../../constants";
 import { LineNode } from "../../types";
 
 export class LineShape {
@@ -15,15 +14,7 @@ export class LineShape {
     this.#context.stroke();
   }
 
-  clearLine({ startX, startY, endX, endY }: LineNode) {
-    const width = endX - startX;
-    const height = endY - startY;
-
-    this.#context.clearRect(
-      startX,
-      startY,
-      width ?? LINE_WIDTH,
-      height ?? LINE_WIDTH
-    );
+  clearLine({ clearWidth, clearHeight, clearStartX, clearStartY }: LineNode) {
+    this.#context.clearRect(clearStartX, clearStartY, clearWidth, clearHeight);
   }
 }
