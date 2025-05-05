@@ -1,5 +1,11 @@
 import { CircleShape } from "../drawing/circle";
-import { CircleNode, LineNode, TDrawCircleNode, TNode } from "../types";
+import {
+  CircleNode,
+  LineNode,
+  TBoxConfiguration,
+  TDrawCircleNode,
+  TNode,
+} from "../types";
 import { SCREEN_UNIT, TREE_VISUAL } from "../constants";
 import { LineShape } from "../drawing/line";
 import { GridShape } from "../drawing/grid";
@@ -44,20 +50,47 @@ export class Canvas {
   }
 
   // nodes
-  drawNodes(width: number, height: number, nodes: Map<number, TNode>) {
+  drawNodes(width: number, nodes: Map<number, TNode>) {
     const radius = SCREEN_UNIT / 2 - 1;
-    const rootX = (width * SCREEN_UNIT) / 2;
-    const rootY = 0;
+    const canvasWidth = width * SCREEN_UNIT;
+    const boxConfig: TBoxConfiguration = {
+      boxStartX: 0,
+      boxStartY: 0,
+      boxEndX: canvasWidth,
+    };
 
-    nodes.forEach(({ hLevel, vLevel }) => {
-      console.log(hLevel);
-      
-      this.drawCircle({
-        cordinateX: rootX + hLevel! * SCREEN_UNIT,
-        cordinateY: 1 + rootY + radius + vLevel! * SCREEN_UNIT,
-        radius,
-      });
-    });
+    this.#drawNode(radius, nodes.get(1)!, boxConfig);
+  }
+  #drawNode(
+    radius: number,
+    { value, left, right }: TNode,
+    { boxEndX, boxStartX, boxStartY }: TBoxConfiguration
+  ) {
+    const circleConfig: TDrawCircleNode = {
+      cordinateX: boxStartX + (boxEndX - boxStartX) / 2,
+      cordinateY: boxStartY + radius + 1,
+      radius,
+    };
+
+    this.drawCircle(circleConfig);
+
+    if (left) {
+      const leftBoxConfig: TBoxConfiguration = {
+        boxStartX,
+        boxEndX: circleConfig.cordinateX - radius,
+        boxStartY: circleConfig.cordinateY + radius + 1,
+      };
+      this.#drawNode(radius, left, leftBoxConfig);
+    }
+
+    if (right) {
+      const rightBoxConfig: TBoxConfiguration = {
+        boxStartX: circleConfig.cordinateX + radius,
+        boxEndX,
+        boxStartY: circleConfig.cordinateY + radius + 1,
+      };
+      this.#drawNode(radius, right, rightBoxConfig);
+    }
   }
 
   clearNodes() {
@@ -90,7 +123,6 @@ export class Canvas {
   }
 
   clearGrid() {
-    // this.#setCanvasSize(10 * SCREEN_UNIT, 10 * SCREEN_UNIT);
     this.#grid.clearGrid();
   }
 

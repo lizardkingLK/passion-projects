@@ -46,3 +46,9 @@ export interface LineNode {
   endY: number;
   lineWidth: number;
 }
+
+export type TBoxConfiguration = {
+  boxStartX: number;
+  boxStartY: number;
+  boxEndX: number;
+};

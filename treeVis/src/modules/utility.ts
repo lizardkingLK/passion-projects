@@ -25,11 +25,13 @@ export function validateJson(input: string): Result<Json> {
   }
 }
 
-export function inDepthAnalyze(object: Json): Result<TNodeAnalyzed> {
+export function treeAnalyze(object: Json): Result<TNodeAnalyzed> {
   let height = Number.MIN_VALUE;
 
   const nodes: Map<number, TNode> = new Map<number, TNode>();
-  const tracker = [];
+
+  const depthTracker = [];
+
   let id = 1;
   let current: TNode = {
     id,
@@ -37,10 +39,12 @@ export function inDepthAnalyze(object: Json): Result<TNodeAnalyzed> {
     right: object["right"] as TNode,
     value: object["value"] as number,
   };
-  tracker.push({ ...current, id, vLevel: 0, hLevel: 0, parent: null });
 
-  while (tracker.length != 0) {
-    current = tracker.pop()!;
+  depthTracker.push({ ...current, id, vLevel: 0, hLevel: 0, parent: null });
+
+  while (depthTracker.length !== 0) {
+    current = depthTracker.pop()!;
+
     current = Object.assign(current, {
       value: current.value,
       id: current.id,
@@ -48,14 +52,15 @@ export function inDepthAnalyze(object: Json): Result<TNodeAnalyzed> {
       hLevel: current.hLevel,
       parentId: current.parent?.id ?? null,
     });
-    nodes.set(current.id,current);
+
+    nodes.set(current.id, current);
 
     if (current.vLevel && current.vLevel > height) {
       height = current.vLevel;
     }
 
     if (current.right) {
-      tracker.push({
+      depthTracker.push({
         ...current.right,
         id: ++id,
         vLevel: current.vLevel! + 1,
@@ -65,7 +70,7 @@ export function inDepthAnalyze(object: Json): Result<TNodeAnalyzed> {
     }
 
     if (current.left) {
-      tracker.push({
+      depthTracker.push({
         ...current.left,
         id: ++id,
         vLevel: current.vLevel! + 1,
@@ -75,13 +80,9 @@ export function inDepthAnalyze(object: Json): Result<TNodeAnalyzed> {
     }
   }
 
-  // console.log("Max v level", maxVLevel);
-  // console.log("Maximum nodes per line", 2 ** maxVLevel);
   return {
     data: { nodes, height: height + 1, width: 2 ** (height + 1) - 1 },
     isSuccess: true,
     message: null,
   };
 }
-
-// doDFS();

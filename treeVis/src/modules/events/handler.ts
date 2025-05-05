@@ -1,4 +1,4 @@
-import { inDepthAnalyze, validateJson } from "../utility";
+import {  treeAnalyze, validateJson } from "../utility";
 import { Canvas } from "../canvas";
 
 export class Handler {
@@ -26,13 +26,14 @@ export class Handler {
       isSuccess: isValidAnalyze,
       data: analizedData,
       message: analizeErrorMessage,
-    } = inDepthAnalyze(validData!);
+    } = treeAnalyze(validData!);
     if (!isValidAnalyze) {
       console.error(analizeErrorMessage);
       return;
     }
 
     const { width, height, nodes } = analizedData!;
+    // console.log(nodes!);
 
     this.#canvas.drawGrid(height, width);
     this.#canvas.drawNodes(width, height, nodes);
@@ -68,11 +69,19 @@ export class Handler {
         const bcr = target.getBoundingClientRect();
 
         const newCenterX =
-          window.scrollX + bcr.left + bcr.width / 2 + (currentLeft - previousLeft) + "px";
+          window.scrollX +
+          bcr.left +
+          bcr.width / 2 +
+          (currentLeft - previousLeft) +
+          "px";
         target.style.left = newCenterX;
 
         const newCenterY =
-        window.scrollY + bcr.top + bcr.height / 2 + (currentTop - previousTop) + "px";
+          window.scrollY +
+          bcr.top +
+          bcr.height / 2 +
+          (currentTop - previousTop) +
+          "px";
         target.style.top = newCenterY;
       },
     };
