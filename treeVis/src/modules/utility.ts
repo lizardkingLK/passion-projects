@@ -27,62 +27,41 @@ export function validateJson(input: string): Result<Json> {
 }
 
 export function treeAnalyze(object: Json): Result<TNodeAnalyzed> {
-  let height = Number.MIN_VALUE;
-
-  const nodes: Map<number, TNode> = new Map<number, TNode>();
+  let height = -Number.MIN_VALUE;
 
   const depthTracker = [];
 
-  let id = 1;
   let current: TNode = {
-    id,
     left: object["left"] as TNode,
     right: object["right"] as TNode,
     value: object["value"] as number,
+    level: 0,
   };
 
-  depthTracker.push({ ...current, id, vLevel: 0, hLevel: 0, parent: null });
+  const root = current;
+
+  depthTracker.push(current);
 
   while (depthTracker.length !== 0) {
     current = depthTracker.pop()!;
 
-    current = Object.assign(current, {
-      value: current.value,
-      id: current.id,
-      vLevel: current.vLevel,
-      hLevel: current.hLevel,
-      parentId: current.parent?.id ?? null,
-    });
-
-    nodes.set(current.id, current);
-
-    if (current.vLevel && current.vLevel > height) {
-      height = current.vLevel;
+    if (typeof current.level === "number" && current.level > height) {
+      height = current.level;
     }
 
     if (current.right) {
-      depthTracker.push({
-        ...current.right,
-        id: ++id,
-        vLevel: current.vLevel! + 1,
-        hLevel: current.hLevel! + 1,
-        parent: current,
-      });
+      current.right.level = current.level! + 1;
+      depthTracker.push(current.right);
     }
 
     if (current.left) {
-      depthTracker.push({
-        ...current.left,
-        id: ++id,
-        vLevel: current.vLevel! + 1,
-        hLevel: current.hLevel! - 1,
-        parent: current,
-      });
+      current.left.level = current.level! + 1;
+      depthTracker.push(current.left);
     }
   }
 
   return {
-    data: { nodes, height: height + 1, width: 2 ** (height + 1) - 1 },
+    data: { root, height: height + 1, width: 2 ** (height + 1) - 1 },
     isSuccess: true,
     message: null,
   };

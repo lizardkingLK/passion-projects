@@ -8,9 +8,9 @@ export type Result<T> = {
 
 export type TNode = {
   value: number;
-  id: number;
-  vLevel?: number;
-  hLevel?: number;
+  // id: number;
+  level?: number;
+  // hLevel?: number;
   parent?: TNode | null;
   left: TNode | null;
   right: TNode | null;
@@ -19,7 +19,8 @@ export type TNode = {
 export type TNodeAnalyzed = {
   height: number;
   width: number;
-  nodes: Map<number, TNode>;
+  root: TNode;
+  // nodes: Map<number, TNode>;
 };
 
 export type TEdge = {

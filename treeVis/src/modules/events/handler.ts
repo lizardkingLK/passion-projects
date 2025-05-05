@@ -35,9 +35,9 @@ export class Handler {
       return;
     }
 
-    const { width, height, nodes } = analizedData!;
+    const { width, height,root } = analizedData!;
     this.#canvas.drawGrid(height, width);
-    this.#canvas.drawNodes(width, nodes);
+    this.#canvas.drawNodes(width, root);
 
     popupStatusMessage({
       color: COLOR_INFO,

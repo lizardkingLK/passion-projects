@@ -57,7 +57,7 @@ export class Canvas {
   }
 
   // nodes
-  drawNodes(width: number, nodes: Map<number, TNode>) {
+  drawNodes(width: number, rootNode: TNode) {
     const radius = SCREEN_UNIT / 2 - LINE_WIDTH;
     const canvasWidth = width * SCREEN_UNIT;
     const boxConfig: TBoxConfiguration = {
@@ -66,8 +66,9 @@ export class Canvas {
       boxEndX: canvasWidth,
     };
 
-    this.#drawNode(radius, nodes.get(1)!, boxConfig);
+    this.#drawNode(radius, rootNode, boxConfig);
   }
+
   #drawNode(
     radius: number,
     { value, left, right }: TNode,
