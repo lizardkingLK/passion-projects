@@ -1,4 +1,5 @@
-import { Json, TNode, Result, TNodeAnalyzed } from "./types";
+import { TREE_VISUAL_STATUS_CONTAINER } from "./constants";
+import { Json, TNode, Result, TNodeAnalyzed, TStatusPopup } from "./types";
 
 export function validateJson(input: string): Result<Json> {
   try {
@@ -85,4 +86,13 @@ export function treeAnalyze(object: Json): Result<TNodeAnalyzed> {
     isSuccess: true,
     message: null,
   };
+}
+
+export function popupStatusMessage({ color, message, duration }: TStatusPopup) {
+  const statusbar = document.querySelector(
+    TREE_VISUAL_STATUS_CONTAINER
+  )! as HTMLElement;
+  statusbar.innerHTML = message;
+  statusbar.style.color = color;
+  setTimeout(() => (statusbar.innerHTML = ""), duration);
 }

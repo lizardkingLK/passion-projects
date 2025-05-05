@@ -1,3 +1,4 @@
+import { LINE_WIDTH } from "../../constants";
 import { CircleNode, TDrawCircleNode } from "../../types";
 
 export class CircleShape {
@@ -25,10 +26,10 @@ export class CircleShape {
 
   clearCircle({ cordinateX, cordinateY, radius }: CircleNode) {
     this.#context.clearRect(
-      cordinateX - radius - 1,
-      cordinateY - radius - 1,
-      radius * 2 + 2,
-      radius * 2 + 2
+      cordinateX - radius - LINE_WIDTH,
+      cordinateY - radius - LINE_WIDTH,
+      radius * 2 + 2 * LINE_WIDTH,
+      radius * 2 + 2 * LINE_WIDTH
     );
   }
 }

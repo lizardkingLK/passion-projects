@@ -52,3 +52,9 @@ export type TBoxConfiguration = {
   boxStartY: number;
   boxEndX: number;
 };
+
+export type TStatusPopup = {
+  message: string;
+  duration: number;
+  color: string;
+};

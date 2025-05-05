@@ -1,4 +1,4 @@
-import { SCREEN_UNIT } from "../../constants";
+import { LINE_WIDTH, SCREEN_UNIT } from "../../constants";
 import { LineNode } from "../../types";
 import { LineShape } from "../line";
 
@@ -25,7 +25,7 @@ export class GridShape {
       startY = (i + 1) * SCREEN_UNIT;
       endX = width;
       endY = (i + 1) * SCREEN_UNIT;
-      line = { startX, startY, endX, endY, lineWidth: 1 };
+      line = { startX, startY, endX, endY, lineWidth: LINE_WIDTH };
       this.#grid.push(line);
       this.#line.drawLine(line);
     }
@@ -35,7 +35,7 @@ export class GridShape {
       startY = 0;
       endX = (i + 1) * SCREEN_UNIT;
       endY = height;
-      line = { startX, startY, endX, endY, lineWidth: 1 };
+      line = { startX, startY, endX, endY, lineWidth: LINE_WIDTH };
       this.#grid.push(line);
       this.#line.drawLine(line);
     }

@@ -1,5 +1,6 @@
-import {  treeAnalyze, validateJson } from "../utility";
+import { popupStatusMessage, treeAnalyze, validateJson } from "../utility";
 import { Canvas } from "../canvas";
+import { COLOR_INFO } from "../constants";
 
 export class Handler {
   #canvas: Canvas;
@@ -22,6 +23,8 @@ export class Handler {
       return;
     }
 
+    const now = Date.now();
+
     const {
       isSuccess: isValidAnalyze,
       data: analizedData,
@@ -33,22 +36,15 @@ export class Handler {
     }
 
     const { width, height, nodes } = analizedData!;
-    // console.log(nodes!);
-
     this.#canvas.drawGrid(height, width);
-    this.#canvas.drawNodes(width, height, nodes);
+    this.#canvas.drawNodes(width, nodes);
+
+    popupStatusMessage({
+      color: COLOR_INFO,
+      message: `${Date.now() - now} ms`,
+      duration: 5000,
+    });
   }
-
-  // getCircleConfig(level: number | null): CircleNode {
-  //   // TODO: set cordinateX and cordinateY actuals
-  //   let config: CircleNode = {
-  //     cordinateX: Math.random() * window.innerWidth,
-  //     cordinateY: Math.random() * window.innerHeight,
-  //     radius: 20,
-  //   };
-
-  //   return config;
-  // }
 
   elementDragged(
     previousLeft: number,

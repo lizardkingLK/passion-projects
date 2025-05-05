@@ -6,7 +6,14 @@ import {
   TDrawCircleNode,
   TNode,
 } from "../types";
-import { SCREEN_UNIT, TREE_VISUAL } from "../constants";
+import {
+  LINE_WIDTH,
+  SCREEN_UNIT,
+  SMOOTHING_ENABLED,
+  SMOOTHING_QUALITY,
+  STROKE_STYLE,
+  TREE_VISUAL,
+} from "../constants";
 import { LineShape } from "../drawing/line";
 import { GridShape } from "../drawing/grid";
 
@@ -43,15 +50,15 @@ export class Canvas {
   }
 
   #initializeContext() {
-    this.#context.lineWidth = 1;
-    this.#context.strokeStyle = "black";
-    this.#context.imageSmoothingEnabled = true;
-    this.#context.imageSmoothingQuality = "high";
+    this.#context.lineWidth = LINE_WIDTH;
+    this.#context.strokeStyle = STROKE_STYLE;
+    this.#context.imageSmoothingEnabled = SMOOTHING_ENABLED;
+    this.#context.imageSmoothingQuality = SMOOTHING_QUALITY;
   }
 
   // nodes
   drawNodes(width: number, nodes: Map<number, TNode>) {
-    const radius = SCREEN_UNIT / 2 - 1;
+    const radius = SCREEN_UNIT / 2 - LINE_WIDTH;
     const canvasWidth = width * SCREEN_UNIT;
     const boxConfig: TBoxConfiguration = {
       boxStartX: 0,
@@ -68,7 +75,7 @@ export class Canvas {
   ) {
     const circleConfig: TDrawCircleNode = {
       cordinateX: boxStartX + (boxEndX - boxStartX) / 2,
-      cordinateY: boxStartY + radius + 1,
+      cordinateY: boxStartY + radius + LINE_WIDTH,
       radius,
     };
 
@@ -77,17 +84,17 @@ export class Canvas {
     if (left) {
       const leftBoxConfig: TBoxConfiguration = {
         boxStartX,
-        boxEndX: circleConfig.cordinateX - radius,
-        boxStartY: circleConfig.cordinateY + radius + 1,
+        boxEndX: circleConfig.cordinateX - radius - LINE_WIDTH,
+        boxStartY: circleConfig.cordinateY + radius + LINE_WIDTH,
       };
       this.#drawNode(radius, left, leftBoxConfig);
     }
 
     if (right) {
       const rightBoxConfig: TBoxConfiguration = {
-        boxStartX: circleConfig.cordinateX + radius,
+        boxStartX: circleConfig.cordinateX + radius + LINE_WIDTH,
         boxEndX,
-        boxStartY: circleConfig.cordinateY + radius + 1,
+        boxStartY: circleConfig.cordinateY + radius + LINE_WIDTH,
       };
       this.#drawNode(radius, right, rightBoxConfig);
     }
