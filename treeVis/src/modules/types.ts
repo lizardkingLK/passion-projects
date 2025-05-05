@@ -8,9 +8,9 @@ export type Result<T> = {
 
 export type TNode = {
   value: number;
-  id?: number;
-  vLevel?: number;
-  hLevel?: number;
+  // id: number;
+  level?: number;
+  // hLevel?: number;
   parent?: TNode | null;
   left: TNode | null;
   right: TNode | null;
@@ -19,7 +19,8 @@ export type TNode = {
 export type TNodeAnalyzed = {
   height: number;
   width: number;
-  nodes: TNode[];
+  root: TNode;
+  // nodes: Map<number, TNode>;
 };
 
 export type TEdge = {
@@ -31,8 +32,13 @@ export interface CircleNode extends TNode {
   cordinateX: number;
   cordinateY: number;
   radius: number;
-  edges: LineNode[]
+  edges: LineNode[];
 }
+
+export type TDrawCircleNode = Pick<
+  CircleNode,
+  "cordinateY" | "cordinateX" | "radius"
+>;
 
 export interface LineNode {
   startX: number;
@@ -40,4 +46,20 @@ export interface LineNode {
   startY: number;
   endY: number;
   lineWidth: number;
+  clearStartX: number;
+  clearStartY: number;
+  clearWidth: number;
+  clearHeight: number;
 }
+
+export type TBoxConfiguration = {
+  boxStartX: number;
+  boxStartY: number;
+  boxEndX: number;
+};
+
+export type TStatusPopup = {
+  message: string;
+  duration: number;
+  color: string;
+};

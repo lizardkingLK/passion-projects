@@ -14,10 +14,7 @@ export class LineShape {
     this.#context.stroke();
   }
 
-  clearLine({ startX, startY, endX, endY }: LineNode) {
-    const width = endX - startX;
-    const height = endY - startY;
-
-    this.#context.clearRect(startX, startY, width ?? 1, height ?? 1);
+  clearLine({ clearWidth, clearHeight, clearStartX, clearStartY }: LineNode) {
+    this.#context.clearRect(clearStartX, clearStartY, clearWidth, clearHeight);
   }
 }

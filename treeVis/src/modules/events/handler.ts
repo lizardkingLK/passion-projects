@@ -1,25 +1,49 @@
-import { Tracker } from "../observer/tracker";
-import { validateJson } from "../utility";
+import { popupStatusMessage, treeAnalyze, validateJson } from "../utility";
+import { Canvas } from "../canvas";
+import { COLOR_INFO } from "../constants";
 
 export class Handler {
-  #tracker: Tracker = new Tracker();
+  #canvas: Canvas;
 
   constructor() {
-    this.#tracker = new Tracker();
+    this.#canvas = new Canvas();
   }
 
   inputChanged(event: Event) {
-    this.#tracker.resetNodes();
+    this.#canvas.clearGrid();
+    this.#canvas.clearNodes();
 
-    const { isSuccess, data } = validateJson(
-      (<HTMLTextAreaElement>event.target).value
-    );
-
-    if (!isSuccess || !data) {
+    const {
+      isSuccess: isValidObject,
+      data: validData,
+      message: validationErrorMessage,
+    } = validateJson((<HTMLTextAreaElement>event.target).value);
+    if (!isValidObject) {
+      console.error(validationErrorMessage);
       return;
     }
 
-    this.#tracker.setNodes(data);
+    const now = Date.now();
+
+    const {
+      isSuccess: isValidAnalyze,
+      data: analizedData,
+      message: analizeErrorMessage,
+    } = treeAnalyze(validData!);
+    if (!isValidAnalyze) {
+      console.error(analizeErrorMessage);
+      return;
+    }
+
+    const { width, height,root } = analizedData!;
+    this.#canvas.drawGrid(height, width);
+    this.#canvas.drawNodes(width, root);
+
+    popupStatusMessage({
+      color: COLOR_INFO,
+      message: `${Date.now() - now} ms`,
+      duration: 5000,
+    });
   }
 
   elementDragged(
@@ -41,11 +65,19 @@ export class Handler {
         const bcr = target.getBoundingClientRect();
 
         const newCenterX =
-          bcr.left + bcr.width / 2 + (currentLeft - previousLeft) + "px";
+          window.scrollX +
+          bcr.left +
+          bcr.width / 2 +
+          (currentLeft - previousLeft) +
+          "px";
         target.style.left = newCenterX;
 
         const newCenterY =
-          bcr.top + bcr.height / 2 + (currentTop - previousTop) + "px";
+          window.scrollY +
+          bcr.top +
+          bcr.height / 2 +
+          (currentTop - previousTop) +
+          "px";
         target.style.top = newCenterY;
       },
     };

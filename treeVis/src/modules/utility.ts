@@ -1,4 +1,5 @@
-import { Json, TNode, Result, TNodeAnalyzed } from "./types";
+import { TREE_VISUAL_STATUS_CONTAINER } from "./constants";
+import { Json, TNode, Result, TNodeAnalyzed, TStatusPopup } from "./types";
 
 export function validateJson(input: string): Result<Json> {
   try {
@@ -25,62 +26,52 @@ export function validateJson(input: string): Result<Json> {
   }
 }
 
-export function inDepthAnalyze(object: Json): Result<TNodeAnalyzed> {
-  let height = Number.MIN_VALUE;
+export function treeAnalyze(object: Json): Result<TNodeAnalyzed> {
+  let height = -Number.MIN_VALUE;
 
-  const nodes: TNode[] = [];
-  const tracker = [];
-  let id = 1;
+  const depthTracker = [];
+
   let current: TNode = {
     left: object["left"] as TNode,
     right: object["right"] as TNode,
     value: object["value"] as number,
+    level: 0,
   };
-  tracker.push({ ...current, id, vLevel: 0, hLevel: 0, parent: null });
 
-  while (tracker.length != 0) {
-    current = tracker.pop()!;
-    current = Object.assign(current, {
-      value: current.value,
-      id: current.id,
-      vLevel: current.vLevel,
-      hLevel: current.hLevel,
-      parentId: current.parent?.id ?? null,
-    });
-    nodes.push(current);
+  const root = current;
 
-    if (current.vLevel && current.vLevel > height) {
-      height = current.vLevel;
+  depthTracker.push(current);
+
+  while (depthTracker.length !== 0) {
+    current = depthTracker.pop()!;
+
+    if (typeof current.level === "number" && current.level > height) {
+      height = current.level;
     }
 
     if (current.right) {
-      tracker.push({
-        ...current.right,
-        id: ++id,
-        vLevel: current.vLevel! + 1,
-        hLevel: current.hLevel! + 1,
-        parent: current,
-      });
+      current.right.level = current.level! + 1;
+      depthTracker.push(current.right);
     }
 
     if (current.left) {
-      tracker.push({
-        ...current.left,
-        id: ++id,
-        vLevel: current.vLevel! + 1,
-        hLevel: current.hLevel! - 1,
-        parent: current,
-      });
+      current.left.level = current.level! + 1;
+      depthTracker.push(current.left);
     }
   }
 
-  // console.log("Max v level", maxVLevel);
-  // console.log("Maximum nodes per line", 2 ** maxVLevel);
   return {
-    data: { nodes, height: height + 1, width: 2 ** (height + 1) - 1 },
+    data: { root, height: height + 1, width: 2 ** (height + 1) - 1 },
     isSuccess: true,
     message: null,
   };
 }
 
-// doDFS();
+export function popupStatusMessage({ color, message, duration }: TStatusPopup) {
+  const statusbar = document.querySelector(
+    TREE_VISUAL_STATUS_CONTAINER
+  )! as HTMLElement;
+  statusbar.innerHTML = message;
+  statusbar.style.color = color;
+  setTimeout(() => (statusbar.innerHTML = ""), duration);
+}

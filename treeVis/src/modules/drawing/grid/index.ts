@@ -1,8 +1,8 @@
-import { SCREEN_UNIT } from "../../constants";
+import { LINE_WIDTH, SCREEN_UNIT } from "../../constants";
 import { LineNode } from "../../types";
 import { LineShape } from "../line";
 
-export class Grid {
+export class GridShape {
   #context: CanvasRenderingContext2D;
   #line: LineShape;
   #grid: LineNode[];
@@ -13,29 +13,77 @@ export class Grid {
     this.#grid = [];
   }
 
-  drawGrid(hLevel: number, wLevel: number, height: number, width: number) {
+  drawGrid(
+    hLevel: number,
+    wLevel: number,
+    canvasHeight: number,
+    canvasWidth: number
+  ) {
     let startX;
     let startY;
     let endX;
     let endY;
     let line: LineNode;
     let i: number;
+    let clearStartX: number;
+    let clearStartY: number;
+    let clearWidth: number;
+    let clearHeight: number;
+
+    // horizontal lines
     for (i = 0; i < hLevel - 1; i++) {
       startX = 0;
       startY = (i + 1) * SCREEN_UNIT;
-      endX = width;
+
+      endX = canvasWidth;
       endY = (i + 1) * SCREEN_UNIT;
-      line = { startX, startY, endX, endY, lineWidth: 1 };
+
+      clearWidth = canvasWidth;
+      clearHeight = LINE_WIDTH;
+      clearStartX = 0;
+      clearStartY = startY - LINE_WIDTH / 2;
+
+      line = {
+        startX,
+        startY,
+        endX,
+        endY,
+        lineWidth: LINE_WIDTH,
+        clearWidth,
+        clearHeight,
+        clearStartX,
+        clearStartY,
+      };
+
       this.#grid.push(line);
       this.#line.drawLine(line);
     }
 
+    // vertical lines
     for (i = 0; i < wLevel - 1; i++) {
       startX = (i + 1) * SCREEN_UNIT;
       startY = 0;
+
       endX = (i + 1) * SCREEN_UNIT;
-      endY = height;
-      line = { startX, startY, endX, endY, lineWidth: 1 };
+      endY = canvasHeight;
+
+      clearWidth = LINE_WIDTH;
+      clearHeight = canvasHeight;
+      clearStartX = startX - LINE_WIDTH / 2;
+      clearStartY = 0;
+
+      line = {
+        startX,
+        startY,
+        endX,
+        endY,
+        lineWidth: LINE_WIDTH,
+        clearWidth,
+        clearHeight,
+        clearStartX,
+        clearStartY,
+      };
+
       this.#grid.push(line);
       this.#line.drawLine(line);
     }
@@ -45,7 +93,10 @@ export class Grid {
     let lineNode;
     for (let index = 0; index < this.#grid.length; index++) {
       lineNode = this.#grid[index] as LineNode;
+
       this.#line.clearLine(lineNode);
     }
+
+    this.#grid = [];
   }
 }
