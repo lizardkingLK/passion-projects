@@ -74,7 +74,7 @@ export class Canvas {
 
   #drawNode(
     radius: number,
-    { value, left, right }: TNode,
+    { value, left, right, parentX, parentY }: TNode,
     { boxEndX, boxStartX, boxStartY }: TBoxConfiguration
   ) {
     const circleConfig: TDrawCircleNode = {
@@ -85,6 +85,12 @@ export class Canvas {
 
     this.drawCircle(circleConfig);
     this.drawValue(circleConfig, value);
+    this.drawEdge(
+      parentX,
+      parentY,
+      circleConfig.cordinateX,
+      circleConfig.cordinateY
+    );
 
     if (left) {
       const leftBoxConfig: TBoxConfiguration = {
@@ -92,6 +98,8 @@ export class Canvas {
         boxEndX: circleConfig.cordinateX - radius - LINE_WIDTH,
         boxStartY: circleConfig.cordinateY + radius + LINE_WIDTH,
       };
+      left.parentX = circleConfig.cordinateX;
+      left.parentY = circleConfig.cordinateY;
       this.#drawNode(radius, left, leftBoxConfig);
     }
 
@@ -101,6 +109,8 @@ export class Canvas {
         boxEndX,
         boxStartY: circleConfig.cordinateY + radius + LINE_WIDTH,
       };
+      right.parentX = circleConfig.cordinateX;
+      right.parentY = circleConfig.cordinateY;
       this.#drawNode(radius, right, rightBoxConfig);
     }
   }
@@ -142,7 +152,30 @@ export class Canvas {
   }
 
   // edges
-  drawEdge() {}
+  drawEdge(
+    parentX: number | undefined,
+    parentY: number | undefined,
+    cordinateX: number,
+    cordinateY: number
+  ) {
+    if (!parentX || !parentY) {
+      return;
+    }
+
+    const lineNode: LineNode = {
+      startX: parentX,
+      startY: parentY,
+      endX: cordinateX,
+      endY: cordinateY,
+      clearHeight: 0,
+      clearWidth: 0,
+      clearStartX: 0,
+      clearStartY: 0,
+      lineWidth: LINE_WIDTH,
+    };
+
+    this.#line.drawLine(lineNode);
+  }
 
   clearEdges(edges: LineNode[]) {
     edges.forEach((edge) => {

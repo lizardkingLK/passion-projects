@@ -8,24 +8,24 @@ export type Result<T> = {
 
 export type TNode = {
   value: number;
-  // id: number;
-  level?: number;
-  // hLevel?: number;
-  parent?: TNode | null;
   left: TNode | null;
   right: TNode | null;
+  level?: number;
+  parentX?: number;
+  parentY?: number;
 };
 
 export type TNodeAnalyzed = {
   height: number;
   width: number;
   root: TNode;
-  // nodes: Map<number, TNode>;
 };
 
 export type TEdge = {
-  parentId: number;
-  childId: number;
+  parentX?: number;
+  parentY?: number;
+  cordinateX: number;
+  cordinateY: number;
 };
 
 export interface CircleNode extends TNode {

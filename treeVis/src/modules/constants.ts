@@ -28,3 +28,7 @@ export const TREE_VISUAL = "#treeVisual";
 export const COLOR_INFO = "#000000";
 export const COLOR_ERROR = "#FF0000";
 export const COLOR_WARNING = "#FFA500";
+
+// animate or time durations
+export const TIME_ONE_SECOND = 1000;
+export const TIME_FOUR_SECONDS = 4000;

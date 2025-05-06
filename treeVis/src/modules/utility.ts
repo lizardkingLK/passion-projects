@@ -1,4 +1,4 @@
-import { TREE_VISUAL_STATUS_ELAPSED } from "./constants";
+import { TIME_ONE_SECOND, TREE_VISUAL_STATUS_ELAPSED } from "./constants";
 import { Json, TNode, Result, TNodeAnalyzed, TStatusPopup } from "./types";
 
 export function validateJson(input: string): Result<Json> {
@@ -75,7 +75,7 @@ export function popupStatusMessage({ color, message, duration }: TStatusPopup) {
   container.style.color = color;
 
   const keyframes = [{ opacity: 1 }, { opacity: 0 }];
-  const keyframeDuration = 1000;
+  const keyframeDuration = TIME_ONE_SECOND;
 
   setTimeout(() => {
     container
