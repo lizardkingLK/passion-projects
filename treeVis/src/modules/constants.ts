@@ -20,6 +20,7 @@ export const FONT_FAMILY = "16px Roboto Mono";
 export const TREE_INPUT_CONTAINER = "#treeInputContainer";
 export const TREE_VISUAL_CONTAINER = "#treeVisualContainer";
 export const TREE_VISUAL_STATUS_CONTAINER = "#treeVisualStatusContainer";
+export const TREE_VISUAL_STATUS_ELAPSED = "#treeVisualStatusElapsed";
 export const TREE_INPUT = "#treeInput";
 export const TREE_VISUAL = "#treeVisual";
 

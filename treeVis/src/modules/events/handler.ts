@@ -42,7 +42,7 @@ export class Handler {
     popupStatusMessage({
       color: COLOR_INFO,
       message: `${Date.now() - now} ms`,
-      duration: 5000,
+      duration: 4000,
     });
   }
 
