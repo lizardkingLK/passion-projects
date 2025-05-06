@@ -21,13 +21,6 @@ export type TNodeAnalyzed = {
   root: TNode;
 };
 
-export type TEdge = {
-  parentX?: number;
-  parentY?: number;
-  cordinateX: number;
-  cordinateY: number;
-};
-
 export interface CircleNode extends TNode {
   cordinateX: number;
   cordinateY: number;
@@ -42,8 +35,8 @@ export type TDrawCircleNode = Pick<
 
 export interface LineNode {
   startX: number;
-  endX: number;
   startY: number;
+  endX: number;
   endY: number;
   lineWidth: number;
   clearStartX: number;
@@ -51,6 +44,12 @@ export interface LineNode {
   clearWidth: number;
   clearHeight: number;
 }
+
+export interface TEdge extends LineNode {
+  radius: number;
+}
+
+export type TDrawEdge = Partial<TEdge>;
 
 export type TBoxConfiguration = {
   boxStartX: number;

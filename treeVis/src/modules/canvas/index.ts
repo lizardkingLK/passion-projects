@@ -4,6 +4,7 @@ import {
   LineNode,
   TBoxConfiguration,
   TDrawCircleNode,
+  TDrawEdge,
   TNode,
 } from "../types";
 import {
@@ -85,12 +86,13 @@ export class Canvas {
 
     this.drawCircle(circleConfig);
     this.drawValue(circleConfig, value);
-    this.drawEdge(
-      parentX,
-      parentY,
-      circleConfig.cordinateX,
-      circleConfig.cordinateY
-    );
+    this.drawEdge({
+      radius,
+      startX: parentX,
+      startY: parentY,
+      endX: circleConfig.cordinateX,
+      endY: circleConfig.cordinateY,
+    });
 
     if (left) {
       const leftBoxConfig: TBoxConfiguration = {
@@ -124,7 +126,8 @@ export class Canvas {
     if (!current) {
       return;
     }
-    // TODO: clear nodes function implement
+    // TODO: clear nodes function implementation
+    // use post order traversal lrn
   }
 
   // circles
@@ -152,29 +155,26 @@ export class Canvas {
   }
 
   // edges
-  drawEdge(
-    parentX: number | undefined,
-    parentY: number | undefined,
-    cordinateX: number,
-    cordinateY: number
-  ) {
-    if (!parentX || !parentY) {
+  drawEdge({ startX, startY, endX, endY, radius }: TDrawEdge) {
+    if (!startX || !startY || !endX || !endY) {
       return;
     }
 
-    const lineNode: LineNode = {
-      startX: parentX,
-      startY: parentY,
-      endX: cordinateX,
-      endY: cordinateY,
+    // TODO: draw it after the edge or before the edge
+    // of the circle of the node
+    console.log(radius);
+
+    this.#line.drawLine({
+      startX,
+      startY,
+      endX,
+      endY,
       clearHeight: 0,
       clearWidth: 0,
       clearStartX: 0,
       clearStartY: 0,
       lineWidth: LINE_WIDTH,
-    };
-
-    this.#line.drawLine(lineNode);
+    });
   }
 
   clearEdges(edges: LineNode[]) {
