@@ -8,24 +8,17 @@ export type Result<T> = {
 
 export type TNode = {
   value: number;
-  // id: number;
-  level?: number;
-  // hLevel?: number;
-  parent?: TNode | null;
   left: TNode | null;
   right: TNode | null;
+  level?: number;
+  parentX?: number;
+  parentY?: number;
 };
 
 export type TNodeAnalyzed = {
   height: number;
   width: number;
   root: TNode;
-  // nodes: Map<number, TNode>;
-};
-
-export type TEdge = {
-  parentId: number;
-  childId: number;
 };
 
 export interface CircleNode extends TNode {
@@ -42,8 +35,8 @@ export type TDrawCircleNode = Pick<
 
 export interface LineNode {
   startX: number;
-  endX: number;
   startY: number;
+  endX: number;
   endY: number;
   lineWidth: number;
   clearStartX: number;
@@ -51,6 +44,12 @@ export interface LineNode {
   clearWidth: number;
   clearHeight: number;
 }
+
+export interface TEdge extends LineNode {
+  radius: number;
+}
+
+export type TDrawEdge = Partial<TEdge>;
 
 export type TBoxConfiguration = {
   boxStartX: number;

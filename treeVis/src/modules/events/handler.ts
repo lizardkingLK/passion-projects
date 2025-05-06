@@ -1,6 +1,6 @@
 import { popupStatusMessage, treeAnalyze, validateJson } from "../utility";
 import { Canvas } from "../canvas";
-import { COLOR_INFO } from "../constants";
+import { COLOR_INFO, TIME_FOUR_SECONDS } from "../constants";
 
 export class Handler {
   #canvas: Canvas;
@@ -42,7 +42,7 @@ export class Handler {
     popupStatusMessage({
       color: COLOR_INFO,
       message: `${Date.now() - now} ms`,
-      duration: 5000,
+      duration: TIME_FOUR_SECONDS,
     });
   }
 

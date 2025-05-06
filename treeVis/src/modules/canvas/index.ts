@@ -4,6 +4,7 @@ import {
   LineNode,
   TBoxConfiguration,
   TDrawCircleNode,
+  TDrawEdge,
   TNode,
 } from "../types";
 import {
@@ -74,7 +75,7 @@ export class Canvas {
 
   #drawNode(
     radius: number,
-    { value, left, right }: TNode,
+    { value, left, right, parentX, parentY }: TNode,
     { boxEndX, boxStartX, boxStartY }: TBoxConfiguration
   ) {
     const circleConfig: TDrawCircleNode = {
@@ -85,6 +86,13 @@ export class Canvas {
 
     this.drawCircle(circleConfig);
     this.drawValue(circleConfig, value);
+    this.drawEdge({
+      radius,
+      startX: parentX,
+      startY: parentY,
+      endX: circleConfig.cordinateX,
+      endY: circleConfig.cordinateY,
+    });
 
     if (left) {
       const leftBoxConfig: TBoxConfiguration = {
@@ -92,6 +100,8 @@ export class Canvas {
         boxEndX: circleConfig.cordinateX - radius - LINE_WIDTH,
         boxStartY: circleConfig.cordinateY + radius + LINE_WIDTH,
       };
+      left.parentX = circleConfig.cordinateX;
+      left.parentY = circleConfig.cordinateY;
       this.#drawNode(radius, left, leftBoxConfig);
     }
 
@@ -101,6 +111,8 @@ export class Canvas {
         boxEndX,
         boxStartY: circleConfig.cordinateY + radius + LINE_WIDTH,
       };
+      right.parentX = circleConfig.cordinateX;
+      right.parentY = circleConfig.cordinateY;
       this.#drawNode(radius, right, rightBoxConfig);
     }
   }
@@ -114,7 +126,8 @@ export class Canvas {
     if (!current) {
       return;
     }
-    // TODO: clear nodes function implement
+    // TODO: clear nodes function implementation
+    // use post order traversal lrn
   }
 
   // circles
@@ -142,7 +155,27 @@ export class Canvas {
   }
 
   // edges
-  drawEdge() {}
+  drawEdge({ startX, startY, endX, endY, radius }: TDrawEdge) {
+    if (!startX || !startY || !endX || !endY) {
+      return;
+    }
+
+    // TODO: draw it after the edge or before the edge
+    // of the circle of the node
+    console.log(radius);
+
+    this.#line.drawLine({
+      startX,
+      startY,
+      endX,
+      endY,
+      clearHeight: 0,
+      clearWidth: 0,
+      clearStartX: 0,
+      clearStartY: 0,
+      lineWidth: LINE_WIDTH,
+    });
+  }
 
   clearEdges(edges: LineNode[]) {
     edges.forEach((edge) => {
