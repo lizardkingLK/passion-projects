@@ -1,9 +1,9 @@
 import { CircleShape } from "../drawing/circle";
 import {
-  LineNode,
   TBoxConfiguration,
   TDrawCircleNode,
   TDrawEdge,
+  TEdge,
   TNode,
 } from "../types";
 import {
@@ -87,17 +87,17 @@ export class Canvas {
       radius,
     };
 
-    rootNode = Object.assign(rootNode, { ...circleConfig });
-
-    this.drawCircle(circleConfig);
-    this.drawValue(circleConfig, value);
-    this.drawEdge({
+    const edgeConfig = {
       radius,
       startX: parentX,
       startY: parentY,
       endX: circleConfig.cordinateX,
       endY: circleConfig.cordinateY,
-    });
+    };
+
+    this.drawCircle(circleConfig, rootNode);
+    this.drawValue(circleConfig, value);
+    this.drawEdge(edgeConfig, rootNode);
 
     if (left) {
       const leftBoxConfig: TBoxConfiguration = {
@@ -140,12 +140,16 @@ export class Canvas {
       radius: rootNode.radius!,
     });
 
-    // TODO: clear nodes function implementation
-    // use post order traversal lrn);
+    if (rootNode.edge) {
+      this.clearEdge(rootNode.edge);
+    }
   }
 
   // circles
-  drawCircle(circleConfig: TDrawCircleNode) {
+  drawCircle(circleConfig: TDrawCircleNode, rootNode: TNode) {
+    rootNode.cordinateX = circleConfig.cordinateX;
+    rootNode.cordinateY = circleConfig.cordinateY;
+    rootNode.radius = circleConfig.radius;
     this.#circle.drawCircle(circleConfig);
   }
 
@@ -169,7 +173,7 @@ export class Canvas {
   }
 
   // edges
-  drawEdge({ startX, startY, endX, endY, radius }: TDrawEdge) {
+  drawEdge({ startX, startY, endX, endY, radius }: TDrawEdge, rootNode: TNode) {
     if (!startX || !startY || !endX || !endY || !radius) {
       return;
     }
@@ -179,7 +183,7 @@ export class Canvas {
 
     const hypotenuse =
       (cordinateXDifference ** 2 + cordinateYDifference ** 2) ** (1 / 2);
-    const centerToBorder = LINE_WIDTH + radius;
+    const centerToBorder = +radius;
 
     const cordinateX1 =
       startX + (centerToBorder * cordinateXDifference) / hypotenuse;
@@ -191,22 +195,25 @@ export class Canvas {
     const cordinateY2 =
       endY - (centerToBorder * cordinateYDifference) / hypotenuse;
 
-    this.#line.drawLine({
+    const drawLineConfig = {
       startX: cordinateX1,
       startY: cordinateY1,
       endX: cordinateX2,
       endY: cordinateY2,
-      clearHeight: 0,
-      clearWidth: 0,
-      clearStartX: 0,
-      clearStartY: 0,
+      clearStartX: cordinateX1,
+      clearStartY: cordinateY1,
+      clearHeight: cordinateY2 - cordinateY1,
+      clearWidth: cordinateX2 - cordinateX1,
       lineWidth: LINE_WIDTH,
-    });
+      radius,
+    };
+
+    rootNode.edge = drawLineConfig;
+
+    this.#line.drawLine(drawLineConfig);
   }
 
-  clearEdges(edges: LineNode[]) {
-    edges.forEach((edge) => {
-      this.#line.clearLine(edge);
-    });
+  clearEdge(edge: TEdge) {
+    this.#line.clearLine(edge);
   }
 }
