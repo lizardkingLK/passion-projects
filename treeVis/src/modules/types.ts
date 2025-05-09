@@ -10,9 +10,13 @@ export type TNode = {
   value: number;
   left: TNode | null;
   right: TNode | null;
+  edge: TEdge | null;
   level?: number;
   parentX?: number;
   parentY?: number;
+  cordinateX?: number;
+  cordinateY?: number;
+  radius?: number;
 };
 
 export type TNodeAnalyzed = {
@@ -25,7 +29,6 @@ export interface CircleNode extends TNode {
   cordinateX: number;
   cordinateY: number;
   radius: number;
-  edges: LineNode[];
 }
 
 export type TDrawCircleNode = Pick<

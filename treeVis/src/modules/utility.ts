@@ -2,13 +2,32 @@ import { TIME_ONE_SECOND, TREE_VISUAL_STATUS_ELAPSED } from "./constants";
 import { Json, TNode, Result, TNodeAnalyzed, TStatusPopup } from "./types";
 
 export function validateJson(input: string): Result<Json> {
+  const keys = ["left", "right", "value"];
+
   try {
-    const parsed = JSON.parse(input);
+    let isValidKeys = true;
+
+    const parsed = JSON.parse(input, (key, value) => {
+      if (key && !keys.includes(key)) {
+        isValidKeys = false;
+      }
+
+      return value;
+    });
+
     if (!(parsed instanceof Object)) {
       return {
         data: null,
         isSuccess: false,
         message: "Input is an array",
+      };
+    }
+
+    if (!isValidKeys) {
+      return {
+        data: null,
+        isSuccess: false,
+        message: "Input json keys are invalid",
       };
     }
 
@@ -36,6 +55,7 @@ export function treeAnalyze(object: Json): Result<TNodeAnalyzed> {
     right: object["right"] as TNode,
     value: object["value"] as number,
     level: 0,
+    edge: null,
   };
 
   const root = current;
@@ -67,7 +87,13 @@ export function treeAnalyze(object: Json): Result<TNodeAnalyzed> {
   };
 }
 
+let timeoutId: number;
+
 export function popupStatusMessage({ color, message, duration }: TStatusPopup) {
+  if (timeoutId) {
+    clearTimeout(timeoutId);
+  }
+
   const container = document.querySelector(
     TREE_VISUAL_STATUS_ELAPSED
   )! as HTMLElement;
@@ -77,7 +103,7 @@ export function popupStatusMessage({ color, message, duration }: TStatusPopup) {
   const keyframes = [{ opacity: 1 }, { opacity: 0 }];
   const keyframeDuration = TIME_ONE_SECOND;
 
-  setTimeout(() => {
+  timeoutId = setTimeout(() => {
     container
       .animate(keyframes, keyframeDuration)
       .finished.then(() => (container.innerHTML = ""));
