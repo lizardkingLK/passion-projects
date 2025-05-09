@@ -1,6 +1,5 @@
 import { CircleShape } from "../drawing/circle";
 import {
-  CircleNode,
   LineNode,
   TBoxConfiguration,
   TDrawCircleNode,
@@ -70,19 +69,25 @@ export class Canvas {
       boxEndX: canvasWidth,
     };
 
+    this.#rootNode = rootNode;
+
     this.#drawNode(radius, rootNode, boxConfig);
   }
 
   #drawNode(
     radius: number,
-    { value, left, right, parentX, parentY }: TNode,
+    rootNode: TNode,
     { boxEndX, boxStartX, boxStartY }: TBoxConfiguration
   ) {
+    const { value, left, right, parentX, parentY } = rootNode;
+
     const circleConfig: TDrawCircleNode = {
       cordinateX: boxStartX + (boxEndX - boxStartX) / 2,
       cordinateY: boxStartY + radius + LINE_WIDTH,
       radius,
     };
+
+    rootNode = Object.assign(rootNode, { ...circleConfig });
 
     this.drawCircle(circleConfig);
     this.drawValue(circleConfig, value);
@@ -121,13 +126,22 @@ export class Canvas {
     this.#text.drawText(cordinateX, cordinateY, value.toString());
   }
 
-  clearNodes() {
-    let current: TNode | null = this.#rootNode;
-    if (!current) {
+  clearNodes(rootNode: TNode | null = this.#rootNode) {
+    if (!rootNode) {
       return;
     }
+
+    this.clearNodes(rootNode.left);
+    this.clearNodes(rootNode.right);
+
+    this.clearCircle({
+      cordinateX: rootNode.cordinateX!,
+      cordinateY: rootNode.cordinateY!,
+      radius: rootNode.radius!,
+    });
+
     // TODO: clear nodes function implementation
-    // use post order traversal lrn
+    // use post order traversal lrn);
   }
 
   // circles
@@ -135,7 +149,7 @@ export class Canvas {
     this.#circle.drawCircle(circleConfig);
   }
 
-  clearCircle(circleConfig: CircleNode) {
+  clearCircle(circleConfig: TDrawCircleNode) {
     this.#circle.clearCircle(circleConfig);
   }
 
@@ -156,19 +170,32 @@ export class Canvas {
 
   // edges
   drawEdge({ startX, startY, endX, endY, radius }: TDrawEdge) {
-    if (!startX || !startY || !endX || !endY) {
+    if (!startX || !startY || !endX || !endY || !radius) {
       return;
     }
 
-    // TODO: draw it after the edge or before the edge
-    // of the circle of the node
-    console.log(radius);
+    const cordinateXDifference = endX - startX;
+    const cordinateYDifference = endY - startY;
+
+    const hypotenuse =
+      (cordinateXDifference ** 2 + cordinateYDifference ** 2) ** (1 / 2);
+    const centerToBorder = LINE_WIDTH + radius;
+
+    const cordinateX1 =
+      startX + (centerToBorder * cordinateXDifference) / hypotenuse;
+    const cordinateY1 =
+      startY + (centerToBorder * cordinateYDifference) / hypotenuse;
+
+    const cordinateX2 =
+      endX - (centerToBorder * cordinateXDifference) / hypotenuse;
+    const cordinateY2 =
+      endY - (centerToBorder * cordinateYDifference) / hypotenuse;
 
     this.#line.drawLine({
-      startX,
-      startY,
-      endX,
-      endY,
+      startX: cordinateX1,
+      startY: cordinateY1,
+      endX: cordinateX2,
+      endY: cordinateY2,
       clearHeight: 0,
       clearWidth: 0,
       clearStartX: 0,
