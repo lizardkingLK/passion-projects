@@ -2,6 +2,7 @@
 export const CANVAS_WIDTH = window.screen.width;
 export const CANVAS_HEIGHT = window.screen.height;
 export const SCREEN_UNIT = window.screen.availHeight / 10;
+export const USE_GRID = true;
 
 // canvas context configurations
 export const LINE_WIDTH = 2;
@@ -14,7 +15,7 @@ export const TEXT_RENDERING = "optimizeLegibility";
 export const FONT_KERNING = "auto";
 export const FONT_STRETCH = "ultra-expanded";
 export const FONT_VARIANT_CAPS = "titling-caps";
-export const FONT_FAMILY = "16px Roboto Mono";
+export const FONT_FAMILY = "{0} Roboto Mono";
 
 // element ids
 export const TREE_INPUT_CONTAINER = "#treeInputContainer";

@@ -1,4 +1,5 @@
-import { LINE_WIDTH, SCREEN_UNIT } from "../../constants";
+import { Drawing } from "..";
+import { LINE_WIDTH } from "../../constants";
 import { LineNode } from "../../types";
 import { LineShape } from "../line";
 
@@ -33,10 +34,10 @@ export class GridShape {
     // horizontal lines
     for (i = 0; i < hLevel - 1; i++) {
       startX = 0;
-      startY = (i + 1) * SCREEN_UNIT;
+      startY = (i + 1) * Drawing.screenUnit;
 
       endX = canvasWidth;
-      endY = (i + 1) * SCREEN_UNIT;
+      endY = (i + 1) * Drawing.screenUnit;
 
       clearWidth = canvasWidth;
       clearHeight = LINE_WIDTH;
@@ -61,10 +62,10 @@ export class GridShape {
 
     // vertical lines
     for (i = 0; i < wLevel - 1; i++) {
-      startX = (i + 1) * SCREEN_UNIT;
+      startX = (i + 1) * Drawing.screenUnit;
       startY = 0;
 
-      endX = (i + 1) * SCREEN_UNIT;
+      endX = (i + 1) * Drawing.screenUnit;
       endY = canvasHeight;
 
       clearWidth = LINE_WIDTH;
