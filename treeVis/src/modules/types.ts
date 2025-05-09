@@ -13,6 +13,9 @@ export type TNode = {
   level?: number;
   parentX?: number;
   parentY?: number;
+  cordinateX?: number;
+  cordinateY?: number;
+  radius?: number;
 };
 
 export type TNodeAnalyzed = {

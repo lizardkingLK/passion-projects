@@ -1,6 +1,5 @@
 import { CircleShape } from "../drawing/circle";
 import {
-  CircleNode,
   LineNode,
   TBoxConfiguration,
   TDrawCircleNode,
@@ -70,19 +69,25 @@ export class Canvas {
       boxEndX: canvasWidth,
     };
 
+    this.#rootNode = rootNode;
+
     this.#drawNode(radius, rootNode, boxConfig);
   }
 
   #drawNode(
     radius: number,
-    { value, left, right, parentX, parentY }: TNode,
+    rootNode: TNode,
     { boxEndX, boxStartX, boxStartY }: TBoxConfiguration
   ) {
+    const { value, left, right, parentX, parentY } = rootNode;
+
     const circleConfig: TDrawCircleNode = {
       cordinateX: boxStartX + (boxEndX - boxStartX) / 2,
       cordinateY: boxStartY + radius + LINE_WIDTH,
       radius,
     };
+
+    rootNode = Object.assign(rootNode, { ...circleConfig });
 
     this.drawCircle(circleConfig);
     this.drawValue(circleConfig, value);
@@ -121,13 +126,22 @@ export class Canvas {
     this.#text.drawText(cordinateX, cordinateY, value.toString());
   }
 
-  clearNodes() {
-    let current: TNode | null = this.#rootNode;
-    if (!current) {
+  clearNodes(rootNode: TNode | null = this.#rootNode) {
+    if (!rootNode) {
       return;
     }
+
+    this.clearNodes(rootNode.left);
+    this.clearNodes(rootNode.right);
+
+    this.clearCircle({
+      cordinateX: rootNode.cordinateX!,
+      cordinateY: rootNode.cordinateY!,
+      radius: rootNode.radius!,
+    });
+
     // TODO: clear nodes function implementation
-    // use post order traversal lrn
+    // use post order traversal lrn);
   }
 
   // circles
@@ -135,7 +149,7 @@ export class Canvas {
     this.#circle.drawCircle(circleConfig);
   }
 
-  clearCircle(circleConfig: CircleNode) {
+  clearCircle(circleConfig: TDrawCircleNode) {
     this.#circle.clearCircle(circleConfig);
   }
 
