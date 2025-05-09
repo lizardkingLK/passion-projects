@@ -35,7 +35,7 @@ export class Handler {
       return;
     }
 
-    const { width, height,root } = analizedData!;
+    const { width, height, root } = analizedData!;
     this.#canvas.drawGrid(height, width);
     this.#canvas.drawNodes(width, root);
 

@@ -1,10 +1,9 @@
 import { CircleShape } from "../drawing/circle";
 import {
-  CircleNode,
-  LineNode,
   TBoxConfiguration,
   TDrawCircleNode,
   TDrawEdge,
+  TEdge,
   TNode,
 } from "../types";
 import {
@@ -70,29 +69,35 @@ export class Canvas {
       boxEndX: canvasWidth,
     };
 
+    this.#rootNode = rootNode;
+
     this.#drawNode(radius, rootNode, boxConfig);
   }
 
   #drawNode(
     radius: number,
-    { value, left, right, parentX, parentY }: TNode,
+    rootNode: TNode,
     { boxEndX, boxStartX, boxStartY }: TBoxConfiguration
   ) {
+    const { value, left, right, parentX, parentY } = rootNode;
+
     const circleConfig: TDrawCircleNode = {
       cordinateX: boxStartX + (boxEndX - boxStartX) / 2,
       cordinateY: boxStartY + radius + LINE_WIDTH,
       radius,
     };
 
-    this.drawCircle(circleConfig);
-    this.drawValue(circleConfig, value);
-    this.drawEdge({
+    const edgeConfig = {
       radius,
       startX: parentX,
       startY: parentY,
       endX: circleConfig.cordinateX,
       endY: circleConfig.cordinateY,
-    });
+    };
+
+    this.drawCircle(circleConfig, rootNode);
+    this.drawValue(circleConfig, value);
+    this.drawEdge(edgeConfig, rootNode);
 
     if (left) {
       const leftBoxConfig: TBoxConfiguration = {
@@ -121,21 +126,34 @@ export class Canvas {
     this.#text.drawText(cordinateX, cordinateY, value.toString());
   }
 
-  clearNodes() {
-    let current: TNode | null = this.#rootNode;
-    if (!current) {
+  clearNodes(rootNode: TNode | null = this.#rootNode) {
+    if (!rootNode) {
       return;
     }
-    // TODO: clear nodes function implementation
-    // use post order traversal lrn
+
+    this.clearNodes(rootNode.left);
+    this.clearNodes(rootNode.right);
+
+    this.clearCircle({
+      cordinateX: rootNode.cordinateX!,
+      cordinateY: rootNode.cordinateY!,
+      radius: rootNode.radius!,
+    });
+
+    if (rootNode.edge) {
+      this.clearEdge(rootNode.edge);
+    }
   }
 
   // circles
-  drawCircle(circleConfig: TDrawCircleNode) {
+  drawCircle(circleConfig: TDrawCircleNode, rootNode: TNode) {
+    rootNode.cordinateX = circleConfig.cordinateX;
+    rootNode.cordinateY = circleConfig.cordinateY;
+    rootNode.radius = circleConfig.radius;
     this.#circle.drawCircle(circleConfig);
   }
 
-  clearCircle(circleConfig: CircleNode) {
+  clearCircle(circleConfig: TDrawCircleNode) {
     this.#circle.clearCircle(circleConfig);
   }
 
@@ -155,31 +173,47 @@ export class Canvas {
   }
 
   // edges
-  drawEdge({ startX, startY, endX, endY, radius }: TDrawEdge) {
-    if (!startX || !startY || !endX || !endY) {
+  drawEdge({ startX, startY, endX, endY, radius }: TDrawEdge, rootNode: TNode) {
+    if (!startX || !startY || !endX || !endY || !radius) {
       return;
     }
 
-    // TODO: draw it after the edge or before the edge
-    // of the circle of the node
-    console.log(radius);
+    const cordinateXDifference = endX - startX;
+    const cordinateYDifference = endY - startY;
 
-    this.#line.drawLine({
-      startX,
-      startY,
-      endX,
-      endY,
-      clearHeight: 0,
-      clearWidth: 0,
-      clearStartX: 0,
-      clearStartY: 0,
+    const hypotenuse =
+      (cordinateXDifference ** 2 + cordinateYDifference ** 2) ** (1 / 2);
+    const centerToBorder = +radius;
+
+    const cordinateX1 =
+      startX + (centerToBorder * cordinateXDifference) / hypotenuse;
+    const cordinateY1 =
+      startY + (centerToBorder * cordinateYDifference) / hypotenuse;
+
+    const cordinateX2 =
+      endX - (centerToBorder * cordinateXDifference) / hypotenuse;
+    const cordinateY2 =
+      endY - (centerToBorder * cordinateYDifference) / hypotenuse;
+
+    const drawLineConfig = {
+      startX: cordinateX1,
+      startY: cordinateY1,
+      endX: cordinateX2,
+      endY: cordinateY2,
+      clearStartX: cordinateX1,
+      clearStartY: cordinateY1,
+      clearHeight: cordinateY2 - cordinateY1,
+      clearWidth: cordinateX2 - cordinateX1,
       lineWidth: LINE_WIDTH,
-    });
+      radius,
+    };
+
+    rootNode.edge = drawLineConfig;
+
+    this.#line.drawLine(drawLineConfig);
   }
 
-  clearEdges(edges: LineNode[]) {
-    edges.forEach((edge) => {
-      this.#line.clearLine(edge);
-    });
+  clearEdge(edge: TEdge) {
+    this.#line.clearLine(edge);
   }
 }

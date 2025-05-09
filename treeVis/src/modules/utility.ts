@@ -1,5 +1,14 @@
-import { TIME_ONE_SECOND, TREE_VISUAL_STATUS_ELAPSED } from "./constants";
-import { Json, TNode, Result, TNodeAnalyzed, TStatusPopup } from "./types";
+import {
+  TIME_ONE_SECOND,
+  TREE_VISUAL_STATUS_ELAPSED,
+} from "./constants";
+import {
+  Json,
+  TNode,
+  Result,
+  TNodeAnalyzed,
+  TStatusPopup,
+} from "./types";
 
 export function validateJson(input: string): Result<Json> {
   try {
@@ -36,6 +45,7 @@ export function treeAnalyze(object: Json): Result<TNodeAnalyzed> {
     right: object["right"] as TNode,
     value: object["value"] as number,
     level: 0,
+    edges: [],
   };
 
   const root = current;
