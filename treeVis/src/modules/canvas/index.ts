@@ -156,19 +156,32 @@ export class Canvas {
 
   // edges
   drawEdge({ startX, startY, endX, endY, radius }: TDrawEdge) {
-    if (!startX || !startY || !endX || !endY) {
+    if (!startX || !startY || !endX || !endY || !radius) {
       return;
     }
 
-    // TODO: draw it after the edge or before the edge
-    // of the circle of the node
-    console.log(radius);
+    const cordinateXDifference = endX - startX;
+    const cordinateYDifference = endY - startY;
+
+    const hypotenuse =
+      (cordinateXDifference ** 2 + cordinateYDifference ** 2) ** (1 / 2);
+    const centerToBorder = LINE_WIDTH + radius;
+
+    const cordinateX1 =
+      startX + (centerToBorder * cordinateXDifference) / hypotenuse;
+    const cordinateY1 =
+      startY + (centerToBorder * cordinateYDifference) / hypotenuse;
+
+    const cordinateX2 =
+      endX - (centerToBorder * cordinateXDifference) / hypotenuse;
+    const cordinateY2 =
+      endY - (centerToBorder * cordinateYDifference) / hypotenuse;
 
     this.#line.drawLine({
-      startX,
-      startY,
-      endX,
-      endY,
+      startX: cordinateX1,
+      startY: cordinateY1,
+      endX: cordinateX2,
+      endY: cordinateY2,
       clearHeight: 0,
       clearWidth: 0,
       clearStartX: 0,
