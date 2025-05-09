@@ -14,6 +14,8 @@ export class Events {
     events.#registerDragListeners();
   }
 
+  // TODO: handle download canvas functionality
+
   #registerTreeInputChangeListener() {
     document
       .querySelector(TREE_INPUT)!
