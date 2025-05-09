@@ -1,6 +1,7 @@
 import { popupStatusMessage, treeAnalyze, validateJson } from "../utility";
 import { Canvas } from "../canvas";
 import { COLOR_INFO, TIME_FOUR_SECONDS } from "../constants";
+import { Drawing } from "../drawing";
 
 export class Handler {
   #canvas: Canvas;
@@ -12,6 +13,7 @@ export class Handler {
   inputChanged(event: Event) {
     this.#canvas.clearGrid();
     this.#canvas.clearNodes();
+    this.#canvas.setSize(0, 0);
 
     const {
       isSuccess: isValidObject,
@@ -36,6 +38,11 @@ export class Handler {
     }
 
     const { width, height, root } = analizedData!;
+
+    this.#canvas.setSize(
+      width * Drawing.screenUnit,
+      height * Drawing.screenUnit
+    );
     this.#canvas.drawGrid(height, width);
     this.#canvas.drawNodes(width, root);
 

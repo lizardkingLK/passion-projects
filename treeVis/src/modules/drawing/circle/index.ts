@@ -9,6 +9,7 @@ export class CircleShape {
   }
 
   drawCircle({ cordinateX, cordinateY, radius }: TDrawCircleNode) {
+    this.#context.lineWidth = LINE_WIDTH;
     this.#context.beginPath();
 
     const startAngle = Math.atan(cordinateY / cordinateX);
