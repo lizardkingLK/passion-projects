@@ -1,3 +1,5 @@
 FROM nginx:alpine
-
-COPY ./src /usr/share/nginx/html
+CMD npm install
+CMD npm run build
+COPY ./dist /usr/share/nginx/html
+EXPOSE 5432

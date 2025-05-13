@@ -1,6 +1,6 @@
 import { popupStatusMessage, treeAnalyze, validateJson } from "../utility";
 import { Canvas } from "../canvas";
-import { COLOR_INFO, TIME_FOUR_SECONDS } from "../constants";
+import { COLOR_ERROR, COLOR_INFO, TIME_FOUR_SECONDS, TIME_ONE_SECOND } from "../constants";
 import { Drawing } from "../drawing";
 
 export class Handler {
@@ -22,6 +22,11 @@ export class Handler {
     } = validateJson((<HTMLTextAreaElement>event.target).value);
     if (!isValidObject) {
       console.error(validationErrorMessage);
+      popupStatusMessage({
+        color: COLOR_ERROR,
+        message: validationErrorMessage!,
+        duration: TIME_ONE_SECOND,
+      });
       return;
     }
 
