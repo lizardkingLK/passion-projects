@@ -1,3 +1,6 @@
+# TreeVis
+
+A Binary Tree Visualizer
 
 ## Run Project
 
