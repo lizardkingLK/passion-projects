@@ -1,4 +1,11 @@
-import { TREE_INPUT, TREE_INPUT_CONTAINER } from "../constants";
+import {
+  TREE_INPUT,
+  TREE_INPUT_CONTAINER,
+  TREE_SETTINGS_CANCEL,
+  TREE_SETTINGS_CONTAINER,
+  TREE_VISUAL_HEADER_SETTINGS,
+  TREE_VISUAL_SETTINGS_CLOSE,
+} from "../constants";
 import { Handler } from "./handler";
 
 export class Events {
@@ -11,8 +18,37 @@ export class Events {
   static registerEvents() {
     const events = new Events();
     events.#registerTreeInputChangeListener();
+    events.#registerTreeInputFocusOutListener();
+    events.#registerSettingsClickListener();
     events.#registerDragListeners();
     events.#registerTreeInputFocusOutListener();
+  }
+
+  #registerSettingsClickListener() {
+    const settingsModal = document.querySelector(TREE_SETTINGS_CONTAINER)!;
+    document.querySelector(TREE_VISUAL_HEADER_SETTINGS)!.addEventListener(
+      "click",
+      () => {
+        settingsModal.setAttribute("class", "block");
+      },
+      false
+    );
+
+    document.querySelector(TREE_VISUAL_SETTINGS_CLOSE)!.addEventListener(
+      "click",
+      () => {
+        settingsModal.setAttribute("class", "hidden");
+      },
+      false
+    );
+
+    document.querySelector(TREE_SETTINGS_CANCEL)!.addEventListener(
+      "click",
+      () => {
+        settingsModal.setAttribute("class", "hidden");
+      },
+      false
+    );
   }
 
   // TODO: handle download canvas functionality

@@ -9,6 +9,26 @@
 	font-family: 'Roboto Mono';
 }
 
+.hidden {
+	display: none;
+}
+
+.block {
+	display: block;
+}
+
+.settingsField {
+	margin: 0 0 20px 0;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.settingsField input {
+	width: 1rem;
+	height: 1rem;
+}
+
 #treeInputContainer {
 	position: absolute;
 	top: 50%;
@@ -52,9 +72,26 @@
 	background-color: #f3f3f3;
 	color: black;
 	display: flex;
-	justify-content: flex-start;
+	justify-content: space-between;
 	align-items: center;
-	padding-left: 20px;
+}
+
+#treeVisualHeaderLabel {
+	position: fixed;
+	left: 20px;
+}
+
+#treeVisualHeaderSettings {
+	position: fixed;
+	right: 20px;
+	border: none;
+	cursor: pointer;
+}
+
+#treeVisualHeaderSettingsIcon {
+	width: 1.5rem;
+	height: 1.5rem;
+	vertical-align: middle;
 }
 
 #treeVisual {
@@ -75,5 +112,59 @@
 	background-color: var(--gray);
 }
 
+#treeSettingsContainer {
+	z-index: 2;
+	position: absolute;
+	top: 0;
+	background-color: white;
+	width: 100%;
+}
+
+#treeSettingsHeader {
+	height: 5vh;
+	color: black;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: var(--gray);
+	padding: 0 20px;
+}
+
+#treeSettingsHeaderClose {
+	border: none;
+	cursor: pointer;
+}
+
+#treeSettingsHeaderCloseIcon {
+	width: 1.5rem;
+	height: 1.5rem;
+	vertical-align: middle;
+}
+
+#treeSettingsContent {
+	padding: 20px;
+	height: 90vh;
+}
+
+#treeSettingsFooter {
+	display: flex;
+	justify-content: flex-end;
+	gap: 20px;
+}
+
+#treeSettingsCancel {
+	border: 1px solid black;
+	padding: 1vh;
+	background-color: white;
+	cursor: pointer;
+}
+
+#treeSettingsSave {
+	border: none;
+	background-color: black;
+	color: white;
+	padding: 1vh;
+	cursor: pointer;
+}
 
 /* TODO: make responsive ui layout */
