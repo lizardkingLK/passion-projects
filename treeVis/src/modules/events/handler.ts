@@ -21,6 +21,7 @@ export class Handler {
       message: validationErrorMessage,
     } = validateJson((<HTMLTextAreaElement>event.target).value);
     if (!isValidObject) {
+      // TODO: display error messages in status bar
       console.error(validationErrorMessage);
       popupStatusMessage({
         color: COLOR_ERROR,
