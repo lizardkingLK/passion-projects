@@ -21,6 +21,7 @@ export class Events {
     events.#registerTreeInputFocusOutListener();
     events.#registerSettingsClickListener();
     events.#registerDragListeners();
+    events.#registerTreeInputFocusOutListener();
   }
 
   #registerSettingsClickListener() {
