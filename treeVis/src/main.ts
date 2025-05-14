@@ -37,26 +37,29 @@ const sectionTreeStatusContainer = `
 const divTreeSettingsContainer = `
   <div id="treeSettingsContent">
     <div class="settingsField">
-      <input
-        id="settingCheckUseGrid"
-        type="checkbox"
-        checked />
+      <label class="settingsFieldLabel">
+        <input id="settingCheckUseGrid" type="checkbox" checked />
+        <span class="settingsCheckThumb"></span>
+      </label>  
       <p>Use Grid</p>
     </div>
+
     <div class="settingsField">
-      <input
-        id="settingCheckUseJsonInput"
-        type="checkbox"
-        checked />
+      <label class="settingsFieldLabel">
+        <input id="settingCheckUseJsonInput" type="checkbox" checked />
+        <span class="settingsCheckThumb"></span>
+      </label>  
       <p>Use Json Input</p>
     </div>
+    
     <div class="settingsField">
-      <input
-        id="settingCheckUseAutosave"
-        type="checkbox"
-        checked />
+      <label class="settingsFieldLabel">
+        <input id="settingCheckUseAutoSave" type="checkbox" checked />
+        <span class="settingsCheckThumb"></span>
+      </label>  
       <p>Use AutoSave</p>
     </div>
+
     <div id="treeSettingsFooter">
       <button
         id="treeSettingsCancel"
@@ -86,7 +89,7 @@ const sectionTreeSettingsContainer = `
       </button>
     </div>
     ${divTreeSettingsContainer}
-  <section>
+  </section>
 `;
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `

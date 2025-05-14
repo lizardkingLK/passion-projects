@@ -29,6 +29,35 @@
 	height: 1rem;
 }
 
+.settingsFieldLabel {
+	position: relative;
+	width: 2vh;
+	height: 2vh;
+	border: 1px solid black;
+	cursor: pointer;
+}
+
+.settingsFieldLabel input[type=checkbox] {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.settingsFieldLabel .settingsCheckThumb {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 2vh;
+	height: 2vh;
+	background-color: transparent;
+}
+
+.settingsFieldLabel input[type=checkbox]:checked+.settingsCheckThumb {
+	background-color: black;
+	transition: .1s;
+}
+
 #treeInputContainer {
 	position: absolute;
 	top: 50%;
