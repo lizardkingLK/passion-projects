@@ -1,5 +1,5 @@
-import "./style.css";
 import { Events } from "./modules/events";
+import "./style.css";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
     <section id="treeInputContainer" draggable="true">
@@ -15,9 +15,10 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
         <button
           id="treeVisualHeaderSettings"
           title="View Settings">
-          <h1>
-            ⚙
-          </h1>
+            <img
+              id="treeVisualHeaderSettingsIcon"
+              src="./assets/cog.svg"
+              alt="settings" />
         </button>
       </div>
       <canvas id="treeVisual"></canvas>
@@ -25,6 +26,22 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
     <section id="treeVisualStatusContainer">
       <p id="treeVisualStatusElapsed"></p>
     </section>
+    <section id="treeSettingsContainer" class="hidden">
+      <div id="treeSettingsHeader">
+        <p>Settings</p>
+        <button
+          id="treeSettingsHeaderClose"
+          title="Close Settings">
+          <img
+            id="treeSettingsHeaderCloseIcon" 
+            src="./assets/close.svg"
+            alt="close" />
+        </button>
+      </div>
+      <div id="treeSettingsContent">
+        Body
+      </div>
+    <section>
   `;
 
 Events.registerEvents();
