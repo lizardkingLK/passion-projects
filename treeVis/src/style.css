@@ -17,6 +17,18 @@
 	display: block;
 }
 
+.settingsField {
+	margin: 0 0 20px 0;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.settingsField input {
+	width: 1rem;
+	height: 1rem;
+}
+
 #treeInputContainer {
 	position: absolute;
 	top: 50%;
@@ -132,6 +144,27 @@
 #treeSettingsContent {
 	padding: 20px;
 	height: 90vh;
+}
+
+#treeSettingsFooter {
+	display: flex;
+	justify-content: flex-end;
+	gap: 20px;
+}
+
+#treeSettingsCancel {
+	border: 1px solid black;
+	padding: 1vh;
+	background-color: white;
+	cursor: pointer;
+}
+
+#treeSettingsSave {
+	border: none;
+	background-color: black;
+	color: white;
+	padding: 1vh;
+	cursor: pointer;
 }
 
 /* TODO: make responsive ui layout */

@@ -1,6 +1,7 @@
 import {
   TREE_INPUT,
   TREE_INPUT_CONTAINER,
+  TREE_SETTINGS_CANCEL,
   TREE_SETTINGS_CONTAINER,
   TREE_VISUAL_HEADER_SETTINGS,
   TREE_VISUAL_SETTINGS_CLOSE,
@@ -33,6 +34,14 @@ export class Events {
     );
 
     document.querySelector(TREE_VISUAL_SETTINGS_CLOSE)!.addEventListener(
+      "click",
+      () => {
+        settingsModal.setAttribute("class", "hidden");
+      },
+      false
+    );
+
+    document.querySelector(TREE_SETTINGS_CANCEL)!.addEventListener(
       "click",
       () => {
         settingsModal.setAttribute("class", "hidden");

@@ -25,8 +25,10 @@ export const TREE_VISUAL = "#treeVisual";
 export const TREE_VISUAL_STATUS_CONTAINER = "#treeVisualStatusContainer";
 export const TREE_VISUAL_HEADER_SETTINGS = "#treeVisualHeaderSettings";
 export const TREE_VISUAL_SETTINGS_CLOSE = "#treeSettingsHeaderClose";
-export const TREE_VISUAL_STATUS_ELAPSED = "#treeVisualStatusElapsed";
+export const TREE_VISUAL_STATUS_ELAPSED = "#treeStatusElapsed";
 export const TREE_SETTINGS_CONTAINER = "#treeSettingsContainer";
+export const TREE_SETTINGS_SAVE = "#treeSettingsSave";
+export const TREE_SETTINGS_CANCEL = "#treeSettingsCancel";
 
 // color hex codes
 export const COLOR_INFO = "#000000";
