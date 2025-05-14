@@ -12,6 +12,7 @@ export class Events {
     const events = new Events();
     events.#registerTreeInputChangeListener();
     events.#registerDragListeners();
+    events.#registerTreeInputFocusOutListener();
   }
 
   // TODO: handle download canvas functionality
@@ -24,6 +25,12 @@ export class Events {
         (event) => this.#handler.inputChanged(event),
         false
       );
+  }
+
+  #registerTreeInputFocusOutListener() {
+    document
+      .querySelector(TREE_INPUT)!
+      .addEventListener("focusout", () => this.#handler.inputFocusOut(), false);
   }
 
   #registerDragListeners() {
@@ -39,7 +46,7 @@ export class Events {
         previousTop,
         currentTop
       );
-      
+
       const elementContainer: HTMLElement = document.querySelector(container)!;
       elementContainer.addEventListener("dragstart", dragStart, false);
       elementContainer.addEventListener("dragend", dragEnd, false);

@@ -1,10 +1,16 @@
 import { popupStatusMessage, treeAnalyze, validateJson } from "../utility";
 import { Canvas } from "../canvas";
-import { COLOR_ERROR, COLOR_INFO, TIME_FOUR_SECONDS, TIME_ONE_SECOND } from "../constants";
+import {
+  COLOR_ERROR,
+  COLOR_INFO,
+  TIME_FOUR_SECONDS,
+  TIME_ONE_SECOND,
+} from "../constants";
 import { Drawing } from "../drawing";
 
 export class Handler {
   #canvas: Canvas;
+  #message: string | null = null;
 
   constructor() {
     this.#canvas = new Canvas();
@@ -21,15 +27,12 @@ export class Handler {
       message: validationErrorMessage,
     } = validateJson((<HTMLTextAreaElement>event.target).value);
     if (!isValidObject) {
-      // TODO: display error messages in status bar
+      this.#message = validationErrorMessage;
       console.error(validationErrorMessage);
-      popupStatusMessage({
-        color: COLOR_ERROR,
-        message: validationErrorMessage!,
-        duration: TIME_ONE_SECOND,
-      });
       return;
     }
+
+    this.#message = null;
 
     const now = Date.now();
 
@@ -57,6 +60,18 @@ export class Handler {
       message: `${Date.now() - now} ms`,
       duration: TIME_FOUR_SECONDS,
     });
+  }
+
+  inputFocusOut() {
+    if (this.#message) {
+      popupStatusMessage({
+        color: COLOR_ERROR,
+        message: this.#message,
+        duration: TIME_ONE_SECOND,
+      });
+      
+      this.#message = null;
+    }
   }
 
   elementDragged(
