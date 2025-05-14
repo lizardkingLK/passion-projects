@@ -1,4 +1,8 @@
-import { TREE_INPUT, TREE_INPUT_CONTAINER } from "../constants";
+import {
+  TREE_INPUT,
+  TREE_INPUT_CONTAINER,
+  TREE_VISUAL_HEADER_SETTINGS,
+} from "../constants";
 import { Handler } from "./handler";
 
 export class Events {
@@ -11,7 +15,15 @@ export class Events {
   static registerEvents() {
     const events = new Events();
     events.#registerTreeInputChangeListener();
+    events.#registerTreeInputFocusOutListener();
     events.#registerDragListeners();
+    events.#registerSettingsClickListener();
+  }
+
+  #registerSettingsClickListener() {
+    document
+      .querySelector(TREE_VISUAL_HEADER_SETTINGS)!
+      .addEventListener("click", () => console.log(true), false);
   }
 
   // TODO: handle download canvas functionality
@@ -24,6 +36,12 @@ export class Events {
         (event) => this.#handler.inputChanged(event),
         false
       );
+  }
+
+  #registerTreeInputFocusOutListener() {
+    document
+      .querySelector(TREE_INPUT)!
+      .addEventListener("focusout", () => this.#handler.inputFocusOut(), false);
   }
 
   #registerDragListeners() {
@@ -39,7 +57,7 @@ export class Events {
         previousTop,
         currentTop
       );
-      
+
       const elementContainer: HTMLElement = document.querySelector(container)!;
       elementContainer.addEventListener("dragstart", dragStart, false);
       elementContainer.addEventListener("dragend", dragEnd, false);
