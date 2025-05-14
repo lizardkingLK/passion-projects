@@ -36,8 +36,13 @@ Write-Host `
 
 $buildOutputArray = (& npm run build)
 
-if ((($buildOutputArray[$buildOutputArray.Length - 1]) -notmatch 'built in')) {
-    Write-Host -ForegroundColor Red "error. app build failed"
+$hasBuildFailed = (
+    ($buildOutputArray[$buildOutputArray.Length - 1]) `
+    -notmatch 'built in')
+if ($hasBuildFailed) {
+    Write-Host `
+    -ForegroundColor Red `
+    -Message "error. rebuild failed"
     Exit
 }
 
@@ -50,7 +55,9 @@ $isDockerAvailable = [Regex]::IsMatch(
     "^Docker version [0-9]*.[0-9]*.[0-9]*, build [a-z0-9]*$")
 
 if (-not $isDockerAvailable) {
-    Write-Host -ForegroundColor Red "error. docker is not available"
+    Write-Host `
+        -ForegroundColor Red `
+        -Message "error. docker is not available"
     Exit
 }
 
