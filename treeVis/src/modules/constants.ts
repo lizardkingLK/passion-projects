@@ -1,3 +1,6 @@
+// local storage keys
+export const KEY_TREE_VISUAL_SETTINGS = "treevisSettings";
+
 // canvas configurations
 export const CANVAS_WIDTH = window.screen.width;
 export const CANVAS_HEIGHT = window.screen.height;
@@ -33,8 +36,17 @@ export const TREE_SETTINGS_CANCEL = "#treeSettingsCancel";
 // color hex codes
 export const COLOR_INFO = "#000000";
 export const COLOR_ERROR = "#FF0000";
+export const COLOR_SUCCESS = "#088000";
 export const COLOR_WARNING = "#FFA500";
 
 // animate or time durations
 export const TIME_ONE_SECOND = 1000;
 export const TIME_FOUR_SECONDS = 4000;
+
+// info messages
+export const INFO_SAVED_SETTINGS = "Settings Saved";
+
+// error messages
+export const ERROR_INPUT_IS_AN_ARRAY = "Input is an array";
+export const ERROR_INPUT_KEYS_ARE_INVALID = "Input json keys are invalid";
+export const ERROR_INPUT_COULD_NOT_BE_PARSED = "Input could not be parsed.";
