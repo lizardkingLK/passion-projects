@@ -1,4 +1,5 @@
 import { Events } from "./modules/events";
+import { Settings } from "./modules/settings";
 import "./style.css";
 
 const sectionTreeInputContainer = `
@@ -38,28 +39,36 @@ const divTreeSettingsContainer = `
   <div id="treeSettingsContent">
     <div class="settingsField">
       <label class="settingsFieldLabel">
-        <input id="settingCheckUseGrid" type="checkbox" checked />
+        <input
+          name="useGrid"
+          id="settingCheckUseGrid"
+          type="checkbox"
+          checked />
         <span class="settingsCheckThumb"></span>
       </label>  
       <p>Use Grid</p>
     </div>
-
     <div class="settingsField">
       <label class="settingsFieldLabel">
-        <input id="settingCheckUseJsonInput" type="checkbox" checked />
+        <input
+          name="useArrayInput"
+          id="settingCheckUseArrayInput"
+          type="checkbox" />
         <span class="settingsCheckThumb"></span>
       </label>  
-      <p>Use Json Input</p>
+      <p>Use Array Input</p>
     </div>
-    
     <div class="settingsField">
       <label class="settingsFieldLabel">
-        <input id="settingCheckUseAutoSave" type="checkbox" checked />
+        <input
+          name="useAutosave"
+          id="settingCheckUseAutoSave"
+          type="checkbox"
+          checked />
         <span class="settingsCheckThumb"></span>
       </label>  
       <p>Use AutoSave</p>
     </div>
-
     <div id="treeSettingsFooter">
       <button
         id="treeSettingsCancel"
@@ -76,7 +85,7 @@ const divTreeSettingsContainer = `
 `;
 
 const sectionTreeSettingsContainer = `
-  <section id="treeSettingsContainer" class="block">
+  <section id="treeSettingsContainer" class="hidden">
     <div id="treeSettingsHeader">
       <p>Settings</p>
       <button
@@ -100,3 +109,4 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   `;
 
 Events.registerEvents();
+Settings.initialize();

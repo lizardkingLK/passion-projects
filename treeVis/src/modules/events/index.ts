@@ -3,6 +3,7 @@ import {
   TREE_INPUT_CONTAINER,
   TREE_SETTINGS_CANCEL,
   TREE_SETTINGS_CONTAINER,
+  TREE_SETTINGS_SAVE,
   TREE_VISUAL_HEADER_SETTINGS,
   TREE_VISUAL_SETTINGS_CLOSE,
 } from "../constants";
@@ -22,6 +23,7 @@ export class Events {
     events.#registerSettingsClickListener();
     events.#registerDragListeners();
     events.#registerTreeInputFocusOutListener();
+    events.#registerSettingsClickSaveListener();
   }
 
   #registerSettingsClickListener() {
@@ -46,6 +48,16 @@ export class Events {
       "click",
       () => {
         settingsModal.setAttribute("class", "hidden");
+      },
+      false
+    );
+  }
+
+  #registerSettingsClickSaveListener() {
+    document.querySelector(TREE_SETTINGS_SAVE)!.addEventListener(
+      "click",
+      () => {
+        this.#handler.settingsSubmitted();
       },
       false
     );
