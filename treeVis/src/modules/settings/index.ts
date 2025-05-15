@@ -16,6 +16,17 @@ export class Settings {
     this.#setSettings();
   }
 
+  static get<T>(key: string) {
+    if (
+      this.settings &&
+      Object.prototype.hasOwnProperty.call(this.settings, key)
+    ) {
+      return this.settings[key] as T;
+    }
+
+    return null;
+  }
+
   static #setSettings() {
     const settings = Settings.settings;
     if (!settings) {

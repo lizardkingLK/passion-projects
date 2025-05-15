@@ -46,8 +46,9 @@ const divTreeSettingsContainer = `
           checked />
         <span class="settingsCheckThumb"></span>
       </label>  
-      <p>Use Grid</p>
+      <p>Use Grid Drawing</p>
     </div>
+
     <div class="settingsField">
       <label class="settingsFieldLabel">
         <input
@@ -58,6 +59,7 @@ const divTreeSettingsContainer = `
       </label>  
       <p>Use Array Input</p>
     </div>
+
     <div class="settingsField">
       <label class="settingsFieldLabel">
         <input
@@ -67,8 +69,20 @@ const divTreeSettingsContainer = `
           checked />
         <span class="settingsCheckThumb"></span>
       </label>  
-      <p>Use AutoSave</p>
+      <p>Use Auto Save</p>
     </div>
+
+    <div class="settingsField">
+      <label class="settingsFieldLabel">
+        <input
+          name="useAutoFormat"
+          id="settingCheckUseAutoFormat"
+          type="checkbox" />
+        <span class="settingsCheckThumb"></span>
+      </label>  
+      <p>Use Auto Format</p>
+    </div>
+
     <div id="treeSettingsFooter">
       <button
         id="treeSettingsCancel"
@@ -108,5 +122,5 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   ${sectionTreeSettingsContainer}
   `;
 
-Events.registerEvents();
+Events.register();
 Settings.initialize();

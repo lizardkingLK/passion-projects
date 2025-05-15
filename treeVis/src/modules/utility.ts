@@ -8,15 +8,12 @@ import {
 import { Json, TNode, Result, TNodeAnalyzed, TStatusPopup } from "./types";
 
 export function validateJson(input: string): Result<Json> {
-  const keys = ["left", "right", "value"];
+  const staticKeys = ["left", "right", "value", ""];
+  const inputKeys: string[] = [];
 
   try {
-    let isValidKeys = true;
-
     const parsed = JSON.parse(input, (key, value) => {
-      if (!key || !keys.includes(key)) {
-        isValidKeys = false;
-      }
+      inputKeys.push(key);
 
       return value;
     });
@@ -29,7 +26,7 @@ export function validateJson(input: string): Result<Json> {
       };
     }
 
-    if (!isValidKeys) {
+    if (!staticKeys.every((key) => inputKeys.includes(key))) {
       return {
         data: null,
         isSuccess: false,

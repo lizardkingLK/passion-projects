@@ -16,7 +16,7 @@ export class Events {
     this.#handler = new Handler();
   }
 
-  static registerEvents() {
+  static register() {
     const events = new Events();
     events.#registerTreeInputChangeListener();
     events.#registerTreeInputFocusOutListener();

@@ -50,3 +50,6 @@ export const INFO_SAVED_SETTINGS = "Settings Saved";
 export const ERROR_INPUT_IS_AN_ARRAY = "Input is an array";
 export const ERROR_INPUT_KEYS_ARE_INVALID = "Input json keys are invalid";
 export const ERROR_INPUT_COULD_NOT_BE_PARSED = "Input could not be parsed.";
+
+// setting keys
+export const SETTING_USE_GRID = "useGrid";
