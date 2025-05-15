@@ -4,16 +4,17 @@ import { Json } from "../types";
 export class Settings {
   static settings: Json | null = null;
 
+  static initialize() {
+    this.reinitialize();
+    this.#setSettingDialog();
+    this.#setSettingValues();
+  }
+
   static reinitialize() {
     const settingsResult = Settings.#getSettings();
     if (settingsResult) {
       Settings.settings = JSON.parse(settingsResult);
     }
-  }
-
-  static initialize() {
-    this.reinitialize();
-    this.#setSettings();
   }
 
   static get<T>(key: string) {
@@ -27,7 +28,11 @@ export class Settings {
     return null;
   }
 
-  static #setSettings() {
+  static #setSettingDialog() {
+    
+  }
+
+  static #setSettingValues() {
     const settings = Settings.settings;
     if (!settings) {
       return;

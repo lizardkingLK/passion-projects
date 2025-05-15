@@ -2,6 +2,7 @@ import { Events } from "./modules/events";
 import { Settings } from "./modules/settings";
 import "./style.css";
 
+// TODO: add refresh and format functionality with buttons
 const sectionTreeInputContainer = `
   <section id="treeInputContainer" draggable="true">
     <div id="treeInputHeader">Input</div>
@@ -35,66 +36,52 @@ const sectionTreeStatusContainer = `
   </section>
 `;
 
+// TODO: make this use a function
 const divTreeSettingsContainer = `
-  <div id="treeSettingsContent">
-    <div class="settingsField">
-      <label class="settingsFieldLabel">
-        <input
-          name="useGrid"
-          id="settingCheckUseGrid"
-          type="checkbox"
-          checked />
-        <span class="settingsCheckThumb"></span>
-      </label>  
-      <p>Use Grid Drawing</p>
-    </div>
+  <div class="settingsField">
+    <label class="settingsFieldLabel">
+      <input
+        name="useGrid"
+        id="settingCheckUseGrid"
+        type="checkbox"
+        checked />
+      <span class="settingsCheckThumb"></span>
+    </label>  
+    <p>Use Grid Drawing</p>
+  </div>
 
-    <div class="settingsField">
-      <label class="settingsFieldLabel">
-        <input
-          name="useArrayInput"
-          id="settingCheckUseArrayInput"
-          type="checkbox" />
-        <span class="settingsCheckThumb"></span>
-      </label>  
-      <p>Use Array Input</p>
-    </div>
+  <div class="settingsField">
+    <label class="settingsFieldLabel">
+      <input
+        name="useArrayInput"
+        id="settingCheckUseArrayInput"
+        type="checkbox" />
+      <span class="settingsCheckThumb"></span>
+    </label>  
+    <p>Use Array Input</p>
+  </div>
 
-    <div class="settingsField">
-      <label class="settingsFieldLabel">
-        <input
-          name="useAutosave"
-          id="settingCheckUseAutoSave"
-          type="checkbox"
-          checked />
-        <span class="settingsCheckThumb"></span>
-      </label>  
-      <p>Use Auto Save</p>
-    </div>
+  <div class="settingsField">
+    <label class="settingsFieldLabel">
+      <input
+        name="useAutosave"
+        id="settingCheckUseAutoSave"
+        type="checkbox"
+        checked />
+      <span class="settingsCheckThumb"></span>
+    </label>  
+    <p>Use Auto Save</p>
+  </div>
 
-    <div class="settingsField">
-      <label class="settingsFieldLabel">
-        <input
-          name="useAutoFormat"
-          id="settingCheckUseAutoFormat"
-          type="checkbox" />
-        <span class="settingsCheckThumb"></span>
-      </label>  
-      <p>Use Auto Format</p>
-    </div>
-
-    <div id="treeSettingsFooter">
-      <button
-        id="treeSettingsCancel"
-        title="Go Back">
-        <p>Cancel</p>
-      </button>
-      <button
-        id="treeSettingsSave"
-        title="Save Changes">
-        <p>Save</p>
-      </button>
-    </div>
+  <div class="settingsField">
+    <label class="settingsFieldLabel">
+      <input
+        name="useAutoFormat"
+        id="settingCheckUseAutoFormat"
+        type="checkbox" />
+      <span class="settingsCheckThumb"></span>
+    </label>  
+    <p>Use Auto Format</p>
   </div>
 `;
 
@@ -111,7 +98,21 @@ const sectionTreeSettingsContainer = `
           alt="close" />
       </button>
     </div>
-    ${divTreeSettingsContainer}
+    <div id="treeSettingsContent">
+      ${/*divTreeSettingsContainer*/ true}
+    </div>
+    <div id="treeSettingsFooter">
+      <button
+        id="treeSettingsCancel"
+        title="Close Settings">
+        <p>Cancel</p>
+      </button>
+      <button
+        id="treeSettingsSave"
+        title="Save Changes">
+        <p>Save</p>
+      </button>
+    </div>
   </section>
 `;
 
@@ -122,5 +123,5 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   ${sectionTreeSettingsContainer}
   `;
 
-Events.register();
 Settings.initialize();
+Events.register();

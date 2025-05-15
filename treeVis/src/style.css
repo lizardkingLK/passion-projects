@@ -64,7 +64,7 @@
 	left: 50%;
 	transform: translate(-50%, -50%);
 	width: auto;
-	min-width: 20vw;
+	min-width: 25vw;
 	height: 20vh;
 	min-height: max-content;
 }
@@ -173,13 +173,14 @@
 
 #treeSettingsContent {
 	padding: 20px 20px 0 20px;
-	height: 90vh;
 }
 
 #treeSettingsFooter {
 	display: flex;
 	justify-content: flex-end;
+	border-bottom: 1px solid black;
 	gap: 20px;
+	padding: 0 20px 20px 0;
 }
 
 #treeSettingsCancel {
