@@ -2,10 +2,29 @@ import { Events } from "./modules/events";
 import { Settings } from "./modules/settings";
 import "./style.css";
 
-// TODO: add refresh and format functionality with buttons
 const sectionTreeInputContainer = `
   <section id="treeInputContainer" draggable="true">
-    <div id="treeInputHeader">Input</div>
+    <div id="treeInputHeader">
+      <p>Input</p>
+      <div id="treeInputHeaderOptions">
+        <button
+          id="treeInputHeaderOptionRedraw"
+          title="Redraw Tree">
+          <img
+            id="treeInputHeaderOptionRedrawIcon"
+            src="./assets/refresh.svg"
+            alt="refresh" />
+        </button>
+        <button
+          id="treeInputHeaderOptionFormat"
+          title="Format Text">
+          <img
+            id="treeInputHeaderOptionFormatIcon"
+            src="./assets/format.svg"
+            alt="format" />
+        </button>
+      </div>
+    </div>
     <textarea
       id="treeInput"
       placeholder="Enter tree info here..."
@@ -31,9 +50,7 @@ const sectionTreeVisualContainer = `
 `;
 
 const sectionTreeStatusContainer = `
-  <section id="treeVisualStatusContainer">
-    <p id="treeStatusElapsed"></p>
-  </section>
+  <section id="treeVisualStatusContainer"></section>
 `;
 
 const sectionTreeSettingsContainer = `

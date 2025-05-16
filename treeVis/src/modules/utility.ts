@@ -3,9 +3,18 @@ import {
   ERROR_INPUT_IS_AN_ARRAY,
   ERROR_INPUT_KEYS_ARE_INVALID,
   TIME_ONE_SECOND,
-  TREE_VISUAL_STATUS_ELAPSED,
+  TREE_INPUT,
+  TREE_VISUAL_STATUS_CONTAINER,
 } from "./constants";
 import { Json, TNode, Result, TNodeAnalyzed, TStatusPopup } from "./types";
+
+export function isValidJson(): Result<Json> {
+  const inputString = (
+    document.querySelector(TREE_INPUT)! as HTMLTextAreaElement
+  ).value;
+
+  return validateJson(inputString);
+}
 
 export function validateJson(input: string): Result<Json> {
   const staticKeys = ["left", "right", "value", ""];
@@ -26,6 +35,7 @@ export function validateJson(input: string): Result<Json> {
       };
     }
 
+    // TODO: validate that every found object must have all of static keys
     if (!staticKeys.every((key) => inputKeys.includes(key))) {
       return {
         data: null,
@@ -90,25 +100,30 @@ export function treeAnalyze(object: Json): Result<TNodeAnalyzed> {
   };
 }
 
-let timeoutId: number;
-
 export function popupStatusMessage({ color, message, duration }: TStatusPopup) {
-  if (timeoutId) {
-    clearTimeout(timeoutId);
-  }
-
   const container = document.querySelector(
-    TREE_VISUAL_STATUS_ELAPSED
+    TREE_VISUAL_STATUS_CONTAINER
   )! as HTMLElement;
-  container.innerHTML = message;
-  container.style.color = color;
+
+  const statusContent = document.createElement("p");
+  statusContent.setAttribute("style", `color: ${color}`);
+  statusContent.innerHTML = message;
 
   const keyframes = [{ opacity: 1 }, { opacity: 0 }];
   const keyframeDuration = TIME_ONE_SECOND;
 
-  timeoutId = setTimeout(() => {
-    container
+  container.appendChild(statusContent);
+  setTimeout(() => {
+    statusContent
       .animate(keyframes, keyframeDuration)
-      .finished.then(() => (container.innerHTML = ""));
+      .finished.then(() => statusContent.remove());
   }, duration);
+}
+
+export function setLocalStorageItem(key: string, value: string) {
+  window.localStorage.setItem(key, value);
+}
+
+export function getLocalStorageItem(key: string) {
+  return window.localStorage.getItem(key);
 }

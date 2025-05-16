@@ -1,6 +1,13 @@
-import { KEY_TREE_VISUAL_SETTINGS, TREE_SETTINGS_BODY } from "../constants";
+import {
+  KEY_TREE_INPUT_CONTENT,
+  KEY_TREE_VISUAL_SETTINGS,
+  SETTING_USE_AUTO_SAVE,
+  TREE_INPUT,
+  TREE_SETTINGS_BODY,
+} from "../constants";
 import settingsJson from "./settings.json";
 import { Json } from "../types";
+import { getLocalStorageItem, setLocalStorageItem } from "../utility";
 
 export class Settings {
   static settings: Json | null = null;
@@ -9,13 +16,30 @@ export class Settings {
     this.reinitialize();
     this.#setSettingDialog();
     this.#setSettingValues();
+    this.#setInitialInputValue();
   }
 
   static reinitialize() {
-    const settingsResult = Settings.#getSettings();
+    const settingsResult = getLocalStorageItem(KEY_TREE_VISUAL_SETTINGS);
     if (settingsResult) {
       Settings.settings = JSON.parse(settingsResult);
     }
+  }
+
+  static saveSettings() {
+    const settingsFields = document.querySelectorAll(
+      ".settingsField label input[type=checkbox]"
+    );
+    const settingsJson: Json = {};
+    let element;
+    for (const settingField in settingsFields) {
+      if (Object.prototype.hasOwnProperty.call(settingsFields, settingField)) {
+        element = settingsFields[settingField] as HTMLInputElement;
+        settingsJson[element.getAttribute("name")!] = element.checked;
+      }
+    }
+
+    setLocalStorageItem(KEY_TREE_VISUAL_SETTINGS, JSON.stringify(settingsJson));
   }
 
   static get<T>(key: string) {
@@ -85,7 +109,13 @@ export class Settings {
     }
   }
 
-  static #getSettings() {
-    return window.localStorage.getItem(KEY_TREE_VISUAL_SETTINGS);
+  static #setInitialInputValue() {
+    if (!Settings.get<boolean>(SETTING_USE_AUTO_SAVE)) {
+      return;
+    }
+
+    const inputContent = getLocalStorageItem(KEY_TREE_INPUT_CONTENT) ?? "";
+    (document.querySelector(TREE_INPUT)! as HTMLTextAreaElement).value =
+      inputContent;
   }
 }

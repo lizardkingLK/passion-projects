@@ -1,6 +1,8 @@
 import {
   TREE_INPUT,
   TREE_INPUT_CONTAINER,
+  TREE_INPUT_OPTION_FORMAT,
+  TREE_INPUT_OPTION_REDRAW,
   TREE_SETTINGS_CANCEL,
   TREE_SETTINGS_CONTAINER,
   TREE_SETTINGS_SAVE,
@@ -20,10 +22,9 @@ export class Events {
     const events = new Events();
     events.#registerTreeInputChangeListener();
     events.#registerTreeInputFocusOutListener();
+    events.#registerTreeInputOptionClickListener();
     events.#registerSettingsClickListener();
     events.#registerDragListeners();
-    events.#registerTreeInputFocusOutListener();
-    events.#registerSettingsClickSaveListener();
   }
 
   #registerSettingsClickListener() {
@@ -51,13 +52,34 @@ export class Events {
       },
       false
     );
-  }
 
-  #registerSettingsClickSaveListener() {
     document.querySelector(TREE_SETTINGS_SAVE)!.addEventListener(
       "click",
       () => {
         this.#handler.settingsSubmitted();
+        settingsModal.setAttribute("class", "hidden");
+      },
+      false
+    );
+  }
+
+  #registerTreeInputOptionClickListener() {
+    document.querySelector(TREE_INPUT_OPTION_REDRAW)!.addEventListener(
+      "click",
+      () => {
+        const inputChangeEvent = new Event("input", {
+          bubbles: false,
+          cancelable: true,
+        });
+        document.querySelector(TREE_INPUT)!.dispatchEvent(inputChangeEvent);
+      },
+      false
+    );
+
+    document.querySelector(TREE_INPUT_OPTION_FORMAT)!.addEventListener(
+      "click",
+      () => {
+        this.#handler.handleInputFormat();
       },
       false
     );
@@ -68,17 +90,17 @@ export class Events {
   #registerTreeInputChangeListener() {
     document
       .querySelector(TREE_INPUT)!
-      .addEventListener(
-        "input",
-        (event) => this.#handler.inputChanged(event),
-        false
-      );
+      .addEventListener("input", () => this.#handler.inputChanged(), false);
   }
 
   #registerTreeInputFocusOutListener() {
     document
       .querySelector(TREE_INPUT)!
-      .addEventListener("focusout", () => this.#handler.inputFocusOut(), false);
+      .addEventListener(
+        "focusout",
+        () => this.#handler.inputFocusOutValidation(),
+        false
+      );
   }
 
   #registerDragListeners() {

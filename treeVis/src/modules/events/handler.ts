@@ -1,5 +1,7 @@
 import {
+  isValidJson,
   popupStatusMessage,
+  setLocalStorageItem,
   treeAnalyze,
   validateJson,
 } from "../utility";
@@ -8,24 +10,33 @@ import {
   COLOR_ERROR,
   COLOR_INFO,
   COLOR_SUCCESS,
+  INFO_FORMATTED_Input,
   INFO_SAVED_SETTINGS,
-  KEY_TREE_VISUAL_SETTINGS,
+  KEY_TREE_INPUT_CONTENT,
+  SETTING_USE_AUTO_FORMAT,
+  SETTING_USE_AUTO_SAVE,
   TIME_FOUR_SECONDS,
   TIME_ONE_SECOND,
+  TREE_INPUT,
 } from "../constants";
 import { Drawing } from "../drawing";
-import { Json } from "../types";
 import { Settings } from "../settings";
 
 export class Handler {
   #canvas: Canvas;
-  #message: string | null = null;
 
   constructor() {
     this.#canvas = new Canvas();
   }
 
-  inputChanged(event: Event) {
+  inputChanged() {
+    const inputContent = (
+      document.querySelector(TREE_INPUT)! as HTMLTextAreaElement
+    ).value;
+    if (Settings.get<boolean>(SETTING_USE_AUTO_SAVE)) {
+      setLocalStorageItem(KEY_TREE_INPUT_CONTENT, inputContent);
+    }
+
     this.#canvas.clearGrid();
     this.#canvas.clearNodes();
     this.#canvas.setSize(0, 0);
@@ -34,14 +45,11 @@ export class Handler {
       isSuccess: isValidObject,
       data: validData,
       message: validationErrorMessage,
-    } = validateJson((<HTMLTextAreaElement>event.target).value);
+    } = validateJson(inputContent);
     if (!isValidObject) {
-      this.#message = validationErrorMessage;
       console.error(validationErrorMessage);
       return;
     }
-
-    this.#message = null;
 
     const now = Date.now();
 
@@ -71,16 +79,46 @@ export class Handler {
     });
   }
 
-  inputFocusOut() {
-    if (this.#message) {
+  inputFocusOutValidation() {
+    const { isSuccess, message } = isValidJson();
+    if (!isSuccess) {
       popupStatusMessage({
         color: COLOR_ERROR,
-        message: this.#message,
+        message: message!,
         duration: TIME_ONE_SECOND,
       });
 
-      this.#message = null;
+      return;
     }
+
+    if (Settings.get<boolean>(SETTING_USE_AUTO_FORMAT)) {
+      this.handleInputFormat();
+    }
+  }
+
+  handleInputFormat() {
+    const { isSuccess, message } = isValidJson();
+    if (!isSuccess) {
+      popupStatusMessage({
+        color: COLOR_ERROR,
+        message: message!,
+        duration: TIME_ONE_SECOND,
+      });
+
+      return;
+    }
+
+    const treeInput = document.querySelector(
+      TREE_INPUT
+    )! as HTMLTextAreaElement;
+    const inputContent = JSON.parse(treeInput.value);
+    const formattedContent = JSON.stringify(inputContent, undefined, 2);
+    treeInput.value = formattedContent;
+    popupStatusMessage({
+      color: COLOR_INFO,
+      duration: TIME_ONE_SECOND,
+      message: INFO_FORMATTED_Input,
+    });
   }
 
   elementDragged(
@@ -121,22 +159,7 @@ export class Handler {
   }
 
   settingsSubmitted() {
-    const settingsFields = document.querySelectorAll(
-      ".settingsField label input[type=checkbox]"
-    );
-    const settingsJson: Json = {};
-    let element;
-    for (const settingField in settingsFields) {
-      if (Object.prototype.hasOwnProperty.call(settingsFields, settingField)) {
-        element = settingsFields[settingField] as HTMLInputElement;
-        settingsJson[element.getAttribute("name")!] = element.checked;
-      }
-    }
-
-    window.localStorage.setItem(
-      KEY_TREE_VISUAL_SETTINGS,
-      JSON.stringify(settingsJson)
-    );
+    Settings.saveSettings();
 
     Settings.reinitialize();
 
