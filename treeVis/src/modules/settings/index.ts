@@ -1,4 +1,5 @@
-import { KEY_TREE_VISUAL_SETTINGS } from "../constants";
+import { KEY_TREE_VISUAL_SETTINGS, TREE_SETTINGS_BODY } from "../constants";
+import settingsJson from "./settings.json";
 import { Json } from "../types";
 
 export class Settings {
@@ -29,7 +30,38 @@ export class Settings {
   }
 
   static #setSettingDialog() {
-    
+    const settingDialog = document.querySelector(
+      TREE_SETTINGS_BODY
+    )! as HTMLDivElement;
+    let settingField: HTMLDivElement;
+    let settingsFieldControl: HTMLLabelElement;
+    let settingsFieldControlInput: HTMLInputElement;
+    let settingsFieldControlSpan: HTMLSpanElement;
+    let settingsFieldDescription: HTMLParagraphElement;
+    settingsJson.map(({ id, name, label, type }) => {
+      settingField = document.createElement("div");
+      settingField.setAttribute("class", "settingsField");
+
+      settingsFieldControl = document.createElement("label");
+      settingsFieldControl.setAttribute("class", "settingsFieldLabel");
+
+      settingsFieldControlInput = document.createElement("input");
+      settingsFieldControlInput.setAttribute("name", name);
+      settingsFieldControlInput.setAttribute("id", id);
+      settingsFieldControlInput.setAttribute("type", type);
+      settingsFieldControl.appendChild(settingsFieldControlInput);
+
+      settingsFieldControlSpan = document.createElement("span");
+      settingsFieldControlSpan.setAttribute("class", "settingsCheckThumb");
+      settingsFieldControl.appendChild(settingsFieldControlSpan);
+      settingField.appendChild(settingsFieldControl);
+
+      settingsFieldDescription = document.createElement("p");
+      settingsFieldDescription.innerText = label;
+      settingField.appendChild(settingsFieldDescription);
+
+      settingDialog.appendChild(settingField);
+    });
   }
 
   static #setSettingValues() {

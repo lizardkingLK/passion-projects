@@ -5,7 +5,7 @@ export const KEY_TREE_VISUAL_SETTINGS = "treevisSettings";
 export const CANVAS_WIDTH = window.screen.width;
 export const CANVAS_HEIGHT = window.screen.height;
 export const SCREEN_UNIT = window.screen.availHeight / 10;
-export const USE_GRID = true;
+export const USE_GRID = false;
 
 // canvas context configurations
 export const LINE_WIDTH = 2;
@@ -30,6 +30,7 @@ export const TREE_VISUAL_HEADER_SETTINGS = "#treeVisualHeaderSettings";
 export const TREE_VISUAL_SETTINGS_CLOSE = "#treeSettingsHeaderClose";
 export const TREE_VISUAL_STATUS_ELAPSED = "#treeStatusElapsed";
 export const TREE_SETTINGS_CONTAINER = "#treeSettingsContainer";
+export const TREE_SETTINGS_BODY = "#treeSettingsContent";
 export const TREE_SETTINGS_SAVE = "#treeSettingsSave";
 export const TREE_SETTINGS_CANCEL = "#treeSettingsCancel";
 

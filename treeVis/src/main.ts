@@ -36,55 +36,6 @@ const sectionTreeStatusContainer = `
   </section>
 `;
 
-// TODO: make this use a function
-const divTreeSettingsContainer = `
-  <div class="settingsField">
-    <label class="settingsFieldLabel">
-      <input
-        name="useGrid"
-        id="settingCheckUseGrid"
-        type="checkbox"
-        checked />
-      <span class="settingsCheckThumb"></span>
-    </label>  
-    <p>Use Grid Drawing</p>
-  </div>
-
-  <div class="settingsField">
-    <label class="settingsFieldLabel">
-      <input
-        name="useArrayInput"
-        id="settingCheckUseArrayInput"
-        type="checkbox" />
-      <span class="settingsCheckThumb"></span>
-    </label>  
-    <p>Use Array Input</p>
-  </div>
-
-  <div class="settingsField">
-    <label class="settingsFieldLabel">
-      <input
-        name="useAutosave"
-        id="settingCheckUseAutoSave"
-        type="checkbox"
-        checked />
-      <span class="settingsCheckThumb"></span>
-    </label>  
-    <p>Use Auto Save</p>
-  </div>
-
-  <div class="settingsField">
-    <label class="settingsFieldLabel">
-      <input
-        name="useAutoFormat"
-        id="settingCheckUseAutoFormat"
-        type="checkbox" />
-      <span class="settingsCheckThumb"></span>
-    </label>  
-    <p>Use Auto Format</p>
-  </div>
-`;
-
 const sectionTreeSettingsContainer = `
   <section id="treeSettingsContainer" class="hidden">
     <div id="treeSettingsHeader">
@@ -98,9 +49,7 @@ const sectionTreeSettingsContainer = `
           alt="close" />
       </button>
     </div>
-    <div id="treeSettingsContent">
-      ${/*divTreeSettingsContainer*/ true}
-    </div>
+    <div id="treeSettingsContent"></div>
     <div id="treeSettingsFooter">
       <button
         id="treeSettingsCancel"

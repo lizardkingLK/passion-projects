@@ -1,0 +1,26 @@
+[
+    {
+        "name": "useGrid",
+        "id": "settingCheckUseGrid",
+        "label": "Use Grid Drawing",
+        "type": "checkbox"
+    },
+    {
+        "name": "useArrayInput",
+        "id": "settingCheckUseArrayInput",
+        "label": "Use Array Input",
+        "type": "checkbox"
+    },
+    {
+        "name": "useAutoSave",
+        "id": "settingCheckUseAutoSave",
+        "label": "Use Auto Save",
+        "type": "checkbox"
+    },
+    {
+        "name": "useAutoFormat",
+        "id": "settingCheckUseAutoFormat",
+        "label": "Use Auto Format",
+        "type": "checkbox"
+    }
+]
