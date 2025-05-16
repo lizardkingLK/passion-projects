@@ -1,4 +1,10 @@
-import { popupStatusMessage, treeAnalyze, validateJson } from "../utility";
+import {
+  isValidJson,
+  popupStatusMessage,
+  setLocalStorageItem,
+  treeAnalyze,
+  validateJson,
+} from "../utility";
 import { Canvas } from "../canvas";
 import {
   COLOR_ERROR,
@@ -6,6 +12,9 @@ import {
   COLOR_SUCCESS,
   INFO_FORMATTED_Input,
   INFO_SAVED_SETTINGS,
+  KEY_TREE_INPUT_CONTENT,
+  SETTING_USE_AUTO_FORMAT,
+  SETTING_USE_AUTO_SAVE,
   TIME_FOUR_SECONDS,
   TIME_ONE_SECOND,
   TREE_INPUT,
@@ -15,13 +24,19 @@ import { Settings } from "../settings";
 
 export class Handler {
   #canvas: Canvas;
-  #message: string | null = null;
 
   constructor() {
     this.#canvas = new Canvas();
   }
 
-  inputChanged(event: Event) {
+  inputChanged() {
+    const inputContent = (
+      document.querySelector(TREE_INPUT)! as HTMLTextAreaElement
+    ).value;
+    if (Settings.get<boolean>(SETTING_USE_AUTO_SAVE)) {
+      setLocalStorageItem(KEY_TREE_INPUT_CONTENT, inputContent);
+    }
+
     this.#canvas.clearGrid();
     this.#canvas.clearNodes();
     this.#canvas.setSize(0, 0);
@@ -30,14 +45,11 @@ export class Handler {
       isSuccess: isValidObject,
       data: validData,
       message: validationErrorMessage,
-    } = validateJson((<HTMLTextAreaElement>event.target).value);
+    } = validateJson(inputContent);
     if (!isValidObject) {
-      this.#message = validationErrorMessage;
       console.error(validationErrorMessage);
       return;
     }
-
-    this.#message = null;
 
     const now = Date.now();
 
@@ -68,22 +80,28 @@ export class Handler {
   }
 
   inputFocusOutValidation() {
-    if (this.#message) {
+    const { isSuccess, message } = isValidJson();
+    if (!isSuccess) {
       popupStatusMessage({
         color: COLOR_ERROR,
-        message: this.#message,
+        message: message!,
         duration: TIME_ONE_SECOND,
       });
 
-      this.#message = null;
+      return;
+    }
+
+    if (Settings.get<boolean>(SETTING_USE_AUTO_FORMAT)) {
+      this.handleInputFormat();
     }
   }
 
   handleInputFormat() {
-    if (this.#message) {
+    const { isSuccess, message } = isValidJson();
+    if (!isSuccess) {
       popupStatusMessage({
         color: COLOR_ERROR,
-        message: this.#message,
+        message: message!,
         duration: TIME_ONE_SECOND,
       });
 

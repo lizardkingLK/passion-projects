@@ -50,9 +50,7 @@ const sectionTreeVisualContainer = `
 `;
 
 const sectionTreeStatusContainer = `
-  <section id="treeVisualStatusContainer">
-    <p id="treeStatusElapsed"></p>
-  </section>
+  <section id="treeVisualStatusContainer"></section>
 `;
 
 const sectionTreeSettingsContainer = `

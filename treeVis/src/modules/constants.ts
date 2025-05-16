@@ -1,5 +1,6 @@
 // local storage keys
 export const KEY_TREE_VISUAL_SETTINGS = "treevisSettings";
+export const KEY_TREE_INPUT_CONTENT = "treevisInputContent";
 
 // canvas configurations
 export const CANVAS_WIDTH = window.screen.width;
@@ -28,7 +29,7 @@ export const TREE_VISUAL = "#treeVisual";
 export const TREE_VISUAL_STATUS_CONTAINER = "#treeVisualStatusContainer";
 export const TREE_VISUAL_HEADER_SETTINGS = "#treeVisualHeaderSettings";
 export const TREE_VISUAL_SETTINGS_CLOSE = "#treeSettingsHeaderClose";
-export const TREE_VISUAL_STATUS_ELAPSED = "#treeStatusElapsed";
+export const TREE_VISUAL_STATUS = "#treeVisualStatus";
 export const TREE_SETTINGS_CONTAINER = "#treeSettingsContainer";
 export const TREE_SETTINGS_BODY = "#treeSettingsContent";
 export const TREE_SETTINGS_SAVE = "#treeSettingsSave";
@@ -58,3 +59,5 @@ export const ERROR_INPUT_COULD_NOT_BE_PARSED = "Input could not be parsed.";
 
 // setting keys
 export const SETTING_USE_GRID = "useGrid";
+export const SETTING_USE_AUTO_FORMAT = "useAutoFormat";
+export const SETTING_USE_AUTO_SAVE = "useAutoSave";

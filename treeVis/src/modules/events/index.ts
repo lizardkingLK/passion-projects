@@ -72,7 +72,6 @@ export class Events {
           cancelable: true,
         });
         document.querySelector(TREE_INPUT)!.dispatchEvent(inputChangeEvent);
-        this.#handler.inputFocusOutValidation();
       },
       false
     );
@@ -91,11 +90,7 @@ export class Events {
   #registerTreeInputChangeListener() {
     document
       .querySelector(TREE_INPUT)!
-      .addEventListener(
-        "input",
-        (event) => this.#handler.inputChanged(event),
-        false
-      );
+      .addEventListener("input", () => this.#handler.inputChanged(), false);
   }
 
   #registerTreeInputFocusOutListener() {
