@@ -67,7 +67,12 @@ export class Events {
     document.querySelector(TREE_INPUT_OPTION_REDRAW)!.addEventListener(
       "click",
       () => {
-        console.log(false);
+        const inputChangeEvent = new Event("input", {
+          bubbles: false,
+          cancelable: true,
+        });
+        document.querySelector(TREE_INPUT)!.dispatchEvent(inputChangeEvent);
+        this.#handler.inputFocusOutValidation();
       },
       false
     );
@@ -96,7 +101,11 @@ export class Events {
   #registerTreeInputFocusOutListener() {
     document
       .querySelector(TREE_INPUT)!
-      .addEventListener("focusout", () => this.#handler.inputFocusOut(), false);
+      .addEventListener(
+        "focusout",
+        () => this.#handler.inputFocusOutValidation(),
+        false
+      );
   }
 
   #registerDragListeners() {

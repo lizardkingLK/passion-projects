@@ -65,7 +65,7 @@ export class Handler {
     });
   }
 
-  inputFocusOut() {
+  inputFocusOutValidation() {
     if (this.#message) {
       popupStatusMessage({
         color: COLOR_ERROR,
