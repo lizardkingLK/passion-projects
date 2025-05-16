@@ -4,9 +4,11 @@ import {
   COLOR_ERROR,
   COLOR_INFO,
   COLOR_SUCCESS,
+  INFO_FORMATTED_Input,
   INFO_SAVED_SETTINGS,
   TIME_FOUR_SECONDS,
   TIME_ONE_SECOND,
+  TREE_INPUT,
 } from "../constants";
 import { Drawing } from "../drawing";
 import { Settings } from "../settings";
@@ -77,6 +79,30 @@ export class Handler {
     }
   }
 
+  handleInputFormat() {
+    if (this.#message) {
+      popupStatusMessage({
+        color: COLOR_ERROR,
+        message: this.#message,
+        duration: TIME_ONE_SECOND,
+      });
+
+      return;
+    }
+
+    const treeInput = document.querySelector(
+      TREE_INPUT
+    )! as HTMLTextAreaElement;
+    const inputContent = JSON.parse(treeInput.value);
+    const formattedContent = JSON.stringify(inputContent, undefined, 2);
+    treeInput.value = formattedContent;
+    popupStatusMessage({
+      color: COLOR_INFO,
+      duration: TIME_ONE_SECOND,
+      message: INFO_FORMATTED_Input,
+    });
+  }
+
   elementDragged(
     previousLeft: number,
     currentLeft: number,
@@ -118,8 +144,6 @@ export class Handler {
     Settings.saveSettings();
 
     Settings.reinitialize();
-
-
 
     popupStatusMessage({
       color: COLOR_SUCCESS,

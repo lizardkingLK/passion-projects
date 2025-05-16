@@ -49,6 +49,7 @@ export const TIME_FOUR_SECONDS = 4000;
 
 // info messages
 export const INFO_SAVED_SETTINGS = "Settings Saved";
+export const INFO_FORMATTED_Input = "Input Formatted";
 
 // error messages
 export const ERROR_INPUT_IS_AN_ARRAY = "Input is an array";

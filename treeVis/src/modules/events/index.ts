@@ -80,7 +80,7 @@ export class Events {
     document.querySelector(TREE_INPUT_OPTION_FORMAT)!.addEventListener(
       "click",
       () => {
-        console.log(true);
+        this.#handler.handleInputFormat();
       },
       false
     );
