@@ -1,4 +1,6 @@
-export type Json = { [keyType: string]: number | string | null | object };
+export type Json = {
+  [keyType: string]: boolean | number | string | null | object;
+};
 
 export type Result<T> = {
   isSuccess: boolean;

@@ -1,33 +1,36 @@
-import { TIME_ONE_SECOND, TREE_VISUAL_STATUS_ELAPSED } from "./constants";
+import {
+  ERROR_INPUT_COULD_NOT_BE_PARSED,
+  ERROR_INPUT_IS_AN_ARRAY,
+  ERROR_INPUT_KEYS_ARE_INVALID,
+  TIME_ONE_SECOND,
+  TREE_VISUAL_STATUS_ELAPSED,
+} from "./constants";
 import { Json, TNode, Result, TNodeAnalyzed, TStatusPopup } from "./types";
 
 export function validateJson(input: string): Result<Json> {
-  const keys = ["left", "right", "value"];
+  const staticKeys = ["left", "right", "value", ""];
+  const inputKeys: string[] = [];
 
   try {
-    let isValidKeys = true;
-
     const parsed = JSON.parse(input, (key, value) => {
-      if (key && !keys.includes(key)) {
-        isValidKeys = false;
-      }
+      inputKeys.push(key);
 
       return value;
     });
 
-    if (!(parsed instanceof Object)) {
+    if (Array.isArray(parsed)) {
       return {
         data: null,
         isSuccess: false,
-        message: "Input is an array",
+        message: ERROR_INPUT_IS_AN_ARRAY,
       };
     }
 
-    if (!isValidKeys) {
+    if (!staticKeys.every((key) => inputKeys.includes(key))) {
       return {
         data: null,
         isSuccess: false,
-        message: "Input json keys are invalid",
+        message: ERROR_INPUT_KEYS_ARE_INVALID,
       };
     }
 
@@ -40,7 +43,7 @@ export function validateJson(input: string): Result<Json> {
     return {
       data: null,
       isSuccess: false,
-      message: "Input could not be parsed.",
+      message: ERROR_INPUT_COULD_NOT_BE_PARSED,
     };
   }
 }

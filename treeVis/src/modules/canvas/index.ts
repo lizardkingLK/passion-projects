@@ -159,7 +159,7 @@ export class Canvas {
 
   // grids
   drawGrid(treeHeight: number, treeWidth: number) {
-    if (Drawing.useGrid) {
+    if (Drawing.useGrid()) {
       this.#grid.drawGrid(
         treeHeight,
         treeWidth,
@@ -170,7 +170,7 @@ export class Canvas {
   }
 
   clearGrid() {
-    if (Drawing.useGrid) {
+    if (Drawing.useGrid()) {
       this.#grid.clearGrid();
     }
   }

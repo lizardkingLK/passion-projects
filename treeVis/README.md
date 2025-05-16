@@ -1,6 +1,6 @@
 # TreeVis
 
-A Binary Tree Visualizer
+A Binary Tree Visualizer made using vanila vite typescript.
 
 ## Run Project
 

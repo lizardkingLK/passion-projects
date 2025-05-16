@@ -1,6 +1,8 @@
 import { Events } from "./modules/events";
+import { Settings } from "./modules/settings";
 import "./style.css";
 
+// TODO: add refresh and format functionality with buttons
 const sectionTreeInputContainer = `
   <section id="treeInputContainer" draggable="true">
     <div id="treeInputHeader">Input</div>
@@ -34,46 +36,8 @@ const sectionTreeStatusContainer = `
   </section>
 `;
 
-const divTreeSettingsContainer = `
-  <div id="treeSettingsContent">
-    <div class="settingsField">
-      <input
-        id="settingCheckUseGrid"
-        type="checkbox"
-        checked />
-      <p>Use Grid</p>
-    </div>
-    <div class="settingsField">
-      <input
-        id="settingCheckUseJsonInput"
-        type="checkbox"
-        checked />
-      <p>Use Json Input</p>
-    </div>
-    <div class="settingsField">
-      <input
-        id="settingCheckUseAutosave"
-        type="checkbox"
-        checked />
-      <p>Use AutoSave</p>
-    </div>
-    <div id="treeSettingsFooter">
-      <button
-        id="treeSettingsCancel"
-        title="Go Back">
-        <p>Cancel</p>
-      </button>
-      <button
-        id="treeSettingsSave"
-        title="Save Changes">
-        <p>Save</p>
-      </button>
-    </div>
-  </div>
-`;
-
 const sectionTreeSettingsContainer = `
-  <section id="treeSettingsContainer" class="block">
+  <section id="treeSettingsContainer" class="hidden">
     <div id="treeSettingsHeader">
       <p>Settings</p>
       <button
@@ -85,8 +49,20 @@ const sectionTreeSettingsContainer = `
           alt="close" />
       </button>
     </div>
-    ${divTreeSettingsContainer}
-  <section>
+    <div id="treeSettingsContent"></div>
+    <div id="treeSettingsFooter">
+      <button
+        id="treeSettingsCancel"
+        title="Close Settings">
+        <p>Cancel</p>
+      </button>
+      <button
+        id="treeSettingsSave"
+        title="Save Changes">
+        <p>Save</p>
+      </button>
+    </div>
+  </section>
 `;
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
@@ -96,4 +72,5 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   ${sectionTreeSettingsContainer}
   `;
 
-Events.registerEvents();
+Settings.initialize();
+Events.register();
