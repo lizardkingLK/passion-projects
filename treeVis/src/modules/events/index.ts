@@ -1,6 +1,8 @@
 import {
   TREE_INPUT,
   TREE_INPUT_CONTAINER,
+  TREE_INPUT_OPTION_FORMAT,
+  TREE_INPUT_OPTION_REDRAW,
   TREE_SETTINGS_CANCEL,
   TREE_SETTINGS_CONTAINER,
   TREE_SETTINGS_SAVE,
@@ -20,10 +22,9 @@ export class Events {
     const events = new Events();
     events.#registerTreeInputChangeListener();
     events.#registerTreeInputFocusOutListener();
+    events.#registerTreeInputOptionClickListener();
     events.#registerSettingsClickListener();
     events.#registerDragListeners();
-    events.#registerTreeInputFocusOutListener();
-    events.#registerSettingsClickSaveListener();
   }
 
   #registerSettingsClickListener() {
@@ -51,13 +52,30 @@ export class Events {
       },
       false
     );
-  }
 
-  #registerSettingsClickSaveListener() {
     document.querySelector(TREE_SETTINGS_SAVE)!.addEventListener(
       "click",
       () => {
         this.#handler.settingsSubmitted();
+        settingsModal.setAttribute("class", "hidden");
+      },
+      false
+    );
+  }
+
+  #registerTreeInputOptionClickListener() {
+    document.querySelector(TREE_INPUT_OPTION_REDRAW)!.addEventListener(
+      "click",
+      () => {
+        console.log(false);
+      },
+      false
+    );
+
+    document.querySelector(TREE_INPUT_OPTION_FORMAT)!.addEventListener(
+      "click",
+      () => {
+        console.log(true);
       },
       false
     );

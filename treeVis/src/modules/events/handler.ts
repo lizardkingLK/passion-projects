@@ -1,20 +1,14 @@
-import {
-  popupStatusMessage,
-  treeAnalyze,
-  validateJson,
-} from "../utility";
+import { popupStatusMessage, treeAnalyze, validateJson } from "../utility";
 import { Canvas } from "../canvas";
 import {
   COLOR_ERROR,
   COLOR_INFO,
   COLOR_SUCCESS,
   INFO_SAVED_SETTINGS,
-  KEY_TREE_VISUAL_SETTINGS,
   TIME_FOUR_SECONDS,
   TIME_ONE_SECOND,
 } from "../constants";
 import { Drawing } from "../drawing";
-import { Json } from "../types";
 import { Settings } from "../settings";
 
 export class Handler {
@@ -121,24 +115,11 @@ export class Handler {
   }
 
   settingsSubmitted() {
-    const settingsFields = document.querySelectorAll(
-      ".settingsField label input[type=checkbox]"
-    );
-    const settingsJson: Json = {};
-    let element;
-    for (const settingField in settingsFields) {
-      if (Object.prototype.hasOwnProperty.call(settingsFields, settingField)) {
-        element = settingsFields[settingField] as HTMLInputElement;
-        settingsJson[element.getAttribute("name")!] = element.checked;
-      }
-    }
-
-    window.localStorage.setItem(
-      KEY_TREE_VISUAL_SETTINGS,
-      JSON.stringify(settingsJson)
-    );
+    Settings.saveSettings();
 
     Settings.reinitialize();
+
+
 
     popupStatusMessage({
       color: COLOR_SUCCESS,

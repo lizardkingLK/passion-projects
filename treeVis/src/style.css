@@ -55,7 +55,6 @@
 
 .settingsFieldLabel input[type=checkbox]:checked+.settingsCheckThumb {
 	background-color: black;
-	transition: .1s;
 }
 
 #treeInputContainer {
@@ -64,31 +63,49 @@
 	left: 50%;
 	transform: translate(-50%, -50%);
 	width: auto;
-	min-width: 25vw;
-	height: 20vh;
-	min-height: max-content;
+	height: max-content;
+	z-index: 1;
 }
 
 #treeInputHeader {
 	height: 5vh;
-	background-color: black;
-	color: white;
+	background-color: var(--gray);
+	color: black;
 	cursor: move;
 	display: flex;
-	justify-content: flex-start;
+	justify-content: space-between;
 	align-items: center;
-	padding-left: 20px;
+	padding: 0 20px;
+}
+
+#treeInputHeaderOptions {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+}
+
+#treeInputHeaderOptions button {
+	border: none;
+	cursor: pointer;
+}
+
+#treeInputHeaderOptionRedrawIcon,
+#treeInputHeaderOptionFormatIcon {
+	width: 1.2rem;
+	height: 1.2rem;
+	vertical-align: middle;
 }
 
 #treeInput {
-	border-top: none;
 	width: 100%;
-	min-width: 20vw;
+	min-width: 25vw;
+	min-height: 20vh;
 	height: 100%;
 	padding: 20px;
-	outline: none;
 	background-color: transparent;
 	backdrop-filter: blur(5px);
+	outline: none;
+	border-top: none;
 }
 
 #treeVisualContainer {
@@ -99,7 +116,7 @@
 
 #treeVisualHeader {
 	height: 5vh;
-	background-color: #f3f3f3;
+	background-color: var(--gray);
 	color: black;
 	display: flex;
 	justify-content: space-between;
@@ -126,7 +143,7 @@
 
 #treeVisual {
 	display: block;
-	border: 1px #f3f3f3 solid;
+	border: 1px var(--gray) solid;
 	overflow: scroll;
 }
 

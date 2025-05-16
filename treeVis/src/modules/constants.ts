@@ -32,6 +32,9 @@ export const TREE_VISUAL_STATUS_ELAPSED = "#treeStatusElapsed";
 export const TREE_SETTINGS_CONTAINER = "#treeSettingsContainer";
 export const TREE_SETTINGS_BODY = "#treeSettingsContent";
 export const TREE_SETTINGS_SAVE = "#treeSettingsSave";
+export const TREE_INPUT_OPTION_REDRAW = "#treeInputHeaderOptionRedraw";
+export const TREE_INPUT_OPTION_FORMAT = "#treeInputHeaderOptionFormat";
+
 export const TREE_SETTINGS_CANCEL = "#treeSettingsCancel";
 
 // color hex codes

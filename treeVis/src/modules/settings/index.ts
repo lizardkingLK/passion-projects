@@ -12,10 +12,29 @@ export class Settings {
   }
 
   static reinitialize() {
-    const settingsResult = Settings.#getSettings();
+    const settingsResult = Settings.#loadSettings();
     if (settingsResult) {
       Settings.settings = JSON.parse(settingsResult);
     }
+  }
+
+  static saveSettings() {
+    const settingsFields = document.querySelectorAll(
+      ".settingsField label input[type=checkbox]"
+    );
+    const settingsJson: Json = {};
+    let element;
+    for (const settingField in settingsFields) {
+      if (Object.prototype.hasOwnProperty.call(settingsFields, settingField)) {
+        element = settingsFields[settingField] as HTMLInputElement;
+        settingsJson[element.getAttribute("name")!] = element.checked;
+      }
+    }
+
+    window.localStorage.setItem(
+      KEY_TREE_VISUAL_SETTINGS,
+      JSON.stringify(settingsJson)
+    );
   }
 
   static get<T>(key: string) {
@@ -85,7 +104,7 @@ export class Settings {
     }
   }
 
-  static #getSettings() {
+  static #loadSettings() {
     return window.localStorage.getItem(KEY_TREE_VISUAL_SETTINGS);
   }
 }
