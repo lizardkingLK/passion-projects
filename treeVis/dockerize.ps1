@@ -130,3 +130,9 @@ Write-Host `
     --name $containerName -d `
     -p 8080:80 `
     $containerName
+
+# write the ready to test url
+Write-Host `
+    -ForegroundColor Cyan `
+    -Message `
+    "info. test the build with http://localhost:8080"

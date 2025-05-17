@@ -1,29 +1,24 @@
-import {
-  KEY_TREE_INPUT_CONTENT,
-  KEY_TREE_VISUAL_SETTINGS,
-  SETTING_USE_AUTO_SAVE,
-  TREE_INPUT,
-  TREE_SETTINGS_BODY,
-} from "../constants";
+import { KEY_TREE_VISUAL_SETTINGS, TREE_SETTINGS_BODY } from "../constants";
 import settingsJson from "./settings.json";
 import { Json } from "../types";
 import { getLocalStorageItem, setLocalStorageItem } from "../utility";
+import { Input } from "../input";
 
 export class Settings {
   static settings: Json | null = null;
 
   static initialize() {
-    this.reinitialize();
-    this.#setSettingDialog();
-    this.#setSettingValues();
-    this.#setInitialInputValue();
+    this.evaluateSettings();
+    this.#setSettingsUI();
   }
 
-  static reinitialize() {
+  static evaluateSettings() {
     const settingsResult = getLocalStorageItem(KEY_TREE_VISUAL_SETTINGS);
     if (settingsResult) {
       Settings.settings = JSON.parse(settingsResult);
     }
+
+    this.#setupReflectingUI();
   }
 
   static saveSettings() {
@@ -51,6 +46,15 @@ export class Settings {
     }
 
     return null;
+  }
+
+  static #setupReflectingUI() {
+    Input.getInstance().switchInput();
+  }
+
+  static #setSettingsUI() {
+    this.#setSettingDialog();
+    this.#setSettingValues();
   }
 
   static #setSettingDialog() {
@@ -107,15 +111,5 @@ export class Settings {
         element.checked = value;
       }
     }
-  }
-
-  static #setInitialInputValue() {
-    if (!Settings.get<boolean>(SETTING_USE_AUTO_SAVE)) {
-      return;
-    }
-
-    const inputContent = getLocalStorageItem(KEY_TREE_INPUT_CONTENT) ?? "";
-    (document.querySelector(TREE_INPUT)! as HTMLTextAreaElement).value =
-      inputContent;
   }
 }

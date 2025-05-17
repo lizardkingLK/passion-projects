@@ -1,18 +1,19 @@
 import { Events } from "./modules/events";
+import { Input } from "./modules/input";
 import { Settings } from "./modules/settings";
 import "./style.css";
 
 const sectionTreeInputContainer = `
-  <section id="treeInputContainer" draggable="true">
+  <section id="treeInputContainer">
     <div id="treeInputHeader">
-      <p>Input</p>
+      <p id="treeInputHeaderTitle">Input</p>
       <div id="treeInputHeaderOptions">
         <button
           id="treeInputHeaderOptionRedraw"
           title="Redraw Tree">
           <img
             id="treeInputHeaderOptionRedrawIcon"
-            src="./assets/refresh.svg"
+            src="./assets/images/refresh.svg"
             alt="refresh" />
         </button>
         <button
@@ -20,7 +21,7 @@ const sectionTreeInputContainer = `
           title="Format Text">
           <img
             id="treeInputHeaderOptionFormatIcon"
-            src="./assets/format.svg"
+            src="./assets/images/format.svg"
             alt="format" />
         </button>
       </div>
@@ -36,14 +37,24 @@ const sectionTreeVisualContainer = `
   <section id="treeVisualContainer">
     <div id="treeVisualHeader">
       <p id="treeVisualHeaderLabel">Visual</p>
-      <button
-        id="treeVisualHeaderSettings"
-        title="View Settings">
-        <img
-          id="treeVisualHeaderSettingsIcon"
-          src="./assets/cog.svg"
-          alt="settings" />
-      </button>
+      <div id="treeVisualHeaderOptions">
+        <button
+          id="treeVisualHeaderSettings"
+          title="View Settings">
+          <img
+            id="treeVisualHeaderSettingsIcon"
+            src="./assets/images/cog.svg"
+            alt="settings" />
+        </button>
+        <button
+          id="treeVisualHeaderHelp"
+          title="View Help">
+          <img
+            id="treeVisualHeaderHelpIcon"
+            src="./assets/images/help.svg"
+            alt="help" />
+        </button>
+      </div>
     </div>
     <canvas id="treeVisual"></canvas>
   </section>
@@ -62,7 +73,7 @@ const sectionTreeSettingsContainer = `
         title="Close Settings">
         <img
           id="treeSettingsHeaderCloseIcon" 
-          src="./assets/close.svg"
+          src="./assets/images/close.svg"
           alt="close" />
       </button>
     </div>
@@ -90,4 +101,5 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   `;
 
 Settings.initialize();
+Input.initialize();
 Events.register();
