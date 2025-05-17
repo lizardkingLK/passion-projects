@@ -18,7 +18,7 @@ export function isValidJson(): Result<Json> {
 
 export function validateJson(input: string): Result<Json> {
   const staticKeys = ["left", "right", "value", ""];
-  const inputKeys: string[] = [];
+  let inputKeys: string[] = [];
 
   try {
     const parsed = JSON.parse(input, (key, value) => {
@@ -35,8 +35,10 @@ export function validateJson(input: string): Result<Json> {
       };
     }
 
-    // TODO: validate that every found object must have all of static keys
-    if (!staticKeys.every((key) => inputKeys.includes(key))) {
+    if (
+      !inputKeys.every((key) => staticKeys.includes(key)) ||
+      !staticKeys.every((key) => inputKeys.includes(key))
+    ) {
       return {
         data: null,
         isSuccess: false,

@@ -1,11 +1,12 @@
 // local storage keys
 export const KEY_TREE_VISUAL_SETTINGS = "treevisSettings";
-export const KEY_TREE_INPUT_CONTENT = "treevisInputContent";
+export const KEY_TREE_ARRAY_INPUT_CONTENT = "treevisArrayInputContent";
+export const KEY_TREE_JSON_INPUT_CONTENT = "treevisJsonInputContent";
 
 // canvas configurations
 export const CANVAS_WIDTH = window.screen.width;
 export const CANVAS_HEIGHT = window.screen.height;
-export const SCREEN_UNIT = window.screen.availHeight / 10;
+export const SCREEN_UNIT = window.screen.availHeight / 20;
 export const USE_GRID = false;
 
 // canvas context configurations
@@ -28,6 +29,7 @@ export const TREE_VISUAL_CONTAINER = "#treeVisualContainer";
 export const TREE_VISUAL = "#treeVisual";
 export const TREE_VISUAL_STATUS_CONTAINER = "#treeVisualStatusContainer";
 export const TREE_VISUAL_HEADER_SETTINGS = "#treeVisualHeaderSettings";
+export const TREE_INPUT_HEADER_TITLE = "#treeInputHeaderTitle";
 export const TREE_VISUAL_SETTINGS_CLOSE = "#treeSettingsHeaderClose";
 export const TREE_VISUAL_STATUS = "#treeVisualStatus";
 export const TREE_SETTINGS_CONTAINER = "#treeSettingsContainer";
@@ -35,7 +37,6 @@ export const TREE_SETTINGS_BODY = "#treeSettingsContent";
 export const TREE_SETTINGS_SAVE = "#treeSettingsSave";
 export const TREE_INPUT_OPTION_REDRAW = "#treeInputHeaderOptionRedraw";
 export const TREE_INPUT_OPTION_FORMAT = "#treeInputHeaderOptionFormat";
-
 export const TREE_SETTINGS_CANCEL = "#treeSettingsCancel";
 
 // color hex codes
@@ -53,11 +54,12 @@ export const INFO_SAVED_SETTINGS = "Settings Saved";
 export const INFO_FORMATTED_Input = "Input Formatted";
 
 // error messages
-export const ERROR_INPUT_IS_AN_ARRAY = "Input is an array";
+export const ERROR_INPUT_IS_AN_ARRAY = "Input is a json array";
 export const ERROR_INPUT_KEYS_ARE_INVALID = "Input json keys are invalid";
 export const ERROR_INPUT_COULD_NOT_BE_PARSED = "Input could not be parsed.";
 
 // setting keys
 export const SETTING_USE_GRID = "useGrid";
+export const SETTING_USE_ARRAY_INPUT = "useArrayInput";
 export const SETTING_USE_AUTO_FORMAT = "useAutoFormat";
 export const SETTING_USE_AUTO_SAVE = "useAutoSave";

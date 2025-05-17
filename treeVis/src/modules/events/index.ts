@@ -6,6 +6,7 @@ import {
   TREE_SETTINGS_CANCEL,
   TREE_SETTINGS_CONTAINER,
   TREE_SETTINGS_SAVE,
+  TREE_VISUAL,
   TREE_VISUAL_HEADER_SETTINGS,
   TREE_VISUAL_SETTINGS_CLOSE,
 } from "../constants";
@@ -25,6 +26,22 @@ export class Events {
     events.#registerTreeInputOptionClickListener();
     events.#registerSettingsClickListener();
     events.#registerDragListeners();
+  }
+
+  #registerTreeInputChangeListener() {
+    document
+      .querySelector(TREE_INPUT)!
+      .addEventListener("input", () => this.#handler.inputChanged(), false);
+  }
+
+  #registerTreeInputFocusOutListener() {
+    document
+      .querySelector(TREE_INPUT)!
+      .addEventListener(
+        "focusout",
+        () => this.#handler.inputFocusOutValidation(),
+        false
+      );
   }
 
   #registerSettingsClickListener() {
@@ -87,24 +104,8 @@ export class Events {
 
   // TODO: handle download canvas functionality
 
-  #registerTreeInputChangeListener() {
-    document
-      .querySelector(TREE_INPUT)!
-      .addEventListener("input", () => this.#handler.inputChanged(), false);
-  }
-
-  #registerTreeInputFocusOutListener() {
-    document
-      .querySelector(TREE_INPUT)!
-      .addEventListener(
-        "focusout",
-        () => this.#handler.inputFocusOutValidation(),
-        false
-      );
-  }
-
   #registerDragListeners() {
-    [TREE_INPUT_CONTAINER].forEach((container) => {
+    [TREE_INPUT_CONTAINER, TREE_VISUAL].forEach((container) => {
       let previousLeft: number = 0;
       let currentLeft: number = 0;
       let previousTop: number = 0;
@@ -118,6 +119,9 @@ export class Events {
       );
 
       const elementContainer: HTMLElement = document.querySelector(container)!;
+
+      elementContainer.setAttribute("draggable", "true");
+      elementContainer.classList.add("draggable");
       elementContainer.addEventListener("dragstart", dragStart, false);
       elementContainer.addEventListener("dragend", dragEnd, false);
     });
