@@ -57,7 +57,6 @@ export class GridShape {
       };
 
       this.#grid.push(line);
-      this.#line.drawLine(line);
     }
 
     // vertical lines
@@ -86,8 +85,14 @@ export class GridShape {
       };
 
       this.#grid.push(line);
-      this.#line.drawLine(line);
     }
+
+    // draw lines - asynchronously
+    this.#grid.map((line) =>
+      setTimeout(() => {
+        this.#line.drawLine(line);
+      }, Math.random() * 10)
+    );
   }
 
   clearGrid() {
