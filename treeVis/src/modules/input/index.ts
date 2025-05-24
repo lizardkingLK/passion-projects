@@ -44,9 +44,7 @@ export class Input {
       this.#input = this.#jsonInput;
     }
 
-    this.#input.setHeading();
-    this.#input.initialize();
-    this.#input.setVisual();
+    this.#input.setTitle();
   }
 
   draw() {
@@ -61,7 +59,7 @@ export class Input {
     this.#input.format();
   }
 
-  setHeading() {
-    this.#input.setHeading();
+  setTitle() {
+    this.#input.setTitle();
   }
 }

@@ -1,7 +1,6 @@
 export interface IInput {
   draw(): void;
-  setHeading(): void;
-  setVisual(): void;
+  setTitle(): void;
   validate(): void;
   format(isSuccess?: boolean, message?: string | null): void;
   initialize(): void;

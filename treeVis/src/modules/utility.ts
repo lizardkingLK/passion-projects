@@ -1,7 +1,5 @@
 import {
-  ERROR_INPUT_ARRAY_IS_INVALID,
   ERROR_INPUT_COULD_NOT_BE_PARSED,
-  ERROR_INPUT_HAS_NO_CONTENT,
   ERROR_INPUT_IS_AN_ARRAY,
   ERROR_INPUT_KEYS_ARE_INVALID,
   TIME_ONE_SECOND,
@@ -10,15 +8,15 @@ import {
 } from "./constants";
 import { Json, TNode, Result, TNodeAnalyzed, TStatusPopup } from "./types";
 
-export function isValidJsonInput(): Result<Json> {
+export function isValidJson(): Result<Json> {
   const inputString = (
     document.querySelector(TREE_INPUT)! as HTMLTextAreaElement
   ).value;
 
-  return validateJsonInput(inputString);
+  return validateJson(inputString);
 }
 
-export function validateJsonInput(input: string): Result<Json> {
+export function validateJson(input: string): Result<Json> {
   const staticKeys = ["left", "right", "value", ""];
   let inputKeys: string[] = [];
 
@@ -62,7 +60,6 @@ export function validateJsonInput(input: string): Result<Json> {
   }
 }
 
-// object based tree build and analyze
 export function treeAnalyze(object: Json): Result<TNodeAnalyzed> {
   let height = -Number.MIN_VALUE;
 
@@ -103,91 +100,6 @@ export function treeAnalyze(object: Json): Result<TNodeAnalyzed> {
     isSuccess: true,
     message: null,
   };
-}
-
-export function isValidArrayInput(): Result<number[]> {
-  const inputString = (
-    document.querySelector(TREE_INPUT)! as HTMLTextAreaElement
-  ).value;
-
-  return validateArrayInput(inputString);
-}
-
-export function validateArrayInput(input: string): Result<number[]> {
-  if (!input) {
-    return {
-      data: null,
-      isSuccess: false,
-      message: ERROR_INPUT_HAS_NO_CONTENT,
-    };
-  }
-
-  const inputNumberArray = getInputNumberArray(input);
-
-  const isValidInputArray = inputNumberArray.every(
-    (item) => !Number.isNaN(item)
-  );
-  if (!isValidInputArray) {
-    return {
-      data: null,
-      isSuccess: false,
-      message: ERROR_INPUT_ARRAY_IS_INVALID,
-    };
-  }
-
-  return {
-    data: inputNumberArray,
-    isSuccess: true,
-    message: null,
-  };
-}
-
-export function getInputNumberArray(inputContent: string) {
-  return inputContent
-    .split(/[\s\r\n\t]/)
-    .filter(Boolean)
-    .map((item) => Number(item.toString()));
-}
-
-// array based tree build and analyze
-export function buildTree(inputArray: number[]): Result<TNodeAnalyzed> {
-  function insertNode(rootNode: Json, newNode: Json) {
-    type TChildNode = Json | null;
-    let left: TChildNode;
-    let right: TChildNode;
-    while (true) {
-      left = <TChildNode>rootNode["left"];
-      right = <TChildNode>rootNode["right"];
-
-      if (newNode["value"]! <= rootNode["value"]!) {
-        if (!left) {
-          rootNode["left"] = newNode;
-          break;
-        }
-        
-        rootNode = left;
-      } else {
-        if (!right) {
-          rootNode["right"] = newNode;
-          break;
-        }
-        
-        rootNode = right;
-      }
-    }
-  }
-
-  const rootNode = {
-    left: null,
-    right: null,
-    value: inputArray[0],
-  };
-
-  for (let i = 1; i < inputArray.length; i++) {
-    insertNode(rootNode, { left: null, right: null, value: inputArray[i] });
-  }
-
-  return treeAnalyze(rootNode);
 }
 
 export function popupStatusMessage({ color, message, duration }: TStatusPopup) {

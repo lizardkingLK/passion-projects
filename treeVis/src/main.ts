@@ -1,4 +1,5 @@
 import { Events } from "./modules/events";
+import { Input } from "./modules/input";
 import { Settings } from "./modules/settings";
 import "./style.css";
 
@@ -100,4 +101,5 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   `;
 
 Settings.initialize();
+Input.initialize();
 Events.register();
