@@ -2,9 +2,10 @@ import { Canvas } from "../canvas";
 import {
   COLOR_ERROR,
   COLOR_INFO,
-  INFO_FORMATTED_Input,
+  INFO_FORMATTED_INPUT,
   KEY_TREE_JSON_INPUT_CONTENT,
   SETTING_USE_AUTO_FORMAT,
+  SETTING_USE_AUTO_SAVE,
   TIME_FOUR_SECONDS,
   TIME_ONE_SECOND,
   TREE_INPUT,
@@ -13,10 +14,10 @@ import {
 import { Drawing } from "../drawing";
 import { Settings } from "../settings";
 import {
-  validateJson,
+  validateJsonInput,
   treeAnalyze,
   popupStatusMessage,
-  isValidJson,
+  isValidJsonInput,
   getLocalStorageItem,
   setLocalStorageItem,
 } from "../utility";
@@ -38,7 +39,7 @@ export class JsonInput implements IInput {
   }
 
   validate(): void {
-    const { isSuccess, message } = isValidJson();
+    const { isSuccess, message } = isValidJsonInput();
     if (!isSuccess) {
       popupStatusMessage({
         color: COLOR_ERROR,
@@ -56,7 +57,7 @@ export class JsonInput implements IInput {
 
   format(isSuccess?: boolean, message?: string | null): void {
     if (isSuccess === undefined && message === undefined) {
-      const isValidJsonResult = isValidJson();
+      const isValidJsonResult = isValidJsonInput();
       isSuccess = isValidJsonResult.isSuccess;
       message = isValidJsonResult.message;
     }
@@ -77,15 +78,25 @@ export class JsonInput implements IInput {
 
     treeInput.value = JSON.stringify(JSON.parse(treeInput.value), undefined, 2);
 
+    if (Settings.get<boolean>(SETTING_USE_AUTO_SAVE)) {
+      this.save(treeInput.value);
+    }
+
     popupStatusMessage({
       color: COLOR_INFO,
       duration: TIME_ONE_SECOND,
-      message: INFO_FORMATTED_Input,
+      message: INFO_FORMATTED_INPUT,
     });
   }
 
-  setTitle(): void {
+  setHeading(): void {
     document.querySelector(TREE_INPUT_HEADER_TITLE)!.innerHTML = "Json Input";
+  }
+
+  setVisual() {
+    this.#canvas.clearGrid();
+    this.#canvas.clearNodes();
+    this.#canvas.setSize(0, 0);
   }
 
   draw(): void {
@@ -101,7 +112,7 @@ export class JsonInput implements IInput {
       isSuccess: isValidObject,
       data: validData,
       message: validationErrorMessage,
-    } = validateJson(inputContent);
+    } = validateJsonInput(inputContent);
     if (!isValidObject) {
       console.error(validationErrorMessage);
       return;
@@ -142,8 +153,9 @@ export class JsonInput implements IInput {
   }
 
   read(): string {
-    const value = (document.querySelector(TREE_INPUT)! as HTMLTextAreaElement)
-      .value;
+    const value = (
+      document.querySelector(TREE_INPUT)! as HTMLTextAreaElement
+    ).value.trim();
 
     this.save(value);
 

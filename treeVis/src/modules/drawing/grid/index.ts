@@ -7,11 +7,13 @@ export class GridShape {
   #context: CanvasRenderingContext2D;
   #line: LineShape;
   #grid: LineNode[];
+  #timeoutRefs: number[];
 
   constructor(context: CanvasRenderingContext2D) {
     this.#context = context;
     this.#line = new LineShape(this.#context);
     this.#grid = [];
+    this.#timeoutRefs = [];
   }
 
   drawGrid(
@@ -87,11 +89,14 @@ export class GridShape {
       this.#grid.push(line);
     }
 
+    // clear previous refs first
+    this.#timeoutRefs.forEach((timeoutRefId) => {
+      clearTimeout(timeoutRefId);
+    });
+
     // draw lines - asynchronously
-    this.#grid.map((line) =>
-      setTimeout(() => {
-        this.#line.drawLine(line);
-      }, Math.random() * 10)
+    this.#timeoutRefs = this.#grid.map((line) =>
+      setTimeout(() => this.#line.drawLine(line), Math.random() * 10)
     );
   }
 
