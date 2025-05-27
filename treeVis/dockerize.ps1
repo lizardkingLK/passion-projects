@@ -38,11 +38,11 @@ $buildOutputArray = (& npm run build)
 
 $hasBuildFailed = (
     ($buildOutputArray[$buildOutputArray.Length - 1]) `
-    -notmatch 'built in')
+        -notmatch 'built in')
 if ($hasBuildFailed) {
     Write-Host `
-    -ForegroundColor Red `
-    -Message "error. rebuild failed"
+        -ForegroundColor Red `
+        -Message "error. rebuild failed"
     Exit
 }
 
@@ -77,41 +77,44 @@ if (-not $isImageAvailable) {
     & docker pull $imageName
 }
 
-# assign container name
-$containerName = "treevis"
+# assign container name(s)
+$containerNames = @("treevis3", "treevis2", "treevis1", "treevis")
 
-# name filter
-$nameFilter = "name=$containerName"
+# remove contains if running
+foreach ($containerName in $containerNames) {
+    # name filter
+    $nameFilter = "name=$containerName"
 
-# check if container with image is running
-$statusFilter = "status=running"
-$isContainerRunningResult = (& docker ps `
-        --filter $nameFilter `
-        --filter $statusFilter)
-$isContainerRunning = ($isContainerRunningResult `
-        -split '\n').Length -ge 2
+    # check if container with image is running
+    $statusFilter = "status=running"
+    $isContainerRunningResult = (& docker ps `
+            --filter $nameFilter `
+            --filter $statusFilter)
+    $isContainerRunning = ($isContainerRunningResult `
+            -split '\n').Length -ge 2
 
-# stop the container if running
-if ($isContainerRunning) {
-    Write-Host `
-        -ForegroundColor Cyan `
-        -Message "info. stopping the running container"
+    # stop the container if running
+    if ($isContainerRunning) {
+        Write-Host `
+            -ForegroundColor Cyan `
+            -Message "info. stopping the running container"
 
-    & docker container stop $containerName
-}
+        & docker container stop $containerName
+    }
 
-# check if stopeed container with image exist
-$hasContainerStopped = ((& docker ps `
-            --filter $nameFilter) `
-        -split '\n').Length -ge 2
+    # check if stopeed container with image exist
+    $hasContainerStopped = ((& docker ps `
+                --filter $nameFilter) `
+            -split '\n').Length -ge 2
 
-# remove the container from list
-if ($hasContainerStopped) {
-    Write-Host `
-        -ForegroundColor Cyan `
-        -Message "info. removing the running container"
+    # remove the container from list
+    if ($hasContainerStopped) {
+        Write-Host `
+            -ForegroundColor Cyan `
+            -Message "info. removing the running container"
 
-    & docker container rm $containerName
+        & docker container rm $containerName
+    }   
 }
 
 # build the container

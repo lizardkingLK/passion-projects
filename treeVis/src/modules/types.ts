@@ -24,6 +24,7 @@ export type TNode = {
 export type TNodeAnalyzed = {
   height: number;
   width: number;
+  count: number;
   root: TNode;
 };
 
@@ -66,4 +67,12 @@ export type TStatusPopup = {
   message: string;
   duration: number;
   color: string;
+};
+
+export type TImage = { id: string; src: string; alt: string };
+
+export type TButton = {
+  id: string;
+  title: string;
+  icon: TImage;
 };

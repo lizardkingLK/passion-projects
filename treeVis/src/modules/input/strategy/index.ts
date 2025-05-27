@@ -1,4 +1,4 @@
-export interface IInput {
+export interface InputStrategy {
   draw(): void;
   setHeading(): void;
   setVisual(): void;

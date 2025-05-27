@@ -10,6 +10,93 @@ import {
 } from "./constants";
 import { Json, TNode, Result, TNodeAnalyzed, TStatusPopup } from "./types";
 
+//#region array based tree build and analyze
+export function isValidArrayInput(): Result<number[]> {
+  const inputString = (
+    document.querySelector(TREE_INPUT)! as HTMLTextAreaElement
+  ).value;
+
+  return validateArrayInput(inputString);
+}
+
+export function validateArrayInput(input: string): Result<number[]> {
+  if (!input) {
+    return {
+      data: null,
+      isSuccess: false,
+      message: ERROR_INPUT_HAS_NO_CONTENT,
+    };
+  }
+
+  const inputNumberArray = getInputNumberArray(input);
+
+  const isValidInputArray = inputNumberArray.every(
+    (item) => !Number.isNaN(item)
+  );
+  if (!isValidInputArray) {
+    return {
+      data: null,
+      isSuccess: false,
+      message: ERROR_INPUT_ARRAY_IS_INVALID,
+    };
+  }
+
+  return {
+    data: inputNumberArray,
+    isSuccess: true,
+    message: null,
+  };
+}
+
+export function getInputNumberArray(inputContent: string) {
+  return inputContent
+    .split(/[\s\r\n\t,]/)
+    .filter(Boolean)
+    .map((item) => Number(item.toString()));
+}
+
+export function buildTree(inputArray: number[]): Result<TNodeAnalyzed> {
+  function insertNode(rootNode: Json, newNode: Json) {
+    type TChildNode = Json | null;
+    let left: TChildNode;
+    let right: TChildNode;
+    while (true) {
+      left = <TChildNode>rootNode["left"];
+      right = <TChildNode>rootNode["right"];
+
+      if (newNode["value"]! <= rootNode["value"]!) {
+        if (!left) {
+          rootNode["left"] = newNode;
+          break;
+        }
+
+        rootNode = left;
+      } else {
+        if (!right) {
+          rootNode["right"] = newNode;
+          break;
+        }
+
+        rootNode = right;
+      }
+    }
+  }
+
+  const rootNode = {
+    left: null,
+    right: null,
+    value: inputArray[0],
+  };
+
+  for (let i = 1; i < inputArray.length; i++) {
+    insertNode(rootNode, { left: null, right: null, value: inputArray[i] });
+  }
+
+  return treeAnalyze(rootNode);
+}
+//#endregion array based tree build and analyze
+
+//#region object based tree build and analyze
 export function isValidJsonInput(): Result<Json> {
   const inputString = (
     document.querySelector(TREE_INPUT)! as HTMLTextAreaElement
@@ -62,8 +149,8 @@ export function validateJsonInput(input: string): Result<Json> {
   }
 }
 
-// object based tree build and analyze
 export function treeAnalyze(object: Json): Result<TNodeAnalyzed> {
+  let count = 0;
   let height = -Number.MIN_VALUE;
 
   const depthTracker = [];
@@ -81,6 +168,7 @@ export function treeAnalyze(object: Json): Result<TNodeAnalyzed> {
   depthTracker.push(current);
 
   while (depthTracker.length !== 0) {
+    count++;
     current = depthTracker.pop()!;
 
     if (typeof current.level === "number" && current.level > height) {
@@ -99,96 +187,27 @@ export function treeAnalyze(object: Json): Result<TNodeAnalyzed> {
   }
 
   return {
-    data: { root, height: height + 1, width: 2 ** (height + 1) - 1 },
+    data: {
+      root,
+      count,
+      height: height + 1,
+      width: 2 ** (height + 1) - 1,
+    },
     isSuccess: true,
     message: null,
   };
 }
+//#endregion object based tree build and analyze
 
-export function isValidArrayInput(): Result<number[]> {
-  const inputString = (
-    document.querySelector(TREE_INPUT)! as HTMLTextAreaElement
-  ).value;
-
-  return validateArrayInput(inputString);
+//#region local storage activities
+export function setLocalStorageItem(key: string, value: string) {
+  window.localStorage.setItem(key, value);
 }
 
-export function validateArrayInput(input: string): Result<number[]> {
-  if (!input) {
-    return {
-      data: null,
-      isSuccess: false,
-      message: ERROR_INPUT_HAS_NO_CONTENT,
-    };
-  }
-
-  const inputNumberArray = getInputNumberArray(input);
-
-  const isValidInputArray = inputNumberArray.every(
-    (item) => !Number.isNaN(item)
-  );
-  if (!isValidInputArray) {
-    return {
-      data: null,
-      isSuccess: false,
-      message: ERROR_INPUT_ARRAY_IS_INVALID,
-    };
-  }
-
-  return {
-    data: inputNumberArray,
-    isSuccess: true,
-    message: null,
-  };
+export function getLocalStorageItem(key: string) {
+  return window.localStorage.getItem(key);
 }
-
-export function getInputNumberArray(inputContent: string) {
-  return inputContent
-    .split(/[\s\r\n\t]/)
-    .filter(Boolean)
-    .map((item) => Number(item.toString()));
-}
-
-// array based tree build and analyze
-export function buildTree(inputArray: number[]): Result<TNodeAnalyzed> {
-  function insertNode(rootNode: Json, newNode: Json) {
-    type TChildNode = Json | null;
-    let left: TChildNode;
-    let right: TChildNode;
-    while (true) {
-      left = <TChildNode>rootNode["left"];
-      right = <TChildNode>rootNode["right"];
-
-      if (newNode["value"]! <= rootNode["value"]!) {
-        if (!left) {
-          rootNode["left"] = newNode;
-          break;
-        }
-        
-        rootNode = left;
-      } else {
-        if (!right) {
-          rootNode["right"] = newNode;
-          break;
-        }
-        
-        rootNode = right;
-      }
-    }
-  }
-
-  const rootNode = {
-    left: null,
-    right: null,
-    value: inputArray[0],
-  };
-
-  for (let i = 1; i < inputArray.length; i++) {
-    insertNode(rootNode, { left: null, right: null, value: inputArray[i] });
-  }
-
-  return treeAnalyze(rootNode);
-}
+//#endregion local storage activities
 
 export function popupStatusMessage({ color, message, duration }: TStatusPopup) {
   const container = document.querySelector(
@@ -208,12 +227,4 @@ export function popupStatusMessage({ color, message, duration }: TStatusPopup) {
       .animate(keyframes, keyframeDuration)
       .finished.then(() => statusContent.remove());
   }, duration);
-}
-
-export function setLocalStorageItem(key: string, value: string) {
-  window.localStorage.setItem(key, value);
-}
-
-export function getLocalStorageItem(key: string) {
-  return window.localStorage.getItem(key);
 }
