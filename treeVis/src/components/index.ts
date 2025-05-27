@@ -34,20 +34,20 @@ const sectionTreeVisualContainer = `
       <p id="treeVisualHeaderLabel">Visual</p>
       <div id="treeVisualHeaderOptions">
         <button
-          id="treeVisualHeaderSettings"
-          title="View Settings">
-          <img
-            id="treeVisualHeaderSettingsIcon"
-            src="./assets/images/cog.svg"
-            alt="settings" />
-        </button>
-        <button
           id="treeVisualHeaderHelp"
           title="View Help">
           <img
             id="treeVisualHeaderHelpIcon"
             src="./assets/images/help.svg"
             alt="help" />
+        </button>
+        <button
+          id="treeVisualHeaderSettings"
+          title="View Settings">
+          <img
+            id="treeVisualHeaderSettingsIcon"
+            src="./assets/images/cog.svg"
+            alt="settings" />
         </button>
       </div>
     </div>
