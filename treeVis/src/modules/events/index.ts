@@ -1,4 +1,5 @@
 import {
+  SETTINGS_NUMBER_INPUT,
   TREE_INPUT,
   TREE_INPUT_CONTAINER,
   TREE_INPUT_OPTION_FORMAT,
@@ -25,6 +26,7 @@ export class Events {
     events.#registerTreeInputFocusOutListener();
     events.#registerTreeInputOptionClickListener();
     events.#registerSettingsClickListener();
+    events.#registerSettingsInputListener();
     events.#registerDragListeners();
   }
 
@@ -77,6 +79,22 @@ export class Events {
         settingsModal.setAttribute("class", "hidden");
       },
       false
+    );
+  }
+
+  #registerSettingsInputListener() {
+    document.querySelectorAll(SETTINGS_NUMBER_INPUT)!.forEach((input) =>
+      input.addEventListener(
+        "keyup",
+        (event) => {
+          this.#handler.numericalSettingChanged(
+            event.target as HTMLInputElement,
+            1,
+            10
+          );
+        },
+        false
+      )
     );
   }
 

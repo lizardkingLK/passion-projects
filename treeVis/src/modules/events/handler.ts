@@ -26,6 +26,19 @@ export class Handler {
     this.#input.validate();
   }
 
+  numericalSettingChanged(target: HTMLInputElement, min: number, max: number) {
+    const value = Number.parseInt(target.value);
+    if (value < 1) {
+      target.value = min.toString();
+      return;
+    }
+
+    if (value > 10) {
+      target.value = max.toString();
+      return;
+    }
+  }
+
   elementDragged(
     previousLeft: number,
     currentLeft: number,

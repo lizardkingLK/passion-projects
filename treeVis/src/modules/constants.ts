@@ -38,6 +38,7 @@ export const TREE_SETTINGS_SAVE = "#treeSettingsSave";
 export const TREE_INPUT_OPTION_REDRAW = "#treeInputHeaderOptionRedraw";
 export const TREE_INPUT_OPTION_FORMAT = "#treeInputHeaderOptionFormat";
 export const TREE_SETTINGS_CANCEL = "#treeSettingsCancel";
+export const SETTINGS_NUMBER_INPUT = ".numberSettingsFieldContainer input";
 
 // color hex codes
 export const COLOR_INFO = "#000000";
