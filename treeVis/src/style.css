@@ -67,7 +67,7 @@
 
 #treeInputContainer {
 	position: absolute;
-	top: 50%;
+	top: 75%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	width: auto;
@@ -159,6 +159,7 @@
 }
 
 #treeVisual {
+	top: 25%;
 	height: auto;
 	display: block;
 	border: 1px var(--gray) solid;

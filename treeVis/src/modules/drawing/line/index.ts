@@ -9,6 +9,7 @@ export class LineShape {
 
   drawLine({ startX, startY, endX, endY, lineWidth }: LineNode) {
     this.#context.lineWidth = lineWidth;
+    this.#context.beginPath();
     this.#context.moveTo(startX, startY);
     this.#context.lineTo(endX, endY);
     this.#context.stroke();
