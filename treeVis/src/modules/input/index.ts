@@ -1,6 +1,7 @@
 import { Canvas } from "../canvas";
 import { SETTING_USE_ARRAY_INPUT, SETTING_USE_AUTO_SAVE } from "../constants";
 import { Settings } from "../settings";
+import { Json } from "../types";
 import { InputStrategy } from "./strategy";
 import { ArrayInput } from "./strategy/arrayInput";
 import { JsonInput } from "./strategy/jsonInput";
@@ -8,7 +9,7 @@ import { JsonInput } from "./strategy/jsonInput";
 export class Input {
   static #inputItem: Input;
 
-  #input: InputStrategy;
+  #input: InputStrategy<Json | number[]>;
   #jsonInput: JsonInput;
   #arrayInput: ArrayInput;
   #canvas: Canvas;

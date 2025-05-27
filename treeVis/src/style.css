@@ -96,7 +96,6 @@
 #treeInputHeaderOptions button {
 	border: none;
 	cursor: pointer;
-	padding: 10px;
 }
 
 #treeInputHeaderOptionRedrawIcon,
@@ -150,7 +149,6 @@
 #treeVisualHeaderOptions button {
 	border: none;
 	cursor: pointer;
-	padding: 10px;
 }
 
 #treeVisualHeaderSettingsIcon,

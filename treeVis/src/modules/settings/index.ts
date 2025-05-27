@@ -1,8 +1,8 @@
 import { KEY_TREE_VISUAL_SETTINGS, TREE_SETTINGS_BODY } from "../constants";
 import settingsJson from "./settings.json";
 import { Json } from "../types";
-import { getLocalStorageItem, setLocalStorageItem } from "../utility";
 import { Input } from "../input";
+import { getLocalStorageItem, setLocalStorageItem } from "../storing";
 
 export class Settings {
   static settings: Json | null = null;
