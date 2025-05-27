@@ -3,24 +3,42 @@
         "name": "useGrid",
         "id": "settingCheckUseGrid",
         "label": "Use Grid Drawing",
+        "description": "Enabling this draws vertical and horizontal lines surrounding each node.\nOutput also contains them.",
         "type": "checkbox"
     },
     {
         "name": "useArrayInput",
         "id": "settingCheckUseArrayInput",
         "label": "Use Array Input",
+        "description": "Enable this to use array input instead of json input.\nLike this below,\n5, 0, 10...",
         "type": "checkbox"
     },
     {
         "name": "useAutoSave",
         "id": "settingCheckUseAutoSave",
         "label": "Use Auto Save",
+        "description": "Enable this to auto save input and retrieve it later.\nThis saves it in the localStorage.",
         "type": "checkbox"
     },
     {
         "name": "useAutoFormat",
         "id": "settingCheckUseAutoFormat",
         "label": "Use Auto Format",
+        "description": "Enabling this automatically formats the input given.\nWhether it is json input or array input.",
         "type": "checkbox"
+    },
+    {
+        "name": "lineWidth",
+        "id": "settingNumberLineWidth",
+        "label": "Set Line Width",
+        "description": "Set the thickness of the lines and edges.\nChoose from 1 (default) to 10 (max) units.\nHigher is better for large inputs.",
+        "type": "number"
+    },
+    {
+        "name": "nodeSize",
+        "id": "settingNumberNodeSize",
+        "label": "Set Node Size",
+        "description": "Set the size of the cicles or nodes.\nChoose from 1 (default) to 10 (max) units.\nHigher is better for large inputs.",
+        "type": "number"
     }
 ]

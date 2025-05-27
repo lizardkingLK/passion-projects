@@ -28,16 +28,23 @@
 .settingsField {
 	margin: 0 0 20px 0;
 	display: flex;
-	align-items: center;
+	align-items: flex-end;
+	justify-content: space-between;
 	gap: 10px;
 }
 
-.settingsField input {
+.settingsField .settingsFieldDescription p {
+	font-weight: bold;
+	margin: 0 0 10px 0;
+}
+
+.settingsField input[type="checkbox"] {
 	width: 1rem;
 	height: 1rem;
 }
 
-.settingsFieldLabel {
+/* settings control styles - type of checkbox */
+.checkboxSettingsFieldContainer {
 	position: relative;
 	width: 2vh;
 	height: 2vh;
@@ -45,13 +52,13 @@
 	cursor: pointer;
 }
 
-.settingsFieldLabel input[type=checkbox] {
+.checkboxSettingsFieldContainer input {
 	opacity: 0;
 	width: 0;
 	height: 0;
 }
 
-.settingsFieldLabel .settingsCheckThumb {
+.checkboxSettingsFieldContainer span {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -61,8 +68,38 @@
 	background-color: transparent;
 }
 
-.settingsFieldLabel input[type=checkbox]:checked+.settingsCheckThumb {
+.checkboxSettingsFieldContainer input:checked+span {
 	background-color: black;
+}
+
+/* settings control styles - type of number */
+.numberSettingsFieldContainer input {
+	font-size: 20px;
+	font-family: 'Roboto Mono';
+	font-weight: bold;
+	text-align: right;
+	-moz-appearance: textfield;
+	appearance: none;
+	outline: none;
+	border: none;
+	border-bottom: 1px solid black;
+	width: 40px;
+}
+
+.numberSettingsFieldContainer input::-webkit-outer-spin-button,
+.numberSettingsFieldContainer input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.numberSettingsFieldContainer span {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 2vh;
+	height: 2vh;
+	background-color: transparent;
 }
 
 #treeInputContainer {

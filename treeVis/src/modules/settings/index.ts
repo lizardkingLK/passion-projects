@@ -23,14 +23,20 @@ export class Settings {
 
   static saveSettings() {
     const settingsFields = document.querySelectorAll(
-      ".settingsField label input[type=checkbox]"
+      ".settingsField label input"
     );
     const settingsJson: Json = {};
     let element;
+    let fieldName;
     for (const settingField in settingsFields) {
       if (Object.prototype.hasOwnProperty.call(settingsFields, settingField)) {
         element = settingsFields[settingField] as HTMLInputElement;
-        settingsJson[element.getAttribute("name")!] = element.checked;
+        fieldName = element.getAttribute("name")!;
+        if (element.type === "checkbox") {
+          settingsJson[fieldName] = element.checked;
+        } else if (element.type === "number") {
+          settingsJson[fieldName] = element.value;
+        }
       }
     }
 
@@ -62,34 +68,75 @@ export class Settings {
       TREE_SETTINGS_BODY
     )! as HTMLDivElement;
     let settingField: HTMLDivElement;
-    let settingsFieldControl: HTMLLabelElement;
-    let settingsFieldControlInput: HTMLInputElement;
-    let settingsFieldControlSpan: HTMLSpanElement;
-    let settingsFieldDescription: HTMLParagraphElement;
-    settingsJson.map(({ id, name, label, type }) => {
+    let settingsFieldInputContainer: HTMLLabelElement;
+    let settingsFieldDescriptionContainer: HTMLDivElement;
+    settingsJson.map(({ id, name, label, description, type }) => {
       settingField = document.createElement("div");
       settingField.setAttribute("class", "settingsField");
 
-      settingsFieldControl = document.createElement("label");
-      settingsFieldControl.setAttribute("class", "settingsFieldLabel");
+      settingsFieldInputContainer = Settings.#getSettingsControl({
+        id,
+        name,
+        type,
+      });
 
-      settingsFieldControlInput = document.createElement("input");
-      settingsFieldControlInput.setAttribute("name", name);
-      settingsFieldControlInput.setAttribute("id", id);
-      settingsFieldControlInput.setAttribute("type", type);
-      settingsFieldControl.appendChild(settingsFieldControlInput);
+      settingsFieldDescriptionContainer = Settings.#getSettingsDescription(
+        label,
+        description
+      );
 
-      settingsFieldControlSpan = document.createElement("span");
-      settingsFieldControlSpan.setAttribute("class", "settingsCheckThumb");
-      settingsFieldControl.appendChild(settingsFieldControlSpan);
-      settingField.appendChild(settingsFieldControl);
-
-      settingsFieldDescription = document.createElement("p");
-      settingsFieldDescription.innerText = label;
-      settingField.appendChild(settingsFieldDescription);
-
+      settingField.appendChild(settingsFieldDescriptionContainer);
+      settingField.appendChild(settingsFieldInputContainer);
       settingDialog.appendChild(settingField);
     });
+  }
+
+  static #getSettingsDescription(
+    label: string,
+    description: string
+  ): HTMLDivElement {
+    const settingsFieldDescriptionContainer = document.createElement("div");
+    settingsFieldDescriptionContainer.setAttribute(
+      "class",
+      "settingsFieldDescription"
+    );
+
+    const settingsFieldHeader = document.createElement("p");
+    settingsFieldHeader.innerText = label;
+    settingsFieldDescriptionContainer.appendChild(settingsFieldHeader);
+
+    const settingsFieldDescription = document.createElement("h5");
+    settingsFieldDescription.innerText = description;
+    settingsFieldDescriptionContainer.appendChild(settingsFieldDescription);
+
+    return settingsFieldDescriptionContainer;
+  }
+
+  static #getSettingsControl({
+    id,
+    name,
+    type,
+  }: {
+    id: string;
+    name: string;
+    type: string;
+  }): HTMLLabelElement {
+    const settingsFieldContainer = document.createElement("label");
+    settingsFieldContainer.setAttribute(
+      "class",
+      `${type}SettingsFieldContainer`
+    );
+
+    const settingsFieldControlInput = document.createElement("input");
+    settingsFieldControlInput.setAttribute("name", name);
+    settingsFieldControlInput.setAttribute("id", id);
+    settingsFieldControlInput.setAttribute("type", type);
+    settingsFieldContainer.appendChild(settingsFieldControlInput);
+
+    const settingsFieldControlSpan = document.createElement("span");
+    settingsFieldContainer.appendChild(settingsFieldControlSpan);
+
+    return settingsFieldContainer;
   }
 
   static #setSettingValues() {
@@ -98,7 +145,6 @@ export class Settings {
       return;
     }
 
-    let value: boolean;
     let element: HTMLInputElement | null;
     for (const item in settings) {
       if (!Object.prototype.hasOwnProperty.call(settings, item)) {
@@ -106,9 +152,14 @@ export class Settings {
       }
 
       element = document.querySelector(`input[name=${item}]`);
-      value = settings[item] as boolean;
-      if (element) {
-        element.checked = value;
+      if (!element) {
+        continue;
+      }
+
+      if (element.type === "checkbox") {
+        element.checked = settings[item] as boolean;
+      } else if (element.type === "number") {
+        element.value = settings[item] as string;
       }
     }
   }

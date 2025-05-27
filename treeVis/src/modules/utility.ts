@@ -7,7 +7,7 @@ export function popupStatusMessage({ color, message, duration }: TStatusPopup) {
   )! as HTMLElement;
 
   const statusContent = document.createElement("p");
-  statusContent.setAttribute("style", `color: ${color}`);
+  statusContent.setAttribute("style", `color: ${color}; opacity: 1;`);
   statusContent.innerHTML = message;
   container.appendChild(statusContent);
 
@@ -24,8 +24,11 @@ function animatePopusStatusMessage(
   }
 
   statusContent.style.opacity = opacity.toString();
-
-  requestAnimationFrame(() =>
-    animatePopusStatusMessage(statusContent, opacity - 0.1)
+  
+  requestAnimationFrame(() => 
+    animatePopusStatusMessage(
+      statusContent,
+      Number((opacity - 0.1).toPrecision(1))
+    )
   );
 }
