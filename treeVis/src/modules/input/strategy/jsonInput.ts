@@ -1,29 +1,29 @@
-import { Canvas } from "../canvas";
+import { InputStrategy } from ".";
+import { Canvas } from "../../canvas";
 import {
-  COLOR_ERROR,
-  COLOR_INFO,
-  INFO_FORMATTED_INPUT,
   KEY_TREE_JSON_INPUT_CONTENT,
+  TREE_INPUT,
+  COLOR_ERROR,
+  TIME_ONE_SECOND,
   SETTING_USE_AUTO_FORMAT,
   SETTING_USE_AUTO_SAVE,
-  TIME_FOUR_SECONDS,
-  TIME_ONE_SECOND,
-  TREE_INPUT,
+  COLOR_INFO,
+  INFO_FORMATTED_INPUT,
   TREE_INPUT_HEADER_TITLE,
-} from "../constants";
-import { Drawing } from "../drawing";
-import { Settings } from "../settings";
+  TIME_FOUR_SECONDS,
+} from "../../constants";
+import { Drawing } from "../../drawing";
+import { Settings } from "../../settings";
 import {
+  getLocalStorageItem,
+  isValidJsonInput,
+  popupStatusMessage,
   validateJsonInput,
   treeAnalyze,
-  popupStatusMessage,
-  isValidJsonInput,
-  getLocalStorageItem,
   setLocalStorageItem,
-} from "../utility";
-import { IInput } from "./inputStrategy";
+} from "../../utility";
 
-export class JsonInput implements IInput {
+export class JsonInput implements InputStrategy {
   #canvas: Canvas;
 
   constructor(canvas: Canvas) {
@@ -104,9 +104,7 @@ export class JsonInput implements IInput {
 
     const inputContent = this.read();
 
-    this.#canvas.clearGrid();
-    this.#canvas.clearNodes();
-    this.#canvas.setSize(0, 0);
+    this.setVisual();
 
     const {
       isSuccess: isValidObject,

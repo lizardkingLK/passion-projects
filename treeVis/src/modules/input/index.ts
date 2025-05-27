@@ -1,14 +1,14 @@
 import { Canvas } from "../canvas";
 import { SETTING_USE_ARRAY_INPUT, SETTING_USE_AUTO_SAVE } from "../constants";
 import { Settings } from "../settings";
-import { ArrayInput } from "./arrayInput";
-import { IInput } from "./inputStrategy";
-import { JsonInput } from "./jsonInput";
+import { InputStrategy } from "./strategy";
+import { ArrayInput } from "./strategy/arrayInput";
+import { JsonInput } from "./strategy/jsonInput";
 
 export class Input {
   static #inputItem: Input;
 
-  #input: IInput;
+  #input: InputStrategy;
   #jsonInput: JsonInput;
   #arrayInput: ArrayInput;
   #canvas: Canvas;
