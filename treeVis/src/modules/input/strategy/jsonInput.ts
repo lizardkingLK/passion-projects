@@ -1,4 +1,5 @@
 import { InputStrategy } from ".";
+import { jsonAnalyze } from "../../analyzing";
 import { Canvas } from "../../canvas";
 import {
   KEY_TREE_JSON_INPUT_CONTENT,
@@ -11,19 +12,18 @@ import {
   INFO_FORMATTED_INPUT,
   TREE_INPUT_HEADER_TITLE,
   TIME_FOUR_SECONDS,
+  ERROR_INPUT_HAS_NO_CONTENT,
+  ERROR_INPUT_IS_AN_ARRAY,
+  ERROR_INPUT_KEYS_ARE_INVALID,
+  ERROR_INPUT_COULD_NOT_BE_PARSED,
 } from "../../constants";
 import { Drawing } from "../../drawing";
 import { Settings } from "../../settings";
-import {
-  getLocalStorageItem,
-  isValidJsonInput,
-  popupStatusMessage,
-  validateJsonInput,
-  treeAnalyze,
-  setLocalStorageItem,
-} from "../../utility";
+import { getLocalStorageItem, setLocalStorageItem } from "../../storing";
+import { Json, Result } from "../../types";
+import { popupStatusMessage } from "../../utility";
 
-export class JsonInput implements InputStrategy {
+export class JsonInput implements InputStrategy<Json> {
   #canvas: Canvas;
 
   constructor(canvas: Canvas) {
@@ -39,7 +39,7 @@ export class JsonInput implements InputStrategy {
   }
 
   validate(): void {
-    const { isSuccess, message } = isValidJsonInput();
+    const { isSuccess, message } = this.isValidInput();
     if (!isSuccess) {
       popupStatusMessage({
         color: COLOR_ERROR,
@@ -57,7 +57,7 @@ export class JsonInput implements InputStrategy {
 
   format(isSuccess?: boolean, message?: string | null): void {
     if (isSuccess === undefined && message === undefined) {
-      const isValidJsonResult = isValidJsonInput();
+      const isValidJsonResult = this.isValidInput();
       isSuccess = isValidJsonResult.isSuccess;
       message = isValidJsonResult.message;
     }
@@ -99,6 +99,62 @@ export class JsonInput implements InputStrategy {
     this.#canvas.setSize(0, 0);
   }
 
+  isValidInput(input?: string): Result<Json> {
+    input =
+      input ??
+      (document.querySelector(TREE_INPUT)! as HTMLTextAreaElement).value;
+
+    if (!input) {
+      return {
+        data: null,
+        isSuccess: false,
+        message: ERROR_INPUT_HAS_NO_CONTENT,
+      };
+    }
+
+    const staticKeys = ["left", "right", "value", ""];
+    let inputKeys: string[] = [];
+
+    try {
+      const parsed = JSON.parse(input, (key, value) => {
+        inputKeys.push(key);
+
+        return value;
+      });
+
+      if (Array.isArray(parsed)) {
+        return {
+          data: null,
+          isSuccess: false,
+          message: ERROR_INPUT_IS_AN_ARRAY,
+        };
+      }
+
+      if (
+        !inputKeys.every((key) => staticKeys.includes(key)) ||
+        !staticKeys.every((key) => inputKeys.includes(key))
+      ) {
+        return {
+          data: null,
+          isSuccess: false,
+          message: ERROR_INPUT_KEYS_ARE_INVALID,
+        };
+      }
+
+      return {
+        data: parsed,
+        isSuccess: true,
+        message: null,
+      };
+    } catch (error) {
+      return {
+        data: null,
+        isSuccess: false,
+        message: ERROR_INPUT_COULD_NOT_BE_PARSED,
+      };
+    }
+  }
+
   draw(): void {
     const now = Date.now();
 
@@ -110,7 +166,7 @@ export class JsonInput implements InputStrategy {
       isSuccess: isValidObject,
       data: validData,
       message: validationErrorMessage,
-    } = validateJsonInput(inputContent);
+    } = this.isValidInput(inputContent);
     if (!isValidObject) {
       console.error(validationErrorMessage);
       return;
@@ -120,20 +176,20 @@ export class JsonInput implements InputStrategy {
       isSuccess: isValidAnalyze,
       data: analizedData,
       message: analizeErrorMessage,
-    } = treeAnalyze(validData!);
+    } = jsonAnalyze(validData!);
     if (!isValidAnalyze) {
       console.error(analizeErrorMessage);
       return;
     }
 
-    const { width, height, root } = analizedData!;
+    const { nodesList, nodesMap, width, height } = analizedData!;
 
     this.#canvas.setSize(
       width * Drawing.screenUnit,
       height * Drawing.screenUnit
     );
     this.#canvas.drawGrid(height, width);
-    this.#canvas.drawNodes(width, root);
+    this.#canvas.drawNodes(nodesList, nodesMap);
 
     popupStatusMessage({
       color: COLOR_INFO,

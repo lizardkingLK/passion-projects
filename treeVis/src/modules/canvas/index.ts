@@ -1,6 +1,5 @@
 import { CircleShape } from "../drawing/circle";
 import {
-  TBoxConfiguration,
   TDrawCircleNode,
   TDrawEdge,
   TEdge,
@@ -60,65 +59,46 @@ export class Canvas {
   }
 
   // nodes
-  drawNodes(width: number, rootNode: TNode) {
+  drawNodes(nodesList: TNode[], nodesMap: Map<number, TNode>) {
     const radius = Drawing.screenUnit / 2 - LINE_WIDTH;
-    const canvasWidth = width * Drawing.screenUnit;
-    const boxConfig: TBoxConfiguration = {
-      boxStartX: 0,
-      boxStartY: 0,
-      boxEndX: canvasWidth,
-    };
-
-    this.#rootNode = rootNode;
-
-    this.#drawNode(radius, rootNode, boxConfig);
-  }
-
-  #drawNode(
-    radius: number,
-    rootNode: TNode,
-    { boxEndX, boxStartX, boxStartY }: TBoxConfiguration
-  ) {
-    const { value, left, right, parentX, parentY } = rootNode;
-
-    const circleConfig: TDrawCircleNode = {
-      cordinateX: boxStartX + (boxEndX - boxStartX) / 2,
-      cordinateY: boxStartY + radius + LINE_WIDTH,
-      radius,
-    };
-
-    const edgeConfig = {
-      radius,
-      startX: parentX,
-      startY: parentY,
-      endX: circleConfig.cordinateX,
-      endY: circleConfig.cordinateY,
-    };
-
-    this.drawCircle(circleConfig, rootNode);
-    this.drawValue(circleConfig, value);
-    this.drawEdge(edgeConfig, rootNode);
-
-    if (left) {
-      const leftBoxConfig: TBoxConfiguration = {
-        boxStartX,
-        boxEndX: circleConfig.cordinateX - radius - LINE_WIDTH,
-        boxStartY: circleConfig.cordinateY + radius + LINE_WIDTH,
+    let cordinateX;
+    let cordinateY;
+    let node;
+    let i;
+    let l = nodesList.length;
+    let circleConfig: TDrawCircleNode;
+    for (i = 0; i < l; i++) {
+      node = nodesList[i];
+      cordinateX = i * Drawing.screenUnit + radius + LINE_WIDTH;
+      cordinateY = node.cordinateY!;
+      circleConfig = {
+        cordinateX,
+        cordinateY,
+        radius,
       };
-      left.parentX = circleConfig.cordinateX;
-      left.parentY = circleConfig.cordinateY;
-      this.#drawNode(radius, left, leftBoxConfig);
+      this.drawCircle(circleConfig, node);
+      this.drawValue(circleConfig, node.value);
+      nodesMap.set(node.index!, node);
     }
 
-    if (right) {
-      const rightBoxConfig: TBoxConfiguration = {
-        boxStartX: circleConfig.cordinateX + radius + LINE_WIDTH,
-        boxEndX,
-        boxStartY: circleConfig.cordinateY + radius + LINE_WIDTH,
+    let edgeConfig: TDrawEdge;
+    let parentNode: TNode;
+    for (i = 0; i < l; i++) {
+      node = nodesList[i];
+      if (!node.parentIndex) {
+        continue;
+      }
+
+      parentNode = nodesMap.get(node.parentIndex)!;
+      edgeConfig = {
+        radius,
+        startX: parentNode.cordinateX,
+        startY: parentNode.cordinateY,
+        endX: node.cordinateX,
+        endY: node.cordinateY,
       };
-      right.parentX = circleConfig.cordinateX;
-      right.parentY = circleConfig.cordinateY;
-      this.#drawNode(radius, right, rightBoxConfig);
+
+      this.drawEdge(edgeConfig, node);
     }
   }
 

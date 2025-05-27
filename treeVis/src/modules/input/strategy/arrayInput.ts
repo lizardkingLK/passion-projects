@@ -1,4 +1,5 @@
 import { InputStrategy } from ".";
+import { arrayAnalyze } from "../../analyzing";
 import { Canvas } from "../../canvas";
 import {
   KEY_TREE_ARRAY_INPUT_CONTENT,
@@ -6,6 +7,8 @@ import {
   COLOR_ERROR,
   TIME_ONE_SECOND,
   SETTING_USE_AUTO_FORMAT,
+  ERROR_INPUT_HAS_NO_CONTENT,
+  ERROR_INPUT_ARRAY_IS_INVALID,
   SETTING_USE_AUTO_SAVE,
   COLOR_INFO,
   INFO_FORMATTED_INPUT,
@@ -14,17 +17,11 @@ import {
 } from "../../constants";
 import { Drawing } from "../../drawing";
 import { Settings } from "../../settings";
-import {
-  getLocalStorageItem,
-  isValidArrayInput,
-  popupStatusMessage,
-  getInputNumberArray,
-  validateArrayInput,
-  buildTree,
-  setLocalStorageItem,
-} from "../../utility";
+import { getLocalStorageItem, setLocalStorageItem } from "../../storing";
+import { Result } from "../../types";
+import { popupStatusMessage } from "../../utility";
 
-export class ArrayInput implements InputStrategy {
+export class ArrayInput implements InputStrategy<number[]> {
   #canvas: Canvas;
 
   constructor(canvas: Canvas) {
@@ -41,7 +38,7 @@ export class ArrayInput implements InputStrategy {
   }
 
   validate(): void {
-    const { isSuccess, message } = isValidArrayInput();
+    const { isSuccess, message } = this.isValidInput();
     if (!isSuccess) {
       popupStatusMessage({
         color: COLOR_ERROR,
@@ -59,7 +56,7 @@ export class ArrayInput implements InputStrategy {
 
   format(isSuccess?: boolean, message?: string | null): void {
     if (isSuccess === undefined && message === undefined) {
-      const isValidArrayResult = isValidArrayInput();
+      const isValidArrayResult = this.isValidInput();
       isSuccess = isValidArrayResult.isSuccess;
       message = isValidArrayResult.message;
     }
@@ -78,7 +75,11 @@ export class ArrayInput implements InputStrategy {
       TREE_INPUT
     )! as HTMLTextAreaElement;
 
-    treeInput.value = getInputNumberArray(treeInput.value).join(" ");
+    treeInput.value = treeInput.value
+      .split(/[\s\r\n\t,]/)
+      .filter(Boolean)
+      .map((item) => Number(item.toString()))
+      .join(" ");
 
     if (Settings.get<boolean>(SETTING_USE_AUTO_SAVE)) {
       this.save(treeInput.value);
@@ -101,6 +102,42 @@ export class ArrayInput implements InputStrategy {
     this.#canvas.setSize(0, 0);
   }
 
+  isValidInput(input?: string): Result<number[]> {
+    input =
+      input ??
+      (document.querySelector(TREE_INPUT)! as HTMLTextAreaElement).value;
+
+    if (!input) {
+      return {
+        data: null,
+        isSuccess: false,
+        message: ERROR_INPUT_HAS_NO_CONTENT,
+      };
+    }
+
+    const inputNumberArray = input
+      .split(/[\s\r\n\t,]/)
+      .filter(Boolean)
+      .map((item) => Number(item.toString()));
+
+    const isValidInputArray = inputNumberArray.every(
+      (item) => !Number.isNaN(item)
+    );
+    if (!isValidInputArray) {
+      return {
+        data: null,
+        isSuccess: false,
+        message: ERROR_INPUT_ARRAY_IS_INVALID,
+      };
+    }
+
+    return {
+      data: inputNumberArray,
+      isSuccess: true,
+      message: null,
+    };
+  }
+
   draw(): void {
     const now = Date.now();
 
@@ -112,7 +149,7 @@ export class ArrayInput implements InputStrategy {
       isSuccess: isValidObject,
       data: validData,
       message: validationErrorMessage,
-    } = validateArrayInput(inputContent);
+    } = this.isValidInput(inputContent);
     if (!isValidObject) {
       console.error(validationErrorMessage);
       return;
@@ -122,20 +159,20 @@ export class ArrayInput implements InputStrategy {
       isSuccess: isValidAnalyze,
       data: analizedData,
       message: analizeErrorMessage,
-    } = buildTree(validData!);
+    } = arrayAnalyze(validData!);
     if (!isValidAnalyze) {
       console.error(analizeErrorMessage);
       return;
     }
 
-    const { width, height, root } = analizedData!;
+    const { nodesList, nodesMap, width, height } = analizedData!;
 
     this.#canvas.setSize(
       width * Drawing.screenUnit,
       height * Drawing.screenUnit
     );
     this.#canvas.drawGrid(height, width);
-    this.#canvas.drawNodes(width, root);
+    this.#canvas.drawNodes(nodesList, nodesMap);
 
     popupStatusMessage({
       color: COLOR_INFO,

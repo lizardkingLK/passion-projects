@@ -13,7 +13,9 @@ export type TNode = {
   left: TNode | null;
   right: TNode | null;
   edge: TEdge | null;
+  index?: number;
   level?: number;
+  parentIndex?: number;
   parentX?: number;
   parentY?: number;
   cordinateX?: number;
@@ -24,8 +26,8 @@ export type TNode = {
 export type TNodeAnalyzed = {
   height: number;
   width: number;
-  count: number;
-  root: TNode;
+  nodesList: TNode[];
+  nodesMap: Map<number, TNode>;
 };
 
 export interface CircleNode extends TNode {
