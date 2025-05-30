@@ -1,4 +1,4 @@
-import { LINE_WIDTH } from "../../constants";
+import { Drawing } from "..";
 import { TDrawCircleNode } from "../../types";
 
 export class CircleShape {
@@ -9,7 +9,7 @@ export class CircleShape {
   }
 
   drawCircle({ cordinateX, cordinateY, radius }: TDrawCircleNode) {
-    this.#context.lineWidth = LINE_WIDTH;
+    this.#context.lineWidth = Drawing.getLineWidth();
     this.#context.beginPath();
 
     const startAngle = Math.atan(cordinateY / cordinateX);
@@ -26,11 +26,13 @@ export class CircleShape {
   }
 
   clearCircle({ cordinateX, cordinateY, radius }: TDrawCircleNode) {
+    const lineWidth = Drawing.getLineWidth();
+    
     this.#context.clearRect(
-      cordinateX - radius - LINE_WIDTH,
-      cordinateY - radius - LINE_WIDTH,
-      radius * 2 + 2 * LINE_WIDTH,
-      radius * 2 + 2 * LINE_WIDTH
+      cordinateX - radius - lineWidth,
+      cordinateY - radius - lineWidth,
+      radius * 2 + 2 * lineWidth,
+      radius * 2 + 2 * lineWidth
     );
   }
 }

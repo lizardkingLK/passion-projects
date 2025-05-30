@@ -8,6 +8,7 @@ export const CANVAS_WIDTH = window.screen.width;
 export const CANVAS_HEIGHT = window.screen.height;
 export const SCREEN_UNIT = window.screen.availHeight / 20;
 export const USE_GRID = false;
+export const USE_IMMEDIATE_DRAW = false;
 
 // canvas context configurations
 export const LINE_WIDTH = 2;
@@ -73,3 +74,6 @@ export const SETTING_USE_GRID = "useGrid";
 export const SETTING_USE_ARRAY_INPUT = "useArrayInput";
 export const SETTING_USE_AUTO_FORMAT = "useAutoFormat";
 export const SETTING_USE_AUTO_SAVE = "useAutoSave";
+export const SETTING_USE_IMMEDIATE_DRAW = "useImmediateDraw";
+export const SETTING_LINE_WIDTH = "lineWidth";
+export const SETTING_NODE_SIZE = "nodeSize";

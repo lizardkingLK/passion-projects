@@ -100,6 +100,7 @@ export class ArrayInput implements InputStrategy<number[]> {
     this.#canvas.clearGrid();
     this.#canvas.clearNodes();
     this.#canvas.setSize(0, 0);
+    this.#canvas.setStyle("");
   }
 
   isValidInput(input?: string): Result<number[]> {
@@ -166,11 +167,9 @@ export class ArrayInput implements InputStrategy<number[]> {
     }
 
     const { nodesList, nodesMap, width, height } = analizedData!;
+    const screenUnit = Drawing.getScreenUnit();
 
-    this.#canvas.setSize(
-      width * Drawing.screenUnit,
-      height * Drawing.screenUnit
-    );
+    this.#canvas.setSize(width * screenUnit, height * screenUnit);
     this.#canvas.drawGrid(height, width);
     this.#canvas.drawNodes(nodesList, nodesMap);
 

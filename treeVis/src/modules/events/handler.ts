@@ -12,6 +12,7 @@ import {
 import { Settings } from "../settings";
 import { Input } from "../input";
 import { popupStatusMessage, clearPopupStatusMessage } from "../notifying";
+import { Drawing } from "../drawing";
 
 export class Handler {
   static #inputChangeWait: number;
@@ -27,6 +28,11 @@ export class Handler {
 
   inputChanged(event: CustomEvent) {
     if (event.detail?.isSynthetic) {
+      this.#input.draw();
+      return;
+    }
+
+    if (Drawing.useImmediateDraw()) {
       this.#input.draw();
       return;
     }

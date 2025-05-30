@@ -1,7 +1,6 @@
 import { CircleShape } from "../drawing/circle";
 import { TDrawCircleNode, TDrawEdge, TEdge, TNode } from "../types";
 import {
-  LINE_WIDTH,
   SMOOTHING_ENABLED,
   SMOOTHING_QUALITY,
   STROKE_STYLE,
@@ -42,7 +41,7 @@ export class Canvas {
   }
 
   #initializeContext() {
-    this.#context.lineWidth = LINE_WIDTH;
+    this.#context.lineWidth = Drawing.getLineWidth();
     this.#context.strokeStyle = STROKE_STYLE;
     this.#context.imageSmoothingEnabled = SMOOTHING_ENABLED;
     this.#context.imageSmoothingQuality = SMOOTHING_QUALITY;
@@ -53,9 +52,15 @@ export class Canvas {
     this.#canvas.height = height;
   }
 
+  setStyle(styleString: string) {
+    this.#canvas.style = styleString;
+  }
+
   // nodes
   drawNodes(nodesList: TNode[], nodesMap: Map<number, TNode>) {
-    const radius = Drawing.screenUnit / 2 - LINE_WIDTH;
+    const lineWidth = Drawing.getLineWidth();
+    const screenUnit = Drawing.getScreenUnit();
+    const radius = screenUnit / 2 - lineWidth;
     let cordinateX;
     let cordinateY;
     let node;
@@ -64,7 +69,7 @@ export class Canvas {
     let circleConfig: TDrawCircleNode;
     for (i = 0; i < l; i++) {
       node = nodesList[i];
-      cordinateX = i * Drawing.screenUnit + radius + LINE_WIDTH;
+      cordinateX = i * screenUnit + radius + lineWidth;
       cordinateY = node.cordinateY!;
       circleConfig = {
         cordinateX,
@@ -91,6 +96,7 @@ export class Canvas {
         startY: parentNode.cordinateY,
         endX: node.cordinateX,
         endY: node.cordinateY,
+        lineWidth,
       };
 
       this.drawEdge(edgeConfig, node);
@@ -135,11 +141,13 @@ export class Canvas {
   // grids
   drawGrid(treeHeight: number, treeWidth: number) {
     if (Drawing.useGrid()) {
+      const screenUnit = Drawing.getScreenUnit();
+
       this.#grid.drawGrid(
         treeHeight,
         treeWidth,
-        treeHeight * Drawing.screenUnit,
-        treeWidth * Drawing.screenUnit
+        treeHeight * screenUnit,
+        treeWidth * screenUnit
       );
     }
   }
@@ -151,7 +159,10 @@ export class Canvas {
   }
 
   // edges
-  drawEdge({ startX, startY, endX, endY, radius }: TDrawEdge, rootNode: TNode) {
+  drawEdge(
+    { startX, startY, endX, endY, radius, lineWidth }: TDrawEdge,
+    rootNode: TNode
+  ) {
     if (!startX || !startY || !endX || !endY || !radius) {
       return;
     }
@@ -182,7 +193,7 @@ export class Canvas {
       clearStartY: cordinateY1,
       clearHeight: cordinateY2 - cordinateY1,
       clearWidth: cordinateX2 - cordinateX1,
-      lineWidth: LINE_WIDTH,
+      lineWidth: lineWidth!,
       radius,
     };
 

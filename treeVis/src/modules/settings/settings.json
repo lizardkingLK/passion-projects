@@ -28,6 +28,13 @@
         "type": "checkbox"
     },
     {
+        "name": "useImmediateDraw",
+        "id": "settingCheckUseImmediateDraw",
+        "label": "Use Immediate Draw",
+        "description": "Enabling this draws the tree immediately.\nStops waiting for the user to finish input.",
+        "type": "checkbox"
+    },
+    {
         "name": "lineWidth",
         "id": "settingNumberLineWidth",
         "label": "Set Line Width",
@@ -39,13 +46,6 @@
         "id": "settingNumberNodeSize",
         "label": "Set Node Size",
         "description": "Set the size of the cicles or nodes.\nChoose from 1 (default) to 10 (max) units.\nHigher is better for large inputs.",
-        "type": "number"
-    },
-    {
-        "name": "fontSize",
-        "id": "settingNumberfontSize",
-        "label": "Set Font Size",
-        "description": "Set the size of the value of nodes.\nChoose from 1 (default) to 10 (max) units.\nHigher is better for large inputs.",
         "type": "number"
     }
 ]

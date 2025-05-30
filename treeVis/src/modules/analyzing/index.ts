@@ -1,4 +1,3 @@
-import { LINE_WIDTH } from "../constants";
 import { Drawing } from "../drawing";
 import {
   Json,
@@ -109,8 +108,9 @@ export function jsonAnalyze(object: Json): Result<TNodeAnalyzed> {
 }
 
 function treeAnalyze(root: TNode, nodes: TNode[], width: number) {
-  const radius = Drawing.screenUnit / 2 - LINE_WIDTH;
-  const fullWidth = width * Drawing.screenUnit;
+  const screenUnit = Drawing.getScreenUnit();
+  const radius = screenUnit / 2 - Drawing.getLineWidth();
+  const fullWidth = width * screenUnit;
   const boxConfig: TBoxConfiguration = {
     boxStartX: 0,
     boxStartY: 0,
@@ -126,11 +126,12 @@ function nodeAnalyze(
   radius: number,
   { boxEndX, boxStartX, boxStartY }: TBoxConfiguration
 ) {
+  const lineWidth = Drawing.getLineWidth();
   const { left, right, index } = rootNode;
 
   const circleConfig: TDrawCircleNode = {
     cordinateX: boxStartX + (boxEndX - boxStartX) / 2,
-    cordinateY: boxStartY + radius + LINE_WIDTH,
+    cordinateY: boxStartY + radius + lineWidth,
     radius,
   };
 
@@ -142,8 +143,8 @@ function nodeAnalyze(
   if (left) {
     const leftBoxConfig: TBoxConfiguration = {
       boxStartX,
-      boxEndX: circleConfig.cordinateX - radius - LINE_WIDTH,
-      boxStartY: circleConfig.cordinateY + radius + LINE_WIDTH,
+      boxEndX: circleConfig.cordinateX - radius - Drawing.getLineWidth(),
+      boxStartY: circleConfig.cordinateY + radius + lineWidth,
     };
     left.parentIndex = index;
     nodeAnalyze(left, nodes, radius, leftBoxConfig);
@@ -151,9 +152,9 @@ function nodeAnalyze(
 
   if (right) {
     const rightBoxConfig: TBoxConfiguration = {
-      boxStartX: circleConfig.cordinateX + radius + LINE_WIDTH,
+      boxStartX: circleConfig.cordinateX + radius + lineWidth,
       boxEndX,
-      boxStartY: circleConfig.cordinateY + radius + LINE_WIDTH,
+      boxStartY: circleConfig.cordinateY + radius + lineWidth,
     };
     right.parentIndex = index;
     nodeAnalyze(right, nodes, radius, rightBoxConfig);

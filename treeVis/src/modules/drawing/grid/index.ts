@@ -1,5 +1,4 @@
 import { Drawing } from "..";
-import { LINE_WIDTH } from "../../constants";
 import { LineNode } from "../../types";
 import { LineShape } from "../line";
 
@@ -22,6 +21,8 @@ export class GridShape {
     canvasHeight: number,
     canvasWidth: number
   ) {
+    const lineWidth = Drawing.getLineWidth();
+    const screenUnit = Drawing.getScreenUnit();
     let startX;
     let startY;
     let endX;
@@ -36,22 +37,22 @@ export class GridShape {
     // horizontal lines
     for (i = 0; i < hLevel - 1; i++) {
       startX = 0;
-      startY = (i + 1) * Drawing.screenUnit;
+      startY = (i + 1) * screenUnit;
 
       endX = canvasWidth;
-      endY = (i + 1) * Drawing.screenUnit;
+      endY = (i + 1) * screenUnit;
 
       clearWidth = canvasWidth;
-      clearHeight = LINE_WIDTH;
+      clearHeight = lineWidth;
       clearStartX = 0;
-      clearStartY = startY - LINE_WIDTH / 2;
+      clearStartY = startY - lineWidth / 2;
 
       line = {
         startX,
         startY,
         endX,
         endY,
-        lineWidth: LINE_WIDTH,
+        lineWidth,
         clearWidth,
         clearHeight,
         clearStartX,
@@ -63,15 +64,15 @@ export class GridShape {
 
     // vertical lines
     for (i = 0; i < wLevel - 1; i++) {
-      startX = (i + 1) * Drawing.screenUnit;
+      startX = (i + 1) * screenUnit;
       startY = 0;
 
-      endX = (i + 1) * Drawing.screenUnit;
+      endX = (i + 1) * screenUnit;
       endY = canvasHeight;
 
-      clearWidth = LINE_WIDTH;
+      clearWidth = lineWidth;
       clearHeight = canvasHeight;
-      clearStartX = startX - LINE_WIDTH / 2;
+      clearStartX = startX - lineWidth / 2;
       clearStartY = 0;
 
       line = {
@@ -79,7 +80,7 @@ export class GridShape {
         startY,
         endX,
         endY,
-        lineWidth: LINE_WIDTH,
+        lineWidth,
         clearWidth,
         clearHeight,
         clearStartX,
