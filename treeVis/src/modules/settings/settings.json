@@ -40,5 +40,12 @@
         "label": "Set Node Size",
         "description": "Set the size of the cicles or nodes.\nChoose from 1 (default) to 10 (max) units.\nHigher is better for large inputs.",
         "type": "number"
+    },
+    {
+        "name": "fontSize",
+        "id": "settingNumberfontSize",
+        "label": "Set Font Size",
+        "description": "Set the size of the value of nodes.\nChoose from 1 (default) to 10 (max) units.\nHigher is better for large inputs.",
+        "type": "number"
     }
 ]

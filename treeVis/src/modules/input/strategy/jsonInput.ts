@@ -18,10 +18,10 @@ import {
   ERROR_INPUT_COULD_NOT_BE_PARSED,
 } from "../../constants";
 import { Drawing } from "../../drawing";
+import { popupStatusMessage } from "../../notifying";
 import { Settings } from "../../settings";
 import { getLocalStorageItem, setLocalStorageItem } from "../../storing";
 import { Json, Result } from "../../types";
-import { popupStatusMessage } from "../../utility";
 
 export class JsonInput implements InputStrategy<Json> {
   #canvas: Canvas;

@@ -16,10 +16,10 @@ import {
   TIME_FOUR_SECONDS,
 } from "../../constants";
 import { Drawing } from "../../drawing";
+import { popupStatusMessage } from "../../notifying";
 import { Settings } from "../../settings";
 import { getLocalStorageItem, setLocalStorageItem } from "../../storing";
 import { Result } from "../../types";
-import { popupStatusMessage } from "../../utility";
 
 export class ArrayInput implements InputStrategy<number[]> {
   #canvas: Canvas;

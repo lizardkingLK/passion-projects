@@ -34,6 +34,14 @@ const sectionTreeVisualContainer = `
       <p id="treeVisualHeaderLabel">Visual</p>
       <div id="treeVisualHeaderOptions">
         <button
+          id="treeVisualHeaderSave"
+          title="Save Output">
+          <img
+            id="treeVisualHeaderSaveIcon"
+            src="./assets/images/save.svg"
+            alt="save" />
+        </button>
+        <button
           id="treeVisualHeaderHelp"
           title="View Help">
           <img

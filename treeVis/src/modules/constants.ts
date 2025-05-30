@@ -47,12 +47,19 @@ export const COLOR_SUCCESS = "#088000";
 export const COLOR_WARNING = "#FFA500";
 
 // animate or time durations
+export const TIME_INFINITE = -1;
 export const TIME_ONE_SECOND = 1000;
 export const TIME_FOUR_SECONDS = 4000;
+export const TIME_FIVE_SECONDS = 5000;
+
+// setting value ranges
+export const SETTING_NUMERIC_MIN = 1;
+export const SETTING_NUMERIC_MAX = 10;
 
 // info messages
 export const INFO_SAVED_SETTINGS = "Settings Saved";
 export const INFO_FORMATTED_INPUT = "Input Formatted";
+export const INFO_WAITING_INPUT = "Waiting for user to finish";
 
 // error messages
 export const ERROR_INPUT_HAS_NO_CONTENT = "Input has no content";

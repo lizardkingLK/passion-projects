@@ -1,10 +1,5 @@
 import { CircleShape } from "../drawing/circle";
-import {
-  TDrawCircleNode,
-  TDrawEdge,
-  TEdge,
-  TNode,
-} from "../types";
+import { TDrawCircleNode, TDrawEdge, TEdge, TNode } from "../types";
 import {
   LINE_WIDTH,
   SMOOTHING_ENABLED,

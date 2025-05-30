@@ -33,7 +33,11 @@ export class Events {
   #registerTreeInputChangeListener() {
     document
       .querySelector(TREE_INPUT)!
-      .addEventListener("input", () => this.#handler.inputChanged(), false);
+      .addEventListener(
+        "input",
+        (event) => this.#handler.inputChanged(event as CustomEvent),
+        false
+      );
   }
 
   #registerTreeInputFocusOutListener() {
@@ -88,9 +92,7 @@ export class Events {
         "keyup",
         (event) => {
           this.#handler.numericalSettingChanged(
-            event.target as HTMLInputElement,
-            1,
-            10
+            event.target as HTMLInputElement
           );
         },
         false
@@ -99,13 +101,15 @@ export class Events {
   }
 
   #registerTreeInputOptionClickListener() {
+    const inputChangeEvent = new CustomEvent("input", {
+      bubbles: false,
+      cancelable: true,
+      detail: { isSynthetic: true },
+    });
+
     document.querySelector(TREE_INPUT_OPTION_REDRAW)!.addEventListener(
       "click",
       () => {
-        const inputChangeEvent = new Event("input", {
-          bubbles: false,
-          cancelable: true,
-        });
         document.querySelector(TREE_INPUT)!.dispatchEvent(inputChangeEvent);
       },
       false
