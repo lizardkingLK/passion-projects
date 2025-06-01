@@ -102,7 +102,7 @@ foreach ($containerName in $containerNames) {
         & docker container stop $containerName
     }
 
-    # check if stopeed container with image exist
+    # check if stopped container with image exist
     $hasContainerStopped = ((& docker ps `
                 --filter $nameFilter) `
             -split '\n').Length -ge 2
