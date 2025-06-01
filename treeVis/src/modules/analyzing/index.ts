@@ -127,6 +127,7 @@ function nodeAnalyze(
   { boxEndX, boxStartX, boxStartY }: TBoxConfiguration
 ) {
   const lineWidth = Drawing.getLineWidth();
+  
   const { left, right, index } = rootNode;
 
   const circleConfig: TDrawCircleNode = {
@@ -143,7 +144,7 @@ function nodeAnalyze(
   if (left) {
     const leftBoxConfig: TBoxConfiguration = {
       boxStartX,
-      boxEndX: circleConfig.cordinateX - radius - Drawing.getLineWidth(),
+      boxEndX: circleConfig.cordinateX - radius - lineWidth,
       boxStartY: circleConfig.cordinateY + radius + lineWidth,
     };
     left.parentIndex = index;
