@@ -23,6 +23,7 @@ export class GridShape {
   ) {
     const lineWidth = Drawing.getLineWidth();
     const screenUnit = Drawing.getScreenUnit();
+
     let startX;
     let startY;
     let endX;
