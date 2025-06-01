@@ -1,15 +1,21 @@
 import {
-  SETTINGS_NUMBER_INPUT,
+  CLASS_BLOCK,
+  CLASS_HIDDEN,
   TREE_INPUT,
   TREE_INPUT_CONTAINER,
   TREE_INPUT_OPTION_FORMAT,
   TREE_INPUT_OPTION_REDRAW,
-  TREE_SETTINGS_CANCEL,
+  TREE_SETTINGS_FOOTER_CLOSE,
+  TREE_SETTINGS_HEADER_CLOSE,
   TREE_SETTINGS_CONTAINER,
   TREE_SETTINGS_SAVE,
   TREE_VISUAL,
   TREE_VISUAL_HEADER_SETTINGS,
-  TREE_VISUAL_SETTINGS_CLOSE,
+  TREE_HELP_CONTAINER,
+  TREE_VISUAL_HEADER_HELP,
+  TREE_HELP_HEADER_CLOSE,
+  TREE_HELP_FOOTER_CLOSE,
+  CLASS_SETTINGS_NUMBER_INPUT,
 } from "../constants";
 import { Handler } from "./handler";
 
@@ -25,7 +31,7 @@ export class Events {
     events.#registerTreeInputChangeListener();
     events.#registerTreeInputFocusOutListener();
     events.#registerTreeInputOptionClickListener();
-    events.#registerSettingsClickListener();
+    events.#registerDialogClickListener();
     events.#registerSettingsInputListener();
     events.#registerDragListeners();
   }
@@ -50,44 +56,78 @@ export class Events {
       );
   }
 
-  #registerSettingsClickListener() {
-    const settingsModal = document.querySelector(TREE_SETTINGS_CONTAINER)!;
-    document.querySelector(TREE_VISUAL_HEADER_SETTINGS)!.addEventListener(
-      "click",
-      () => {
-        settingsModal.setAttribute("class", "block");
+  #registerDialogClickListener() {
+    [
+      {
+        dialogQuerySelector: TREE_SETTINGS_CONTAINER,
+        dialogOpenQuerySelector: TREE_VISUAL_HEADER_SETTINGS,
+        dialogCloseHeaderQuerySelector: TREE_SETTINGS_HEADER_CLOSE,
+        dialogCloseFooterQuerySelector: TREE_SETTINGS_FOOTER_CLOSE,
+        dialogSaveQuerySelector: TREE_SETTINGS_SAVE,
       },
-      false
-    );
+      {
+        dialogQuerySelector: TREE_HELP_CONTAINER,
+        dialogOpenQuerySelector: TREE_VISUAL_HEADER_HELP,
+        dialogCloseHeaderQuerySelector: TREE_HELP_HEADER_CLOSE,
+        dialogCloseFooterQuerySelector: TREE_HELP_FOOTER_CLOSE,
+        dialogSaveQuerySelector: null,
+      },
+    ].forEach(
+      ({
+        dialogQuerySelector,
+        dialogOpenQuerySelector,
+        dialogCloseHeaderQuerySelector,
+        dialogCloseFooterQuerySelector,
+        dialogSaveQuerySelector,
+      }) => {
+        let dialogModal = document.querySelector(dialogQuerySelector)!;
 
-    document.querySelector(TREE_VISUAL_SETTINGS_CLOSE)!.addEventListener(
-      "click",
-      () => {
-        settingsModal.setAttribute("class", "hidden");
-      },
-      false
-    );
+        document.querySelector(dialogOpenQuerySelector)!.addEventListener(
+          "click",
+          () => {
+            dialogModal.setAttribute("class", CLASS_BLOCK);
+          },
+          false
+        );
 
-    document.querySelector(TREE_SETTINGS_CANCEL)!.addEventListener(
-      "click",
-      () => {
-        settingsModal.setAttribute("class", "hidden");
-      },
-      false
-    );
+        document
+          .querySelector(dialogCloseHeaderQuerySelector)!
+          .addEventListener(
+            "click",
+            () => {
+              dialogModal.setAttribute("class", CLASS_HIDDEN);
+            },
+            false
+          );
 
-    document.querySelector(TREE_SETTINGS_SAVE)!.addEventListener(
-      "click",
-      () => {
-        this.#handler.settingsSubmitted();
-        settingsModal.setAttribute("class", "hidden");
-      },
-      false
+        document
+          .querySelector(dialogCloseFooterQuerySelector)!
+          .addEventListener(
+            "click",
+            () => {
+              dialogModal.setAttribute("class", CLASS_HIDDEN);
+            },
+            false
+          );
+
+        if (!dialogSaveQuerySelector) {
+          return;
+        }
+
+        document.querySelector(dialogSaveQuerySelector)!.addEventListener(
+          "click",
+          () => {
+            this.#handler.settingsSubmitted();
+            dialogModal.setAttribute("class", CLASS_HIDDEN);
+          },
+          false
+        );
+      }
     );
   }
 
   #registerSettingsInputListener() {
-    document.querySelectorAll(SETTINGS_NUMBER_INPUT)!.forEach((input) =>
+    document.querySelectorAll(CLASS_SETTINGS_NUMBER_INPUT)!.forEach((input) =>
       input.addEventListener(
         "keyup",
         (event) => {

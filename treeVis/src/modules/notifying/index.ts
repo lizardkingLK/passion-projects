@@ -1,14 +1,14 @@
 import { TREE_VISUAL_STATUS_CONTAINER, TIME_INFINITE } from "../constants";
 import { TStatusPopup } from "../types";
 
-export function popupStatusMessage({ color, message, duration }: TStatusPopup) {
+export function popupStatusMessage({ className, message, duration }: TStatusPopup) {
   const container = document.querySelector(
     TREE_VISUAL_STATUS_CONTAINER
   )! as HTMLElement;
 
   const statusContent = document.createElement("p");
-  statusContent.setAttribute("style", `color: ${color}; opacity: 1;`);
   statusContent.innerHTML = message;
+  statusContent.setAttribute("class", className);
   container.appendChild(statusContent);
 
   if (duration !== TIME_INFINITE) {

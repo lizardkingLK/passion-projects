@@ -24,28 +24,38 @@ export const FONT_VARIANT_CAPS = "titling-caps";
 export const FONT_FAMILY = "{0} Roboto Mono";
 
 // element ids
-export const TREE_INPUT_CONTAINER = "#treeInputContainer";
-export const TREE_INPUT = "#treeInput";
 export const TREE_VISUAL_CONTAINER = "#treeVisualContainer";
 export const TREE_VISUAL = "#treeVisual";
-export const TREE_VISUAL_STATUS_CONTAINER = "#treeVisualStatusContainer";
+export const TREE_VISUAL_HEADER_HELP = "#treeVisualHeaderHelp";
 export const TREE_VISUAL_HEADER_SETTINGS = "#treeVisualHeaderSettings";
-export const TREE_INPUT_HEADER_TITLE = "#treeInputHeaderTitle";
-export const TREE_VISUAL_SETTINGS_CLOSE = "#treeSettingsHeaderClose";
+export const TREE_VISUAL_STATUS_CONTAINER = "#treeVisualStatusContainer";
 export const TREE_VISUAL_STATUS = "#treeVisualStatus";
+
+export const TREE_HELP_CONTAINER = "#treeHelpContainer";
+export const TREE_HELP_BODY = "#treeHelpContent";
+export const TREE_HELP_HEADER_CLOSE = "#treeHelpHeaderClose";
+export const TREE_HELP_FOOTER_CLOSE = "#treeHelpFooterClose";
+
 export const TREE_SETTINGS_CONTAINER = "#treeSettingsContainer";
 export const TREE_SETTINGS_BODY = "#treeSettingsContent";
-export const TREE_SETTINGS_SAVE = "#treeSettingsSave";
+export const TREE_SETTINGS_HEADER_CLOSE = "#treeSettingsHeaderClose";
+export const TREE_SETTINGS_FOOTER_CLOSE = "#treeSettingsFooterClose";
+export const TREE_SETTINGS_SAVE = "#treeSettingsFooterSave";
+
+export const TREE_INPUT_CONTAINER = "#treeInputContainer";
+export const TREE_INPUT = "#treeInput";
+export const TREE_INPUT_HEADER_TITLE = "#treeInputHeaderTitle";
 export const TREE_INPUT_OPTION_REDRAW = "#treeInputHeaderOptionRedraw";
 export const TREE_INPUT_OPTION_FORMAT = "#treeInputHeaderOptionFormat";
-export const TREE_SETTINGS_CANCEL = "#treeSettingsCancel";
-export const SETTINGS_NUMBER_INPUT = ".numberSettingsFieldContainer input";
 
-// color hex codes
-export const COLOR_INFO = "#000000";
-export const COLOR_ERROR = "#FF0000";
-export const COLOR_SUCCESS = "#088000";
-export const COLOR_WARNING = "#FFA500";
+// element common classes
+export const CLASS_INFO = "info";
+export const CLASS_ERROR = "error";
+export const CLASS_SUCCESS = "success";
+export const CLASS_HIDDEN = "hidden";
+export const CLASS_BLOCK = "block";
+export const CLASS_SETTINGS_NUMBER_INPUT =
+  ".numberSettingsFieldContainer input";
 
 // animate or time durations
 export const TIME_INFINITE = -1;
@@ -60,7 +70,7 @@ export const SETTING_NUMERIC_MAX = 10;
 // info messages
 export const INFO_SAVED_SETTINGS = "Settings Saved";
 export const INFO_FORMATTED_INPUT = "Input Formatted";
-export const INFO_WAITING_INPUT = "Waiting for user to finish";
+export const INFO_WAITING_INPUT = "Waiting for you to finish";
 
 // error messages
 export const ERROR_INPUT_HAS_NO_CONTENT = "Input has no content";
@@ -77,3 +87,7 @@ export const SETTING_USE_AUTO_SAVE = "useAutoSave";
 export const SETTING_USE_IMMEDIATE_DRAW = "useImmediateDraw";
 export const SETTING_LINE_WIDTH = "lineWidth";
 export const SETTING_NODE_SIZE = "nodeSize";
+export const SETTING_LINE_COLOR = "lineColor";
+export const SETTING_NODE_COLOR = "nodeColor";
+export const SETTING_TEXT_COLOR = "textColor";
+export const SETTING_CANVAS_COLOR = "canvasColor";

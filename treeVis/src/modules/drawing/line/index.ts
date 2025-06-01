@@ -1,3 +1,9 @@
+import { Drawing } from "..";
+import {
+  SMOOTHING_ENABLED,
+  SMOOTHING_QUALITY,
+  STROKE_STYLE,
+} from "../../constants";
 import { LineNode } from "../../types";
 
 export class LineShape {
@@ -7,8 +13,16 @@ export class LineShape {
     this.#context = context;
   }
 
-  drawLine({ startX, startY, endX, endY, lineWidth }: LineNode) {
+  #setContext(lineWidth: number) {
     this.#context.lineWidth = lineWidth;
+    this.#context.strokeStyle = STROKE_STYLE;
+    this.#context.imageSmoothingEnabled = SMOOTHING_ENABLED;
+    this.#context.imageSmoothingQuality = SMOOTHING_QUALITY;
+    this.#context.strokeStyle = Drawing.getLineColor()!;
+  }
+
+  drawLine({ startX, startY, endX, endY, lineWidth }: LineNode) {
+    this.#setContext(lineWidth);
     this.#context.beginPath();
     this.#context.moveTo(startX, startY);
     this.#context.lineTo(endX, endY);

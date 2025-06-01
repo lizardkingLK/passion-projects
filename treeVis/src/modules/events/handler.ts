@@ -1,6 +1,6 @@
 import {
-  COLOR_INFO,
-  COLOR_SUCCESS,
+  CLASS_INFO,
+  CLASS_SUCCESS,
   INFO_SAVED_SETTINGS,
   INFO_WAITING_INPUT,
   SETTING_NUMERIC_MAX,
@@ -43,7 +43,7 @@ export class Handler {
 
     if (!Handler.#inputChangePopup) {
       Handler.#inputChangePopup = popupStatusMessage({
-        color: COLOR_INFO,
+        className: CLASS_INFO,
         message: INFO_WAITING_INPUT,
         duration: TIME_INFINITE,
       });
@@ -120,7 +120,7 @@ export class Handler {
     Settings.evaluateSettings();
 
     popupStatusMessage({
-      color: COLOR_SUCCESS,
+      className: CLASS_SUCCESS,
       duration: TIME_ONE_SECOND,
       message: INFO_SAVED_SETTINGS,
     });

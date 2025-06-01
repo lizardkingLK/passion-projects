@@ -4,48 +4,87 @@
         "id": "settingCheckUseGrid",
         "label": "Use Grid Drawing",
         "description": "Enabling this draws vertical and horizontal lines surrounding each node.\nOutput also contains them.",
-        "type": "checkbox"
+        "type": "checkbox",
+        "default": false
     },
     {
         "name": "useArrayInput",
         "id": "settingCheckUseArrayInput",
         "label": "Use Array Input",
         "description": "Enable this to use array input instead of json input.\nLike this below,\n5, 0, 10...",
-        "type": "checkbox"
+        "type": "checkbox",
+        "default": false
     },
     {
         "name": "useAutoSave",
         "id": "settingCheckUseAutoSave",
         "label": "Use Auto Save",
         "description": "Enable this to auto save input and retrieve it later.\nThis saves it in the localStorage.",
-        "type": "checkbox"
+        "type": "checkbox",
+        "default": false
     },
     {
         "name": "useAutoFormat",
         "id": "settingCheckUseAutoFormat",
         "label": "Use Auto Format",
         "description": "Enabling this automatically formats the input given.\nWhether it is json input or array input.",
-        "type": "checkbox"
+        "type": "checkbox",
+        "default": false
     },
     {
         "name": "useImmediateDraw",
         "id": "settingCheckUseImmediateDraw",
         "label": "Use Immediate Draw",
         "description": "Enabling this draws the tree immediately.\nStops waiting for the user to finish input.",
-        "type": "checkbox"
+        "type": "checkbox",
+        "default": false
     },
     {
         "name": "lineWidth",
         "id": "settingNumberLineWidth",
         "label": "Set Line Width",
         "description": "Set the thickness of the lines and edges.\nChoose from 1 (default) to 10 (max) units.\nHigher is better for large inputs.",
-        "type": "number"
+        "type": "number",
+        "default": "1"
     },
     {
         "name": "nodeSize",
         "id": "settingNumberNodeSize",
         "label": "Set Node Size",
-        "description": "Set the size of the cicles or nodes.\nChoose from 1 (default) to 10 (max) units.\nHigher is better for large inputs.",
-        "type": "number"
+        "description": "Set the size of the circles or nodes.\nChoose from 1 (default) to 10 (max) units.\nHigher is better for large inputs.",
+        "type": "number",
+        "default": "1"
+    },
+    {
+        "name": "lineColor",
+        "id": "settingColorLineColor",
+        "label": "Set Line Color",
+        "description": "Set the color of the lines and edges.\nConsider the color contrast.",
+        "type": "color",
+        "default": "#000000"
+    },
+    {
+        "name": "nodeColor",
+        "id": "settingColorNodeColor",
+        "label": "Set Node Color",
+        "description": "Set the color of the circles or nodes.\nConsider the color contrast.",
+        "type": "color",
+        "default": "#ffffff"
+    },
+    {
+        "name": "textColor",
+        "id": "settingColortextColor",
+        "label": "Set Text Color",
+        "description": "Set the color of the text value.\nConsider the color contrast.",
+        "type": "color",
+        "default": "#000000"
+    },
+    {
+        "name": "canvasColor",
+        "id": "settingColorCanvasColor",
+        "label": "Set Canvas Color",
+        "description": "Set the color of the canvas.\nConsider the color contrast.",
+        "type": "color",
+        "default": "#ffffff"
     }
 ]

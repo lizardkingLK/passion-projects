@@ -1,8 +1,14 @@
-import { KEY_TREE_VISUAL_SETTINGS, TREE_SETTINGS_BODY } from "../constants";
+import {
+  KEY_TREE_VISUAL_SETTINGS,
+  SETTING_CANVAS_COLOR,
+  SETTING_LINE_COLOR,
+  TREE_SETTINGS_BODY,
+} from "../constants";
 import settingsJson from "./settings.json";
 import { Json } from "../types";
 import { Input } from "../input";
 import { getLocalStorageItem, setLocalStorageItem } from "../storing";
+import { Theme } from "../theme";
 
 export class Settings {
   static settings: Json | null = null;
@@ -14,9 +20,10 @@ export class Settings {
 
   static evaluateSettings() {
     const settingsResult = getLocalStorageItem(KEY_TREE_VISUAL_SETTINGS);
-    if (settingsResult) {
-      Settings.settings = JSON.parse(settingsResult);
-    }
+
+    Settings.settings = settingsResult
+      ? JSON.parse(settingsResult)
+      : Settings.#evaluateDefaults();
 
     this.#setupReflectingUI();
   }
@@ -26,16 +33,18 @@ export class Settings {
       ".settingsField label input"
     );
     const settingsJson: Json = {};
-    let element;
+    let settingsInputControl;
     let fieldName;
     for (const settingField in settingsFields) {
       if (Object.prototype.hasOwnProperty.call(settingsFields, settingField)) {
-        element = settingsFields[settingField] as HTMLInputElement;
-        fieldName = element.getAttribute("name")!;
-        if (element.type === "checkbox") {
-          settingsJson[fieldName] = element.checked;
-        } else if (element.type === "number") {
-          settingsJson[fieldName] = element.value;
+        settingsInputControl = settingsFields[settingField] as HTMLInputElement;
+        fieldName = settingsInputControl.getAttribute("name")!;
+        if (settingsInputControl.type === "checkbox") {
+          settingsJson[fieldName] = settingsInputControl.checked;
+        } else if (settingsInputControl.type === "number") {
+          settingsJson[fieldName] = settingsInputControl.value;
+        } else if (settingsInputControl.type === "color") {
+          settingsJson[fieldName] = settingsInputControl.value;
         }
       }
     }
@@ -52,6 +61,24 @@ export class Settings {
     }
 
     return null;
+  }
+
+  static #evaluateDefaults() {
+    let settings: Json = {};
+
+    settingsJson.forEach(({ name, default: value }) =>
+      Object.assign(settings, { [name]: value })
+    );
+
+    Object.assign(settings, {
+      [SETTING_CANVAS_COLOR]: Theme.get(false),
+    });
+
+    Object.assign(settings, {
+      [SETTING_LINE_COLOR]: Theme.get(true),
+    });
+
+    return settings;
   }
 
   static #setupReflectingUI() {
@@ -159,6 +186,8 @@ export class Settings {
       if (element.type === "checkbox") {
         element.checked = settings[item] as boolean;
       } else if (element.type === "number") {
+        element.value = settings[item] as string;
+      } else if (element.type === "color") {
         element.value = settings[item] as string;
       }
     }
