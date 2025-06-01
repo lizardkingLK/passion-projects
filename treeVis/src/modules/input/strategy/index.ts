@@ -9,6 +9,5 @@ export interface InputStrategy<T> {
   format(isSuccess?: boolean, message?: string | null): void;
   initialize(): void;
   save(inputString: string): void;
-  load(): void;
   read(): string;
 }

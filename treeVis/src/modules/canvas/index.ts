@@ -1,21 +1,11 @@
 import { CircleShape } from "../drawing/circle";
-import {
-  TDrawCircleNode,
-  TDrawEdge,
-  TEdge,
-  TNode,
-} from "../types";
-import {
-  LINE_WIDTH,
-  SMOOTHING_ENABLED,
-  SMOOTHING_QUALITY,
-  STROKE_STYLE,
-  TREE_VISUAL,
-} from "../constants";
+import { TDrawCircleNode, TDrawEdge, TEdge, TNode } from "../types";
+import { TREE_VISUAL } from "../constants";
 import { LineShape } from "../drawing/line";
 import { GridShape } from "../drawing/grid";
 import { TextShape } from "../drawing/text";
 import { Drawing } from "../drawing";
+import { BoxShape } from "../drawing/box";
 
 export class Canvas {
   // canvas elements
@@ -23,22 +13,21 @@ export class Canvas {
   #context: CanvasRenderingContext2D;
 
   // composed drawing items
+  #box: BoxShape;
   #grid: GridShape;
   #circle: CircleShape;
   #line: LineShape;
   #text: TextShape;
 
-  // nodes tree
+  // root node
   #rootNode: TNode | null;
 
   constructor() {
     this.#canvas = document.querySelector(TREE_VISUAL)!;
-    this.setSize(0, 0);
-
     this.#context = this.#canvas.getContext("2d")!;
-    this.#initializeContext();
 
     this.#grid = new GridShape(this.#context);
+    this.#box = new BoxShape(this.#context);
     this.#circle = new CircleShape(this.#context);
     this.#line = new LineShape(this.#context);
     this.#text = new TextShape(this.#context);
@@ -46,21 +35,17 @@ export class Canvas {
     this.#rootNode = null;
   }
 
-  #initializeContext() {
-    this.#context.lineWidth = LINE_WIDTH;
-    this.#context.strokeStyle = STROKE_STYLE;
-    this.#context.imageSmoothingEnabled = SMOOTHING_ENABLED;
-    this.#context.imageSmoothingQuality = SMOOTHING_QUALITY;
-  }
-
-  setSize(width: number, height: number) {
+  setCanvas(width: number, height: number) {
     this.#canvas.width = width;
     this.#canvas.height = height;
+    this.#box.drawBox({ cordinateX: 0, cordinateY: 0, width, height });
   }
 
   // nodes
   drawNodes(nodesList: TNode[], nodesMap: Map<number, TNode>) {
-    const radius = Drawing.screenUnit / 2 - LINE_WIDTH;
+    const lineWidth = Drawing.getLineWidth();
+    const screenUnit = Drawing.getScreenUnit();
+    const radius = screenUnit / 2 - lineWidth;
     let cordinateX;
     let cordinateY;
     let node;
@@ -69,7 +54,7 @@ export class Canvas {
     let circleConfig: TDrawCircleNode;
     for (i = 0; i < l; i++) {
       node = nodesList[i];
-      cordinateX = i * Drawing.screenUnit + radius + LINE_WIDTH;
+      cordinateX = i * screenUnit + radius + lineWidth;
       cordinateY = node.cordinateY!;
       circleConfig = {
         cordinateX,
@@ -96,6 +81,7 @@ export class Canvas {
         startY: parentNode.cordinateY,
         endX: node.cordinateX,
         endY: node.cordinateY,
+        lineWidth,
       };
 
       this.drawEdge(edgeConfig, node);
@@ -140,11 +126,13 @@ export class Canvas {
   // grids
   drawGrid(treeHeight: number, treeWidth: number) {
     if (Drawing.useGrid()) {
+      const screenUnit = Drawing.getScreenUnit();
+
       this.#grid.drawGrid(
         treeHeight,
         treeWidth,
-        treeHeight * Drawing.screenUnit,
-        treeWidth * Drawing.screenUnit
+        treeHeight * screenUnit,
+        treeWidth * screenUnit
       );
     }
   }
@@ -156,7 +144,10 @@ export class Canvas {
   }
 
   // edges
-  drawEdge({ startX, startY, endX, endY, radius }: TDrawEdge, rootNode: TNode) {
+  drawEdge(
+    { startX, startY, endX, endY, radius, lineWidth }: TDrawEdge,
+    rootNode: TNode
+  ) {
     if (!startX || !startY || !endX || !endY || !radius) {
       return;
     }
@@ -187,7 +178,7 @@ export class Canvas {
       clearStartY: cordinateY1,
       clearHeight: cordinateY2 - cordinateY1,
       clearWidth: cordinateX2 - cordinateX1,
-      lineWidth: LINE_WIDTH,
+      lineWidth: lineWidth!,
       radius,
     };
 

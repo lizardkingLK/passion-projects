@@ -4,22 +4,22 @@ import { Canvas } from "../../canvas";
 import {
   KEY_TREE_ARRAY_INPUT_CONTENT,
   TREE_INPUT,
-  COLOR_ERROR,
   TIME_ONE_SECOND,
   SETTING_USE_AUTO_FORMAT,
   ERROR_INPUT_HAS_NO_CONTENT,
   ERROR_INPUT_ARRAY_IS_INVALID,
   SETTING_USE_AUTO_SAVE,
-  COLOR_INFO,
   INFO_FORMATTED_INPUT,
   TREE_INPUT_HEADER_TITLE,
   TIME_FOUR_SECONDS,
+  CLASS_ERROR,
+  CLASS_INFO,
 } from "../../constants";
 import { Drawing } from "../../drawing";
+import { popupStatusMessage } from "../../notifying";
 import { Settings } from "../../settings";
 import { getLocalStorageItem, setLocalStorageItem } from "../../storing";
 import { Result } from "../../types";
-import { popupStatusMessage } from "../../utility";
 
 export class ArrayInput implements InputStrategy<number[]> {
   #canvas: Canvas;
@@ -41,7 +41,7 @@ export class ArrayInput implements InputStrategy<number[]> {
     const { isSuccess, message } = this.isValidInput();
     if (!isSuccess) {
       popupStatusMessage({
-        color: COLOR_ERROR,
+        className: CLASS_ERROR,
         message: message!,
         duration: TIME_ONE_SECOND,
       });
@@ -63,7 +63,7 @@ export class ArrayInput implements InputStrategy<number[]> {
 
     if (!isSuccess) {
       popupStatusMessage({
-        color: COLOR_ERROR,
+        className: CLASS_ERROR,
         message: message!,
         duration: TIME_ONE_SECOND,
       });
@@ -86,7 +86,7 @@ export class ArrayInput implements InputStrategy<number[]> {
     }
 
     popupStatusMessage({
-      color: COLOR_INFO,
+      className: CLASS_INFO,
       duration: TIME_ONE_SECOND,
       message: INFO_FORMATTED_INPUT,
     });
@@ -99,7 +99,7 @@ export class ArrayInput implements InputStrategy<number[]> {
   setVisual() {
     this.#canvas.clearGrid();
     this.#canvas.clearNodes();
-    this.#canvas.setSize(0, 0);
+    this.#canvas.setCanvas(0, 0);
   }
 
   isValidInput(input?: string): Result<number[]> {
@@ -166,27 +166,23 @@ export class ArrayInput implements InputStrategy<number[]> {
     }
 
     const { nodesList, nodesMap, width, height } = analizedData!;
+    const screenUnit = Drawing.getScreenUnit();
 
-    this.#canvas.setSize(
-      width * Drawing.screenUnit,
-      height * Drawing.screenUnit
-    );
+    this.#canvas.setCanvas(width * screenUnit, height * screenUnit);
     this.#canvas.drawGrid(height, width);
     this.#canvas.drawNodes(nodesList, nodesMap);
 
     popupStatusMessage({
-      color: COLOR_INFO,
+      className: CLASS_INFO,
       message: `${Date.now() - now} ms`,
       duration: TIME_FOUR_SECONDS,
     });
   }
 
   save(inputContent: string): void {
-    setLocalStorageItem(KEY_TREE_ARRAY_INPUT_CONTENT, inputContent);
-  }
-
-  load() {
-    return getLocalStorageItem(KEY_TREE_ARRAY_INPUT_CONTENT);
+    if (Settings.get<boolean>(SETTING_USE_AUTO_SAVE)) {
+      setLocalStorageItem(KEY_TREE_ARRAY_INPUT_CONTENT, inputContent);
+    }
   }
 
   read(): string {

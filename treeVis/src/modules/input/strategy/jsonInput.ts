@@ -4,11 +4,9 @@ import { Canvas } from "../../canvas";
 import {
   KEY_TREE_JSON_INPUT_CONTENT,
   TREE_INPUT,
-  COLOR_ERROR,
   TIME_ONE_SECOND,
   SETTING_USE_AUTO_FORMAT,
   SETTING_USE_AUTO_SAVE,
-  COLOR_INFO,
   INFO_FORMATTED_INPUT,
   TREE_INPUT_HEADER_TITLE,
   TIME_FOUR_SECONDS,
@@ -16,12 +14,14 @@ import {
   ERROR_INPUT_IS_AN_ARRAY,
   ERROR_INPUT_KEYS_ARE_INVALID,
   ERROR_INPUT_COULD_NOT_BE_PARSED,
+  CLASS_ERROR,
+  CLASS_INFO,
 } from "../../constants";
 import { Drawing } from "../../drawing";
+import { popupStatusMessage } from "../../notifying";
 import { Settings } from "../../settings";
 import { getLocalStorageItem, setLocalStorageItem } from "../../storing";
 import { Json, Result } from "../../types";
-import { popupStatusMessage } from "../../utility";
 
 export class JsonInput implements InputStrategy<Json> {
   #canvas: Canvas;
@@ -42,7 +42,7 @@ export class JsonInput implements InputStrategy<Json> {
     const { isSuccess, message } = this.isValidInput();
     if (!isSuccess) {
       popupStatusMessage({
-        color: COLOR_ERROR,
+        className: CLASS_ERROR,
         message: message!,
         duration: TIME_ONE_SECOND,
       });
@@ -64,7 +64,7 @@ export class JsonInput implements InputStrategy<Json> {
 
     if (!isSuccess) {
       popupStatusMessage({
-        color: COLOR_ERROR,
+        className: CLASS_ERROR,
         message: message!,
         duration: TIME_ONE_SECOND,
       });
@@ -83,7 +83,7 @@ export class JsonInput implements InputStrategy<Json> {
     }
 
     popupStatusMessage({
-      color: COLOR_INFO,
+      className: CLASS_INFO,
       duration: TIME_ONE_SECOND,
       message: INFO_FORMATTED_INPUT,
     });
@@ -96,7 +96,7 @@ export class JsonInput implements InputStrategy<Json> {
   setVisual() {
     this.#canvas.clearGrid();
     this.#canvas.clearNodes();
-    this.#canvas.setSize(0, 0);
+    this.#canvas.setCanvas(0, 0);
   }
 
   isValidInput(input?: string): Result<Json> {
@@ -183,27 +183,23 @@ export class JsonInput implements InputStrategy<Json> {
     }
 
     const { nodesList, nodesMap, width, height } = analizedData!;
+    const screenUnit = Drawing.getScreenUnit();
 
-    this.#canvas.setSize(
-      width * Drawing.screenUnit,
-      height * Drawing.screenUnit
-    );
+    this.#canvas.setCanvas(width * screenUnit, height * screenUnit);
     this.#canvas.drawGrid(height, width);
     this.#canvas.drawNodes(nodesList, nodesMap);
 
     popupStatusMessage({
-      color: COLOR_INFO,
+      className: CLASS_INFO,
       message: `${Date.now() - now} ms`,
       duration: TIME_FOUR_SECONDS,
     });
   }
 
   save(inputContent: string): void {
-    setLocalStorageItem(KEY_TREE_JSON_INPUT_CONTENT, inputContent);
-  }
-
-  load() {
-    return getLocalStorageItem(KEY_TREE_JSON_INPUT_CONTENT);
+    if (Settings.get<boolean>(SETTING_USE_AUTO_SAVE)) {
+      setLocalStorageItem(KEY_TREE_JSON_INPUT_CONTENT, inputContent);
+    }
   }
 
   read(): string {

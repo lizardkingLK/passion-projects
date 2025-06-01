@@ -1,21 +1,60 @@
-import { popupStatusMessage } from "../utility";
 import {
-  COLOR_SUCCESS,
+  CLASS_INFO,
+  CLASS_SUCCESS,
   INFO_SAVED_SETTINGS,
+  INFO_WAITING_INPUT,
+  SETTING_NUMERIC_MAX,
+  SETTING_NUMERIC_MIN,
+  TIME_FIVE_SECONDS,
+  TIME_INFINITE,
   TIME_ONE_SECOND,
 } from "../constants";
 import { Settings } from "../settings";
 import { Input } from "../input";
+import { popupStatusMessage, clearPopupStatusMessage } from "../notifying";
+import { Drawing } from "../drawing";
 
 export class Handler {
+  static #inputChangeWait: number;
+  static #inputChangePopup: HTMLParagraphElement | null;
   #input: Input;
 
   constructor() {
+    Handler.#inputChangeWait = 0;
+    Handler.#inputChangePopup = null;
+
     this.#input = Input.getInstance();
   }
 
-  inputChanged() {
-    this.#input.draw();
+  inputChanged(event: CustomEvent) {
+    if (event.detail?.isSynthetic) {
+      this.#input.draw();
+      return;
+    }
+
+    if (Drawing.useImmediateDraw()) {
+      this.#input.draw();
+      return;
+    }
+
+    if (Handler.#inputChangeWait) {
+      clearTimeout(Handler.#inputChangeWait);
+    }
+
+    if (!Handler.#inputChangePopup) {
+      Handler.#inputChangePopup = popupStatusMessage({
+        className: CLASS_INFO,
+        message: INFO_WAITING_INPUT,
+        duration: TIME_INFINITE,
+      });
+    }
+
+    Handler.#inputChangeWait = setTimeout(() => {
+      clearPopupStatusMessage(Handler.#inputChangePopup, () => {
+        Handler.#inputChangePopup = null;
+        this.#input.draw();
+      });
+    }, TIME_FIVE_SECONDS);
   }
 
   handleInputFormat() {
@@ -24,6 +63,19 @@ export class Handler {
 
   inputFocusOutValidation() {
     this.#input.validate();
+  }
+
+  numericalSettingChanged(target: HTMLInputElement) {
+    const value = Number.parseInt(target.value);
+    if (value < SETTING_NUMERIC_MIN) {
+      target.value = SETTING_NUMERIC_MIN.toString();
+      return;
+    }
+
+    if (value > SETTING_NUMERIC_MAX) {
+      target.value = SETTING_NUMERIC_MAX.toString();
+      return;
+    }
   }
 
   elementDragged(
@@ -68,7 +120,7 @@ export class Handler {
     Settings.evaluateSettings();
 
     popupStatusMessage({
-      color: COLOR_SUCCESS,
+      className: CLASS_SUCCESS,
       duration: TIME_ONE_SECOND,
       message: INFO_SAVED_SETTINGS,
     });

@@ -1,0 +1,69 @@
+[
+  {
+    "label": "Input Area",
+    "description": [
+      "This is the area where you should input the tree data.",
+      "For any given input kind below, the tree will be generated.",
+      "Input will wait for you to complete.",
+      "This behavior can be changed using setting \"Use Immediate Draw\""
+    ]
+  },
+  {
+    "label": "Json Input",
+    "description": [
+      "You can input a non-array & nested json object to generate a binary tree.",
+      "The keys that must include in this object are, \"left\", \"right\" and \"value\".",
+      "\"value\" must be numeric.",
+      "",
+      "Check below example:",
+      "{",
+      "&nbsp;&nbsp;\"left\": null,",
+      "&nbsp;&nbsp;\"right\": null,",
+      "&nbsp;&nbsp;\"value\": 2",
+      "}"
+    ]
+  },
+  {
+    "label": "Array Input",
+    "description": [
+      "You can input a decimal & non-scientific array to generate a binary tree.",
+      "The input can be either comma separated or whitespace separated",
+      "",
+      "Check below examples:",
+      "2, 3, 4",
+      "or",
+      "2 3 4"
+    ]
+  },
+  {
+    "label": "Visual Area",
+    "description": [
+      "This is the area where the tree will be displayed in.",
+      "For a given valid input, the output tree will be rendered here."
+    ]
+  },
+  {
+    "label": "Format Input",
+    "description": [
+      "You can format input using the \"Format Input\" button.",
+      "The input must be valid before you can format the input."
+    ]
+  },
+  {
+    "label": "Redraw Tree",
+    "description": [
+      "You can redraw the tree using the \"Redraw Tree\" button.",
+      "The input must be valid before you can redraw the tree."
+    ]
+  },
+  {
+    "label": "Save Output",
+    "description": ["You can save the output using the \"Save Output\" button."]
+  },
+  {
+    "label": "Settings",
+    "description": [
+      "You can change the settings using the \"View Settings\" button."
+    ]
+  }
+]

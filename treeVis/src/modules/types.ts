@@ -41,6 +41,13 @@ export type TDrawCircleNode = Pick<
   "cordinateY" | "cordinateX" | "radius"
 >;
 
+export type TDrawBoxNode = {
+  cordinateX: number;
+  cordinateY: number;
+  width: number;
+  height: number;
+};
+
 export interface LineNode {
   startX: number;
   startY: number;
@@ -68,7 +75,7 @@ export type TBoxConfiguration = {
 export type TStatusPopup = {
   message: string;
   duration: number;
-  color: string;
+  className: string;
 };
 
 export type TImage = { id: string; src: string; alt: string };
