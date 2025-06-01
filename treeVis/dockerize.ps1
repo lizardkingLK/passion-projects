@@ -102,8 +102,8 @@ foreach ($containerName in $containerNames) {
         & docker container stop $containerName
     }
 
-    # check if stopeed container with image exist
-    $hasContainerStopped = ((& docker ps `
+    # check if stopped container with image exist
+    $hasContainerStopped = ((& docker ps -a `
                 --filter $nameFilter) `
             -split '\n').Length -ge 2
 
@@ -114,7 +114,7 @@ foreach ($containerName in $containerNames) {
             -Message "info. removing the running container"
 
         & docker container rm $containerName
-    }   
+    }
 }
 
 # build the container
