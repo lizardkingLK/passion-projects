@@ -1,4 +1,5 @@
 import { Drawing } from "..";
+import { SMOOTHING_ENABLED, SMOOTHING_QUALITY } from "../../constants";
 import { TDrawCircleNode } from "../../types";
 
 export class CircleShape {
@@ -8,11 +9,21 @@ export class CircleShape {
     this.#context = context;
   }
 
-  drawCircle({ cordinateX, cordinateY, radius }: TDrawCircleNode) {
-    this.#context.lineWidth = Drawing.getLineWidth();
-    this.#context.beginPath();
+  #setContext(lineWidth: number) {
+    this.#context.lineWidth = lineWidth;
+    this.#context.imageSmoothingEnabled = SMOOTHING_ENABLED;
+    this.#context.imageSmoothingQuality = SMOOTHING_QUALITY;
+    this.#context.strokeStyle = Drawing.getLineColor()!;
+    this.#context.fillStyle = Drawing.getNodeColor()!;
+  }
 
+  drawCircle({ cordinateX, cordinateY, radius }: TDrawCircleNode) {
+    const lineWidth = Drawing.getLineWidth() * 2;
     const startAngle = Math.atan(cordinateY / cordinateX);
+
+    this.#setContext(lineWidth);
+
+    this.#context.beginPath();
 
     this.#context.arc(
       cordinateX,
@@ -23,11 +34,13 @@ export class CircleShape {
     );
 
     this.#context.stroke();
+
+    this.#context.fill();
   }
 
   clearCircle({ cordinateX, cordinateY, radius }: TDrawCircleNode) {
     const lineWidth = Drawing.getLineWidth();
-    
+
     this.#context.clearRect(
       cordinateX - radius - lineWidth,
       cordinateY - radius - lineWidth,
