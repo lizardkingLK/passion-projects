@@ -87,7 +87,7 @@ foreach ($containerName in $containerNames) {
 
     # check if container with image is running
     $statusFilter = "status=running"
-    $isContainerRunningResult = (& docker ps `
+    $isContainerRunningResult = (& docker ps -a `
             --filter $nameFilter `
             --filter $statusFilter)
     $isContainerRunning = ($isContainerRunningResult `
