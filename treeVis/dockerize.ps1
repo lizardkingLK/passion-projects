@@ -87,7 +87,7 @@ foreach ($containerName in $containerNames) {
 
     # check if container with image is running
     $statusFilter = "status=running"
-    $isContainerRunningResult = (& docker ps `
+    $isContainerRunningResult = (& docker ps -a `
             --filter $nameFilter `
             --filter $statusFilter)
     $isContainerRunning = ($isContainerRunningResult `
@@ -103,7 +103,7 @@ foreach ($containerName in $containerNames) {
     }
 
     # check if stopped container with image exist
-    $hasContainerStopped = ((& docker ps `
+    $hasContainerStopped = ((& docker ps -a `
                 --filter $nameFilter) `
             -split '\n').Length -ge 2
 
@@ -114,7 +114,7 @@ foreach ($containerName in $containerNames) {
             -Message "info. removing the running container"
 
         & docker container rm $containerName
-    }   
+    }
 }
 
 # build the container
