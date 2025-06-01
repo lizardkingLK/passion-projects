@@ -1,15 +1,11 @@
 import { CircleShape } from "../drawing/circle";
 import { TDrawCircleNode, TDrawEdge, TEdge, TNode } from "../types";
-import {
-  SMOOTHING_ENABLED,
-  SMOOTHING_QUALITY,
-  STROKE_STYLE,
-  TREE_VISUAL,
-} from "../constants";
+import { TREE_VISUAL } from "../constants";
 import { LineShape } from "../drawing/line";
 import { GridShape } from "../drawing/grid";
 import { TextShape } from "../drawing/text";
 import { Drawing } from "../drawing";
+import { BoxShape } from "../drawing/box";
 
 export class Canvas {
   // canvas elements
@@ -17,22 +13,21 @@ export class Canvas {
   #context: CanvasRenderingContext2D;
 
   // composed drawing items
+  #box: BoxShape;
   #grid: GridShape;
   #circle: CircleShape;
   #line: LineShape;
   #text: TextShape;
 
-  // nodes tree
+  // root node
   #rootNode: TNode | null;
 
   constructor() {
     this.#canvas = document.querySelector(TREE_VISUAL)!;
-    this.setSize(0, 0);
-
     this.#context = this.#canvas.getContext("2d")!;
-    this.#initializeContext();
 
     this.#grid = new GridShape(this.#context);
+    this.#box = new BoxShape(this.#context);
     this.#circle = new CircleShape(this.#context);
     this.#line = new LineShape(this.#context);
     this.#text = new TextShape(this.#context);
@@ -40,20 +35,10 @@ export class Canvas {
     this.#rootNode = null;
   }
 
-  #initializeContext() {
-    this.#context.lineWidth = Drawing.getLineWidth();
-    this.#context.strokeStyle = STROKE_STYLE;
-    this.#context.imageSmoothingEnabled = SMOOTHING_ENABLED;
-    this.#context.imageSmoothingQuality = SMOOTHING_QUALITY;
-  }
-
-  setSize(width: number, height: number) {
+  setCanvas(width: number, height: number) {
     this.#canvas.width = width;
     this.#canvas.height = height;
-  }
-
-  setStyle(styleString: string) {
-    this.#canvas.style = styleString;
+    this.#box.drawBox({ cordinateX: 0, cordinateY: 0, width, height });
   }
 
   // nodes
