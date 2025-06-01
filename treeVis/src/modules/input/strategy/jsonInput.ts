@@ -114,9 +114,15 @@ export class JsonInput implements InputStrategy<Json> {
 
     const staticKeys = ["left", "right", "value", ""];
     let inputKeys: string[] = [];
+    let isValidKeys = true;
 
     try {
       const parsed = JSON.parse(input, (key, value) => {
+        if (value instanceof Object && Object.keys(value).length === 0) {
+          isValidKeys = false;
+          return;
+        }
+
         inputKeys.push(key);
 
         return value;
@@ -131,6 +137,7 @@ export class JsonInput implements InputStrategy<Json> {
       }
 
       if (
+        !isValidKeys ||
         !inputKeys.every((key) => staticKeys.includes(key)) ||
         !staticKeys.every((key) => inputKeys.includes(key))
       ) {
