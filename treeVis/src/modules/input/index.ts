@@ -1,5 +1,5 @@
 import { Canvas } from "../canvas";
-import { SETTING_USE_ARRAY_INPUT, SETTING_USE_AUTO_SAVE } from "../constants";
+import { SETTING_USE_ARRAY_INPUT } from "../constants";
 import { Settings } from "../settings";
 import { Json } from "../types";
 import { InputStrategy } from "./strategy";
@@ -30,24 +30,13 @@ export class Input {
     return this.#inputItem;
   }
 
-  static initialize() {
-    if (!Settings.get<boolean>(SETTING_USE_AUTO_SAVE)) {
-      return;
-    }
-
-    this.#inputItem.#input.initialize();
-  }
-
   switchInput() {
-    if (Settings.get<boolean>(SETTING_USE_ARRAY_INPUT)) {
-      this.#input = this.#arrayInput;
-    } else {
-      this.#input = this.#jsonInput;
-    }
+    this.#input = Settings.get<boolean>(SETTING_USE_ARRAY_INPUT)
+      ? this.#arrayInput
+      : this.#jsonInput;
 
     this.#input.setHeading();
     this.#input.initialize();
-    this.#input.setVisual();
   }
 
   draw() {
