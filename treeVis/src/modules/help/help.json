@@ -63,7 +63,9 @@
   {
     "label": "Settings",
     "description": [
-      "You can change the settings using the \"View Settings\" button."
+      "You can change the settings using the \"View Settings\" button.",
+      "If need you can reset your settings using \"Reset Settings\" button the under\"Settings\"",
+      "(Requires a page reload)"
     ]
   }
 ]
