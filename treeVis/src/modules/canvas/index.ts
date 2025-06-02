@@ -1,6 +1,10 @@
 import { CircleShape } from "../drawing/circle";
 import { TDrawCircleNode, TDrawEdge, TEdge, TNode } from "../types";
-import { TREE_VISUAL } from "../constants";
+import {
+  CANVAS_HEIGHT_RATIO,
+  CANVAS_WIDTH_RATIO,
+  TREE_VISUAL,
+} from "../constants";
 import { LineShape } from "../drawing/line";
 import { GridShape } from "../drawing/grid";
 import { TextShape } from "../drawing/text";
@@ -33,6 +37,23 @@ export class Canvas {
     this.#text = new TextShape(this.#context);
 
     this.#rootNode = null;
+  }
+
+  clearCanvas() {
+    const screenUnit = Drawing.getScreenUnit();
+
+    const width = screenUnit * CANVAS_WIDTH_RATIO;
+    this.#canvas.width = width;
+
+    const height = screenUnit * CANVAS_HEIGHT_RATIO;
+    this.#canvas.height = height;
+
+    this.#box.drawBox({
+      cordinateX: 0,
+      cordinateY: 0,
+      width: width,
+      height: height,
+    });
   }
 
   setCanvas(width: number, height: number) {
@@ -89,7 +110,7 @@ export class Canvas {
   }
 
   drawValue({ cordinateX, cordinateY }: TDrawCircleNode, value: number) {
-    this.#text.drawText(cordinateX, cordinateY, value.toString());
+    this.#text.drawText({ cordinateX, cordinateY, value: value.toString() });
   }
 
   clearNodes(rootNode: TNode | null = this.#rootNode) {
