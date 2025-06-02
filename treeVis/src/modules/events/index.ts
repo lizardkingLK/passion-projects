@@ -15,7 +15,9 @@ import {
   TREE_VISUAL_HEADER_HELP,
   TREE_HELP_HEADER_CLOSE,
   TREE_HELP_FOOTER_CLOSE,
-  CLASS_SETTINGS_NUMBER_INPUT,
+  TREE_SETTINGS_RESET,
+  TREE_VISUAL_HEADER_SAVE,
+  TREE_SETTINGS_NUMBER_INPUT,
 } from "../constants";
 import { Handler } from "./handler";
 
@@ -32,6 +34,7 @@ export class Events {
     events.#registerTreeInputFocusOutListener();
     events.#registerTreeInputOptionClickListener();
     events.#registerDialogClickListener();
+    events.#registerSaveClickListener();
     events.#registerSettingsInputListener();
     events.#registerDragListeners();
   }
@@ -63,6 +66,7 @@ export class Events {
         dialogOpenQuerySelector: TREE_VISUAL_HEADER_SETTINGS,
         dialogCloseHeaderQuerySelector: TREE_SETTINGS_HEADER_CLOSE,
         dialogCloseFooterQuerySelector: TREE_SETTINGS_FOOTER_CLOSE,
+        dialogResetQuerySelector: TREE_SETTINGS_RESET,
         dialogSaveQuerySelector: TREE_SETTINGS_SAVE,
       },
       {
@@ -70,7 +74,6 @@ export class Events {
         dialogOpenQuerySelector: TREE_VISUAL_HEADER_HELP,
         dialogCloseHeaderQuerySelector: TREE_HELP_HEADER_CLOSE,
         dialogCloseFooterQuerySelector: TREE_HELP_FOOTER_CLOSE,
-        dialogSaveQuerySelector: null,
       },
     ].forEach(
       ({
@@ -78,6 +81,7 @@ export class Events {
         dialogOpenQuerySelector,
         dialogCloseHeaderQuerySelector,
         dialogCloseFooterQuerySelector,
+        dialogResetQuerySelector,
         dialogSaveQuerySelector,
       }) => {
         let dialogModal = document.querySelector(dialogQuerySelector)!;
@@ -110,24 +114,31 @@ export class Events {
             false
           );
 
-        if (!dialogSaveQuerySelector) {
-          return;
-        }
+        dialogResetQuerySelector &&
+          document.querySelector(dialogResetQuerySelector)!.addEventListener(
+            "click",
+            () => {
+              this.#handler.settingsResetRequested();
+              dialogModal.setAttribute("class", CLASS_HIDDEN);
+            },
+            false
+          );
 
-        document.querySelector(dialogSaveQuerySelector)!.addEventListener(
-          "click",
-          () => {
-            this.#handler.settingsSubmitted();
-            dialogModal.setAttribute("class", CLASS_HIDDEN);
-          },
-          false
-        );
+        dialogSaveQuerySelector &&
+          document.querySelector(dialogSaveQuerySelector)!.addEventListener(
+            "click",
+            () => {
+              this.#handler.settingsSubmitted();
+              dialogModal.setAttribute("class", CLASS_HIDDEN);
+            },
+            false
+          );
       }
     );
   }
 
   #registerSettingsInputListener() {
-    document.querySelectorAll(CLASS_SETTINGS_NUMBER_INPUT)!.forEach((input) =>
+    document.querySelectorAll(TREE_SETTINGS_NUMBER_INPUT)!.forEach((input) =>
       input.addEventListener(
         "keyup",
         (event) => {
@@ -164,7 +175,15 @@ export class Events {
     );
   }
 
-  // TODO: handle download canvas functionality
+  #registerSaveClickListener() {
+    document.querySelector(TREE_VISUAL_HEADER_SAVE)!.addEventListener(
+      "click",
+      () => {
+        this.#handler.handleVisualSave();
+      },
+      false
+    );
+  }
 
   #registerDragListeners() {
     [TREE_INPUT_CONTAINER, TREE_VISUAL].forEach((container) => {
