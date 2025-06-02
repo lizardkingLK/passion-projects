@@ -1,12 +1,17 @@
+import {
+  CLASS_INFO,
+  DURATION_FIVE_SECONDS,
+  INFO_THEME_CHANGE_DETECTED,
+} from "../constants";
+import { popupStatusMessage } from "../notifying";
+
 export class Theme {
-  static #prefersDark: boolean | null;
   static themeColor: string | null;
   static negateColor: string | null;
 
   static render() {
-    this.#prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
+    const mediaQueryList = window.matchMedia("(prefers-color-scheme: dark)");
+    const { matches: prefersDarkTheme } = mediaQueryList;
 
     const rootElement = document.querySelector(":root") as HTMLElement;
     const computedStyles = getComputedStyle(rootElement);
@@ -14,13 +19,20 @@ export class Theme {
     const dayColor = computedStyles.getPropertyValue("--day");
     const nightColor = computedStyles.getPropertyValue("--night");
 
-    if (this.#prefersDark) {
+    if (prefersDarkTheme) {
       this.themeColor = nightColor;
       this.negateColor = dayColor;
     } else {
       this.themeColor = dayColor;
       this.negateColor = nightColor;
     }
+
+    mediaQueryList.onchange = () =>
+      popupStatusMessage({
+        className: CLASS_INFO,
+        message: INFO_THEME_CHANGE_DETECTED,
+        duration: DURATION_FIVE_SECONDS,
+      });
   }
 
   static get(isNegateColor: boolean) {
