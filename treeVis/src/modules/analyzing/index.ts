@@ -1,3 +1,4 @@
+import { STRING_LEFT, STRING_RIGHT, STRING_VALUE } from "../constants";
 import { Drawing } from "../drawing";
 import {
   Json,
@@ -14,19 +15,19 @@ export function arrayAnalyze(inputArray: number[]): Result<TNodeAnalyzed> {
     let left: TChildNode;
     let right: TChildNode;
     while (true) {
-      left = <TChildNode>rootNode["left"];
-      right = <TChildNode>rootNode["right"];
+      left = <TChildNode>rootNode[STRING_LEFT];
+      right = <TChildNode>rootNode[STRING_RIGHT];
 
-      if (newNode["value"]! <= rootNode["value"]!) {
+      if (newNode[STRING_VALUE]! <= rootNode[STRING_VALUE]!) {
         if (!left) {
-          rootNode["left"] = newNode;
+          rootNode[STRING_LEFT] = newNode;
           break;
         }
 
         rootNode = left;
       } else {
         if (!right) {
-          rootNode["right"] = newNode;
+          rootNode[STRING_RIGHT] = newNode;
           break;
         }
 
@@ -55,9 +56,9 @@ export function jsonAnalyze(object: Json): Result<TNodeAnalyzed> {
   const depthTracker = [];
 
   let current: TNode = {
-    left: object["left"] as TNode,
-    right: object["right"] as TNode,
-    value: object["value"] as number,
+    left: object[STRING_LEFT] as TNode,
+    right: object[STRING_RIGHT] as TNode,
+    value: object[STRING_VALUE] as number,
     level: 0,
     edge: null,
   };
@@ -127,7 +128,7 @@ function nodeAnalyze(
   { boxEndX, boxStartX, boxStartY }: TBoxConfiguration
 ) {
   const lineWidth = Drawing.getLineWidth();
-  
+
   const { left, right, index } = rootNode;
 
   const circleConfig: TDrawCircleNode = {
