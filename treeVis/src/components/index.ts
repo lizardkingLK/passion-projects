@@ -168,6 +168,11 @@ const sectionTreeSettingsContainer = `
         <p>Close</p>
       </button>
       <button
+        id="treeSettingsFooterReset"
+        title="Reset Settings">
+        <p>Reset</p>
+      </button>
+      <button
         id="treeSettingsFooterSave"
         title="Save Changes">
         <p>Save</p>

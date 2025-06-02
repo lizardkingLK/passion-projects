@@ -1,7 +1,11 @@
-import { TREE_VISUAL_STATUS_CONTAINER, TIME_INFINITE } from "../constants";
+import { TREE_VISUAL_STATUS_CONTAINER, DURATION_INFINITE } from "../constants";
 import { TStatusPopup } from "../types";
 
-export function popupStatusMessage({ className, message, duration }: TStatusPopup) {
+export function popupStatusMessage({
+  className,
+  message,
+  duration,
+}: TStatusPopup) {
   const container = document.querySelector(
     TREE_VISUAL_STATUS_CONTAINER
   )! as HTMLElement;
@@ -11,7 +15,7 @@ export function popupStatusMessage({ className, message, duration }: TStatusPopu
   statusContent.setAttribute("class", className);
   container.appendChild(statusContent);
 
-  if (duration !== TIME_INFINITE) {
+  if (duration !== DURATION_INFINITE) {
     setTimeout(() => animatePopupStatusMessage(statusContent, 1), duration);
   }
 
@@ -19,7 +23,7 @@ export function popupStatusMessage({ className, message, duration }: TStatusPopu
 }
 
 export function clearPopupStatusMessage(
-  statusContent: HTMLParagraphElement | null,
+  statusContent: HTMLElement | null,
   useCallback?: () => void
 ) {
   if (statusContent) {
@@ -28,7 +32,7 @@ export function clearPopupStatusMessage(
 }
 
 function animatePopupStatusMessage(
-  statusContent: HTMLParagraphElement,
+  statusContent: HTMLElement,
   opacity: number,
   useCallback?: () => void
 ) {

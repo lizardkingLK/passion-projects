@@ -4,16 +4,17 @@ import { Canvas } from "../../canvas";
 import {
   KEY_TREE_ARRAY_INPUT_CONTENT,
   TREE_INPUT,
-  TIME_ONE_SECOND,
+  DURATION_ONE_SECOND,
   SETTING_USE_AUTO_FORMAT,
   ERROR_INPUT_HAS_NO_CONTENT,
   ERROR_INPUT_ARRAY_IS_INVALID,
   SETTING_USE_AUTO_SAVE,
   INFO_FORMATTED_INPUT,
   TREE_INPUT_HEADER_TITLE,
-  TIME_FOUR_SECONDS,
+  DURATION_FOUR_SECONDS,
   CLASS_ERROR,
   CLASS_INFO,
+  STRING_ARRAY_INPUT,
 } from "../../constants";
 import { Drawing } from "../../drawing";
 import { popupStatusMessage } from "../../notifying";
@@ -29,12 +30,15 @@ export class ArrayInput implements InputStrategy<number[]> {
   }
 
   initialize(): void {
-    const inputContent =
+    (document.querySelector(TREE_INPUT)! as HTMLTextAreaElement).value =
       getLocalStorageItem(KEY_TREE_ARRAY_INPUT_CONTENT) ?? "";
-    const inputElement = document.querySelector(
-      TREE_INPUT
-    )! as HTMLTextAreaElement;
-    inputElement.value = inputContent;
+
+    if (!Settings.get<boolean>(SETTING_USE_AUTO_SAVE)) {
+      this.#canvas.clearCanvas();
+      return;
+    }
+
+    this.draw();
   }
 
   validate(): void {
@@ -43,7 +47,7 @@ export class ArrayInput implements InputStrategy<number[]> {
       popupStatusMessage({
         className: CLASS_ERROR,
         message: message!,
-        duration: TIME_ONE_SECOND,
+        duration: DURATION_ONE_SECOND,
       });
 
       return;
@@ -65,7 +69,7 @@ export class ArrayInput implements InputStrategy<number[]> {
       popupStatusMessage({
         className: CLASS_ERROR,
         message: message!,
-        duration: TIME_ONE_SECOND,
+        duration: DURATION_ONE_SECOND,
       });
 
       return;
@@ -87,19 +91,20 @@ export class ArrayInput implements InputStrategy<number[]> {
 
     popupStatusMessage({
       className: CLASS_INFO,
-      duration: TIME_ONE_SECOND,
+      duration: DURATION_ONE_SECOND,
       message: INFO_FORMATTED_INPUT,
     });
   }
 
   setHeading(): void {
-    document.querySelector(TREE_INPUT_HEADER_TITLE)!.innerHTML = "Array Input";
+    document.querySelector(TREE_INPUT_HEADER_TITLE)!.innerHTML =
+      STRING_ARRAY_INPUT;
   }
 
   setVisual() {
     this.#canvas.clearGrid();
     this.#canvas.clearNodes();
-    this.#canvas.setCanvas(0, 0);
+    this.#canvas.clearCanvas();
   }
 
   isValidInput(input?: string): Result<number[]> {
@@ -175,7 +180,7 @@ export class ArrayInput implements InputStrategy<number[]> {
     popupStatusMessage({
       className: CLASS_INFO,
       message: `${Date.now() - now} ms`,
-      duration: TIME_FOUR_SECONDS,
+      duration: DURATION_FOUR_SECONDS,
     });
   }
 

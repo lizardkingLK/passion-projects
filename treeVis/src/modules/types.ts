@@ -48,6 +48,15 @@ export type TDrawBoxNode = {
   height: number;
 };
 
+export type TDrawTextNode = {
+  cordinateX: number;
+  cordinateY: number;
+  value: string;
+  fontSize?: number;
+  fontColor?: string;
+  maxWidth?: number;
+};
+
 export interface LineNode {
   startX: number;
   startY: number;
