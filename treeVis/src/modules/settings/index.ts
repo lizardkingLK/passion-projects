@@ -1,4 +1,6 @@
 import {
+  KEY_TREE_ARRAY_INPUT_CONTENT,
+  KEY_TREE_JSON_INPUT_CONTENT,
   KEY_TREE_VISUAL_SETTINGS,
   SETTING_CANVAS_COLOR,
   SETTING_LINE_COLOR,
@@ -7,25 +9,41 @@ import {
 import settingsJson from "./settings.json";
 import { Json } from "../types";
 import { Input } from "../input";
-import { getLocalStorageItem, setLocalStorageItem } from "../storing";
+import {
+  clearLocalStorageItem,
+  getLocalStorageItem,
+  setLocalStorageItem,
+} from "../storing";
 import { Theme } from "../theme";
 
 export class Settings {
   static settings: Json | null = null;
 
   static initialize() {
-    this.evaluateSettings();
-    this.#setSettingsUI();
+    this.evaluateSettingConfigurations(true);
   }
 
-  static evaluateSettings() {
+  static evaluateSettingConfigurations(isInitializing?: boolean) {
     const settingsResult = getLocalStorageItem(KEY_TREE_VISUAL_SETTINGS);
 
-    Settings.settings = settingsResult
+    this.settings = settingsResult
       ? JSON.parse(settingsResult)
-      : Settings.#evaluateDefaults();
+      : this.#evaluateDefaultConfigurations();
 
-    this.#setupReflectingUI();
+    if (isInitializing) {
+      this.#evaluateSettingComponents();
+      return;
+    }
+
+    this.#setupReflectingComponents();
+  }
+
+  static resetSettings() {
+    [
+      KEY_TREE_VISUAL_SETTINGS,
+      KEY_TREE_ARRAY_INPUT_CONTENT,
+      KEY_TREE_JSON_INPUT_CONTENT,
+    ].forEach((key) => clearLocalStorageItem(key));
   }
 
   static saveSettings() {
@@ -63,7 +81,7 @@ export class Settings {
     return null;
   }
 
-  static #evaluateDefaults() {
+  static #evaluateDefaultConfigurations() {
     let settings: Json = {};
 
     settingsJson.forEach(({ name, default: value }) =>
@@ -81,11 +99,11 @@ export class Settings {
     return settings;
   }
 
-  static #setupReflectingUI() {
+  static #setupReflectingComponents() {
     Input.getInstance().switchInput();
   }
 
-  static #setSettingsUI() {
+  static #evaluateSettingComponents() {
     this.#setSettingDialog();
     this.#setSettingValues();
   }

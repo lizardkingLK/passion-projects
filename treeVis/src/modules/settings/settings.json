@@ -19,7 +19,7 @@
         "name": "useAutoSave",
         "id": "settingCheckUseAutoSave",
         "label": "Use Auto Save",
-        "description": "Enable this to auto save input and retrieve it later.\nThis saves it in the localStorage.",
+        "description": "Enable this to auto save the input in browser storage.\nWhen load or refreshed, it will load the input and according visual.",
         "type": "checkbox",
         "default": false
     },
@@ -35,7 +35,7 @@
         "name": "useImmediateDraw",
         "id": "settingCheckUseImmediateDraw",
         "label": "Use Immediate Draw",
-        "description": "Enabling this draws the tree immediately.\nStops waiting for the user to finish input.",
+        "description": "Enabling this draws the tree immediately.\nStops waiting for the user to finish input.\nAffects AutoSave function as well.",
         "type": "checkbox",
         "default": false
     },
