@@ -21,6 +21,7 @@
 	left: 50%;
 	transform: translate(-50%, -50%);
 	cursor: grab;
+	transition-duration: 500ms;
 }
 
 .hidden {
@@ -307,8 +308,17 @@
 #treeHelpFooterClose,
 #treeSettingsFooterClose {
 	border: .2vh solid var(--dark);
-	padding: 1vh;
 	background-color: var(--light);
+	color: var(--dark);
+	padding: 1vh;
+	cursor: pointer;
+}
+
+#treeSettingsFooterReset {
+	border: .2vh solid var(--danger);
+	background-color: var(--danger);
+	color: var(--light);
+	padding: 1vh;
 	cursor: pointer;
 }
 
@@ -356,8 +366,8 @@
 
 	#treeHelpHeader,
 	#treeSettingsHeader {
-		color: var(--day);
 		background-color: var(--night);
+		color: var(--day);
 	}
 
 	#treeHelpFooter,
@@ -369,13 +379,16 @@
 	#treeSettingsFooterClose {
 		border-color: var(--day);
 		background-color: var(--night);
-		color: var(--day);
+	}
+
+	#treeSettingsFooterReset {
+		border-color: var(--danger);
+		background-color: var(--night);
 	}
 
 	#treeSettingsFooterSave {
 		border-color: var(--day);
 		background-color: var(--night);
-		color: var(--day);
 	}
 
 	#treeVisual {
