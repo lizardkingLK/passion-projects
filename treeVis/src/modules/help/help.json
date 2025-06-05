@@ -67,5 +67,13 @@
       "If need you can reset your settings using \"Reset Settings\" button the under\"Settings\"",
       "(Requires a page reload)"
     ]
+  },
+  {
+    "label": "Attention",
+    "description": [
+      "* Please note that html canvas API has a max size limit for width, height or area.",
+      "* This max size limit may differ from client browser.",
+      "* So very large output may or may not work even with small node sizes."
+    ]
   }
 ]
