@@ -42,10 +42,10 @@ export class Canvas {
   clearCanvas() {
     const screenUnit = Drawing.getScreenUnit();
 
-    const width = screenUnit * CANVAS_WIDTH_RATIO;
+    const width = screenUnit * CANVAS_WIDTH_RATIO * 4;
     this.#canvas.width = width;
 
-    const height = screenUnit * CANVAS_HEIGHT_RATIO;
+    const height = screenUnit * CANVAS_HEIGHT_RATIO * 4;
     this.#canvas.height = height;
 
     this.#box.drawBox({
