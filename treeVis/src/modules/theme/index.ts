@@ -3,7 +3,7 @@ import {
   DURATION_FIVE_SECONDS,
   INFO_THEME_CHANGE_DETECTED,
 } from "../constants";
-import { popupStatusMessage } from "../notifying";
+import { popupContent } from "../notifying";
 
 export class Theme {
   static themeColor: string | null;
@@ -28,7 +28,7 @@ export class Theme {
     }
 
     mediaQueryList.onchange = () =>
-      popupStatusMessage({
+      popupContent({
         className: CLASS_INFO,
         message: INFO_THEME_CHANGE_DETECTED,
         duration: DURATION_FIVE_SECONDS,

@@ -17,7 +17,7 @@ import {
   STRING_ARRAY_INPUT,
 } from "../../constants";
 import { Drawing } from "../../drawing";
-import { popupStatusMessage } from "../../notifying";
+import { popupContent } from "../../notifying";
 import { Settings } from "../../settings";
 import { getLocalStorageItem, setLocalStorageItem } from "../../storing";
 import { Result } from "../../types";
@@ -44,7 +44,7 @@ export class ArrayInput implements InputStrategy<number[]> {
   validate(): void {
     const { isSuccess, message } = this.isValidInput();
     if (!isSuccess) {
-      popupStatusMessage({
+      popupContent({
         className: CLASS_ERROR,
         message: message!,
         duration: DURATION_ONE_SECOND,
@@ -66,7 +66,7 @@ export class ArrayInput implements InputStrategy<number[]> {
     }
 
     if (!isSuccess) {
-      popupStatusMessage({
+      popupContent({
         className: CLASS_ERROR,
         message: message!,
         duration: DURATION_ONE_SECOND,
@@ -89,7 +89,7 @@ export class ArrayInput implements InputStrategy<number[]> {
       this.save(treeInput.value);
     }
 
-    popupStatusMessage({
+    popupContent({
       className: CLASS_INFO,
       duration: DURATION_ONE_SECOND,
       message: INFO_FORMATTED_INPUT,
@@ -177,7 +177,7 @@ export class ArrayInput implements InputStrategy<number[]> {
     this.#canvas.drawGrid(height, width);
     this.#canvas.drawNodes(nodesList, nodesMap);
 
-    popupStatusMessage({
+    popupContent({
       className: CLASS_INFO,
       message: `${Date.now() - now} ms`,
       duration: DURATION_FOUR_SECONDS,
