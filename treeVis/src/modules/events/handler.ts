@@ -10,13 +10,13 @@ import {
   DURATION_ONE_SECOND,
   INFO_RESET_SETTINGS,
   TREE_VISUAL,
-  TREE_VISUAL_STATUS_CONTAINER,
-  STRING_CLICK_TO_DOWNLOAD,
-  TREE_SETTINGS_DOWNLOAD_LINK,
+  TREE_VISUAL_HEADER_DOWNLOAD,
+  CLASS_BLOCK,
+  CLASS_HIDDEN,
 } from "../constants";
 import { Settings } from "../settings";
 import { Input } from "../input";
-import { popupStatusMessage, clearPopupStatusMessage } from "../notifying";
+import { handlePoppedContent, popupContent } from "../notifying";
 import { Drawing } from "../drawing";
 
 export class Handler {
@@ -47,7 +47,7 @@ export class Handler {
     }
 
     if (!Handler.#inputChangePopup) {
-      Handler.#inputChangePopup = popupStatusMessage({
+      Handler.#inputChangePopup = popupContent({
         className: CLASS_INFO,
         message: INFO_WAITING_INPUT,
         duration: DURATION_INFINITE,
@@ -55,10 +55,16 @@ export class Handler {
     }
 
     Handler.#inputChangeWait = setTimeout(() => {
-      clearPopupStatusMessage(Handler.#inputChangePopup, () => {
-        Handler.#inputChangePopup = null;
-        this.#input.draw();
-      });
+      handlePoppedContent(
+        Handler.#inputChangePopup,
+        () => {
+          Handler.#inputChangePopup!.remove();
+        },
+        () => {
+          this.#input.draw();
+          Handler.#inputChangePopup = null;
+        }
+      );
     }, DURATION_FIVE_SECONDS);
   }
 
@@ -84,13 +90,6 @@ export class Handler {
   }
 
   handleVisualSave() {
-    const previousLink = document.querySelector(
-      TREE_SETTINGS_DOWNLOAD_LINK
-    ) as HTMLElement | null;
-    if (previousLink) {
-      previousLink.remove();
-    }
-
     const treeVisual = document.querySelector(
       TREE_VISUAL
     )! as HTMLCanvasElement;
@@ -111,16 +110,17 @@ export class Handler {
           return;
         }
 
-        const downloadLink = document.createElement("a");
+        const downloadLink = document.querySelector(
+          TREE_VISUAL_HEADER_DOWNLOAD
+        )! as HTMLAnchorElement;
         downloadLink.href = fileReader.result as string;
         downloadLink.download = `${Date.now()}.png`;
-        downloadLink.innerHTML = STRING_CLICK_TO_DOWNLOAD;
-        downloadLink.setAttribute("class", "downloadLink");
-        downloadLink.onclick = () => clearPopupStatusMessage(downloadLink);
-
-        document
-          .querySelector(TREE_VISUAL_STATUS_CONTAINER)!
-          .appendChild(downloadLink);
+        downloadLink.classList.replace(CLASS_HIDDEN, CLASS_BLOCK);
+        downloadLink.onclick = () =>
+          handlePoppedContent(downloadLink, () => {
+            downloadLink.classList.replace(CLASS_BLOCK, CLASS_HIDDEN);
+            downloadLink.style.opacity = "1";
+          });
       };
     });
   }
@@ -166,7 +166,7 @@ export class Handler {
     Settings.resetSettings();
     Settings.evaluateSettingConfigurations();
 
-    popupStatusMessage({
+    popupContent({
       className: CLASS_SUCCESS,
       duration: DURATION_ONE_SECOND,
       message: INFO_RESET_SETTINGS,
@@ -177,7 +177,7 @@ export class Handler {
     Settings.saveSettings();
     Settings.evaluateSettingConfigurations();
 
-    popupStatusMessage({
+    popupContent({
       className: CLASS_SUCCESS,
       duration: DURATION_ONE_SECOND,
       message: INFO_SAVED_SETTINGS,

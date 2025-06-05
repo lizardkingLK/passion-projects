@@ -1,11 +1,7 @@
 import { TREE_VISUAL_STATUS_CONTAINER, DURATION_INFINITE } from "../constants";
 import { TStatusPopup } from "../types";
 
-export function popupStatusMessage({
-  className,
-  message,
-  duration,
-}: TStatusPopup) {
+export function popupContent({ className, message, duration }: TStatusPopup) {
   const container = document.querySelector(
     TREE_VISUAL_STATUS_CONTAINER
   )! as HTMLElement;
@@ -16,40 +12,45 @@ export function popupStatusMessage({
   container.appendChild(statusContent);
 
   if (duration !== DURATION_INFINITE) {
-    setTimeout(() => animatePopupStatusMessage(statusContent, 1), duration);
+    setTimeout(
+      () => animatePopupContent(statusContent, 1, () => statusContent.remove()),
+      duration
+    );
   }
 
   return statusContent;
 }
 
-export function clearPopupStatusMessage(
+export function handlePoppedContent(
   statusContent: HTMLElement | null,
-  useCallback?: () => void
+  onFinished?: () => void,
+  onAfterFinished?: () => void
 ) {
   if (statusContent) {
-    animatePopupStatusMessage(statusContent, 1, useCallback);
+    animatePopupContent(statusContent, 1, onFinished, onAfterFinished);
   }
 }
 
-function animatePopupStatusMessage(
-  statusContent: HTMLElement,
+function animatePopupContent(
+  contentElement: HTMLElement,
   opacity: number,
-  useCallback?: () => void
+  onFinished?: () => void,
+  onAfterFinished?: () => void
 ) {
   if (opacity === 0) {
-    statusContent.remove();
-    useCallback && useCallback();
-
+    onFinished && onFinished();
+    onAfterFinished && onAfterFinished();
     return;
   }
 
-  statusContent.style.opacity = opacity.toString();
+  contentElement.style.opacity = opacity.toString();
 
   requestAnimationFrame(() =>
-    animatePopupStatusMessage(
-      statusContent,
+    animatePopupContent(
+      contentElement,
       Number((opacity - 0.1).toPrecision(1)),
-      useCallback
+      onFinished,
+      onAfterFinished
     )
   );
 }

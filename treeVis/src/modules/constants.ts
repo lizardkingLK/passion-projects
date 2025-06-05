@@ -28,9 +28,11 @@ export const FONT_FAMILY = "{0} Roboto Mono";
 // element ids
 export const TREE_VISUAL_CONTAINER = "#treeVisualContainer";
 export const TREE_VISUAL = "#treeVisual";
-export const TREE_VISUAL_HEADER_SAVE = "#treeVisualHeaderSave";
-export const TREE_VISUAL_HEADER_HELP = "#treeVisualHeaderHelp";
-export const TREE_VISUAL_HEADER_SETTINGS = "#treeVisualHeaderSettings";
+export const TREE_VISUAL_HEADER_OPTIONS = "#treeVisualHeaderOptions";
+export const TREE_VISUAL_HEADER_DOWNLOAD = "#treeVisualHeaderOptionDownload";
+export const TREE_VISUAL_HEADER_SAVE = "#treeVisualHeaderOptionSave";
+export const TREE_VISUAL_HEADER_HELP = "#treeVisualHeaderOptionHelp";
+export const TREE_VISUAL_HEADER_SETTINGS = "#treeVisualHeaderOptionSettings";
 export const TREE_VISUAL_STATUS_CONTAINER = "#treeVisualStatusContainer";
 export const TREE_VISUAL_STATUS = "#treeVisualStatus";
 
@@ -53,7 +55,6 @@ export const TREE_INPUT_OPTION_REDRAW = "#treeInputHeaderOptionRedraw";
 export const TREE_INPUT_OPTION_FORMAT = "#treeInputHeaderOptionFormat";
 
 export const TREE_SETTINGS_NUMBER_INPUT = ".numberSettingsFieldContainer input";
-export const TREE_SETTINGS_DOWNLOAD_LINK = ".downloadLink";
 
 // element common classes
 export const CLASS_INFO = "info";

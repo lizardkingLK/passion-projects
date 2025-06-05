@@ -129,13 +129,20 @@ Write-Host `
     -ForegroundColor Cyan `
     -Message "info. running the container"
 
+# port to start web server
+$portContainer = 80
+
+# port to expose web server
+$portHost = 8080
+
 & docker run `
     --name $containerName -d `
-    -p 8080:80 `
+    -p "${portHost}:${portContainer}" `
     $containerName
 
 # write the ready to test url
 Write-Host `
     -ForegroundColor Cyan `
     -Message `
-    "info. test the build with http://localhost:8080"
+
+    "info. test the build with http://localhost:$portHost"

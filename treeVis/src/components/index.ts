@@ -57,30 +57,47 @@ const sectionTreeVisualContainer = `
     <div id="treeVisualHeader">
       <p id="treeVisualHeaderLabel">Visual</p>
       <div id="treeVisualHeaderOptions">
-        <button
-          id="treeVisualHeaderSave"
-          title="Save Output">
+        <a
+          id="treeVisualHeaderOptionDownload"
+          class="downloadLink hidden"
+          href="#"
+          title="Click to Download">
           <svg
-            id="treeVisualHeaderSaveIcon"
+            id="treeVisualHeaderOptionDownloadIcon"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="size-6"
-          >
+            class="size-6">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+          </svg>
+        </a>
+        <button
+          id="treeVisualHeaderOptionSave"
+          title="Save Output">
+          <svg
+            id="treeVisualHeaderOptionSaveIcon"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-6">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
-              d="m9 13.5 3 3m0 0 3-3m-3 3v-6m1.06-4.19-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z"
-            />
+              d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
           </svg>
         </button>
         <button
-          id="treeVisualHeaderHelp"
+          id="treeVisualHeaderOptionHelp"
           title="View Help">
           <svg
-            id="treeVisualHeaderHelpIcon"
+            id="treeVisualHeaderOptionHelpIcon"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -96,10 +113,10 @@ const sectionTreeVisualContainer = `
           </svg>
         </button>
         <button
-          id="treeVisualHeaderSettings"
+          id="treeVisualHeaderOptionSettings"
           title="View Settings">
           <svg
-            id="treeVisualHeaderSettingsIcon"
+            id="treeVisualHeaderOptionSettingsIcon"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
