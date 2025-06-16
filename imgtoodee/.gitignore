@@ -1,0 +1,6 @@
+# bin, obj files
+*/**/bin
+*/**/obj
+
+# zip files
+*.zip
