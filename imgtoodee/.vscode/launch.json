@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": ".NET Core Launch (console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "dotnet: build",
+            "program": "${workspaceFolder}\\src\\imgtoodee.Program\\bin\\Debug\\net9.0\\imgtoodee.Program.dll",
+            "args": [
+                "tests\\imgtoodee.Core.Tests\\data\\img1.png"
+            ],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        }
+    ]
+}
