@@ -2,7 +2,6 @@ import {
   CLASS_BLOCK,
   CLASS_HIDDEN,
   TREE_INPUT,
-  TREE_INPUT_CONTAINER,
   TREE_INPUT_OPTION_FORMAT,
   TREE_INPUT_OPTION_REDRAW,
   TREE_SETTINGS_FOOTER_CLOSE,
@@ -186,7 +185,7 @@ export class Events {
   }
 
   #registerDragListeners() {
-    [TREE_INPUT_CONTAINER, TREE_VISUAL].forEach((container) => {
+    [TREE_VISUAL].forEach((container) => {
       let previousLeft: number = 0;
       let currentLeft: number = 0;
       let previousTop: number = 0;

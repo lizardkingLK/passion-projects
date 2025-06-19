@@ -29,7 +29,6 @@ export const FONT_FAMILY = "{0} Roboto Mono";
 export const TREE_VISUAL_CONTAINER = "#treeVisualContainer";
 export const TREE_VISUAL = "#treeVisual";
 export const TREE_VISUAL_HEADER_OPTIONS = "#treeVisualHeaderOptions";
-export const TREE_VISUAL_HEADER_DOWNLOAD = "#treeVisualHeaderOptionDownload";
 export const TREE_VISUAL_HEADER_SAVE = "#treeVisualHeaderOptionSave";
 export const TREE_VISUAL_HEADER_HELP = "#treeVisualHeaderOptionHelp";
 export const TREE_VISUAL_HEADER_SETTINGS = "#treeVisualHeaderOptionSettings";

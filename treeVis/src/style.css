@@ -21,7 +21,7 @@
 	left: 50%;
 	transform: translate(-50%, -50%);
 	cursor: grab;
-	transition-duration: 500ms;
+	/* transition-duration: 500ms; */
 }
 
 .hidden {
@@ -33,21 +33,21 @@
 }
 
 .info {
-	padding: 1vh;
+	padding: 1rem;
 	background-color: var(--light);
 	color: var(--dark);
 	opacity: 1;
 }
 
 .error {
-	padding: 1vh;
+	padding: 1rem;
 	background-color: var(--light);
 	color: var(--danger);
 	opacity: 1;
 }
 
 .success {
-	padding: 1vh;
+	padding: 1rem;
 	background-color: var(--light);
 	color: var(--success);
 	opacity: 1;
@@ -55,24 +55,26 @@
 
 .helpField,
 .settingsField {
-	margin: 2vh;
+	margin: 2rem;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: 1vh;
-	padding: 0 0 1vh 0;
-	border-bottom: .1vh solid var(--dark);
+	gap: 1rem;
+	padding: 0 0 1rem 0;
+	border-bottom: .1rem solid var(--dark);
 }
 
 .helpField .helpFieldDescription p,
 .settingsField .settingsFieldDescription p {
 	font-weight: bold;
 	margin-bottom: 1rem;
+	font-size: 2rem;
 }
 
 .helpField .helpFieldDescription h5,
 .settingsField .settingsFieldDescription h5 {
 	line-height: 1.5rem;
+	font-size: 1.2rem;
 }
 
 .settingsField input[type="checkbox"] {
@@ -82,9 +84,9 @@
 
 .checkboxSettingsFieldContainer {
 	position: relative;
-	width: 2vh;
-	height: 2vh;
-	border: .2vh solid var(--dark);
+	width: 2rem;
+	height: 2rem;
+	border: .2rem solid var(--dark);
 	cursor: pointer;
 }
 
@@ -99,8 +101,8 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	width: 2vh;
-	height: 2vh;
+	width: 2rem;
+	height: 2rem;
 	background-color: transparent;
 }
 
@@ -109,7 +111,7 @@
 }
 
 .numberSettingsFieldContainer input {
-	font-size: 2vh;
+	font-size: 2rem;
 	font-family: 'Roboto Mono';
 	font-weight: bold;
 	text-align: right;
@@ -117,8 +119,8 @@
 	appearance: none;
 	outline: none;
 	border: none;
-	padding: 1vh;
-	width: 6vh;
+	padding: 1rem;
+	width: 6rem;
 }
 
 .numberSettingsFieldContainer input::-webkit-outer-spin-button,
@@ -132,37 +134,73 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	width: 2vh;
-	height: 2vh;
+	width: 2rem;
+	height: 2rem;
 	background-color: transparent;
 }
 
+#appContainer {
+	display: flex;
+}
+
+#treeSidebarOptionsContainer {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	background-color: var(--gray);
+	border-right: 1px solid var(--night);
+	z-index: 1;
+}
+
+#treeSidebarOptionsContainer button {
+	border: none;
+	cursor: pointer;
+	width: 4rem;
+	height: 4rem;
+}
+
+#treeSidebarOptionsContainer button svg {
+	width: 1.5rem;
+	height: 1.5rem;
+	vertical-align: middle;
+	fill: var(--dark);
+}
+
+#treeSidebarContainer {
+	background-color: var(--gray);
+	z-index: 1;
+}
+
+#treeSidebarContainer #treeSidebarHeader {
+	display: flex;
+	align-items: center;
+	height: 4rem;
+	margin-left: 2rem;
+}
+
+#treeVisual {
+	overflow: scroll;
+}
+
 #treeInputContainer {
-	position: absolute;
-	top: 75%;
-	left: 50%;
-	transform: translate(-50%, -50%);
 	height: max-content;
 	z-index: 2;
-	min-width: 25vw;
-	backdrop-filter: blur(1vh);
+	min-width: 20vw;
 }
 
 #treeInputHeader {
-	height: 5vh;
+	height: 4rem;
 	background-color: var(--gray);
 	color: var(--dark);
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 0 2vh;
-	border: .2vh solid var(--dark);
-	border-bottom: none;
+	padding: 0 2rem;
 }
 
 #treeInputHeaderOptions {
 	display: flex;
-	gap: 1vh;
+	gap: 1rem;
 	align-items: center;
 }
 
@@ -171,112 +209,62 @@
 	cursor: pointer;
 }
 
-#treeInputHeaderOptionRedrawIcon,
-#treeInputHeaderOptionFormatIcon {
+#treeInputHeaderOptions button svg {
 	width: 1.2rem;
 	height: 1.2rem;
 	vertical-align: middle;
 }
 
 #treeInput {
-	min-height: 20vh;
-	min-width: 25vw;
-	width: auto;
-	height: 100%;
-	padding: 2vh;
+	min-height: calc(100vh - 5rem);
+	padding: 2rem;
 	background-color: transparent;
+	font-size: 1.5rem;
 	outline: none;
-	border: .2vh solid var(--dark);
-	border-top: none;
-}
-
-#treeVisualContainer {
-	z-index: -1;
-	min-width: calc(100vw - (100vw - 100%));
-	width: max-content;
-}
-
-#treeVisualHeader {
-	z-index: 1;
-	position: fixed;
-	width: calc(100vw - (100vw - 100%));
-	height: 5vh;
-	background-color: var(--gray);
-	color: var(--dark);
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-#treeVisualHeaderLabel {
-	margin-left: 4vh;
-}
-
-#treeVisualHeaderOptions {
-	margin-right: 4vh;
-	display: flex;
-	gap: 2vh;
-}
-
-#treeVisualHeaderOptions button {
+	outline: none;
 	border: none;
-	cursor: pointer;
-}
-
-#treeVisualHeaderOptionSettingsIcon,
-#treeVisualHeaderOptionHelpIcon,
-#treeVisualHeaderOptionSaveIcon,
-#treeVisualHeaderOptionDownloadIcon {
-	width: 1.5rem;
-	height: 1.5rem;
-	vertical-align: middle;
-}
-
-#treeVisual {
-	top: 25%;
-	height: auto;
-	display: block;
-	border: .2vh var(--gray) solid;
-	overflow: scroll;
+	resize: none;
 }
 
 #treeVisualStatusContainer {
-	position: fixed;
+	position: absolute;
 	bottom: 0;
-	min-width: calc(100vw - (100vw - 100%));
-	width: auto;
+	right: 0;
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	gap: 2vh;
-	height: 5vh;
-	padding: 0 2vh;
-	backdrop-filter: blur(1vh);
-	background-color: transparent;
+	gap: 2rem;
+	height: 4rem;
+	padding: 0 2rem;
 }
 
 #treeVisualStatusContainer p {
 	width: max-content;
+	backdrop-filter: blur(1rem);
+	background-color: transparent;
 }
 
 #treeHelpContainer,
 #treeSettingsContainer {
 	position: absolute;
 	top: 0;
+	left: 4rem;
+	/* right: 4rem; */
+	/* width: calc(100vw - 4rem); */
 	background-color: var(--light);
-	width: calc(100vw - (100vw - 100%));
 	z-index: 2;
+	/* overflow: scroll; */
 }
 
 #treeHelpHeader,
 #treeSettingsHeader {
-	height: 5vh;
+	height: 4rem;
 	color: var(--dark);
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	background-color: var(--gray);
-	padding: 0 4vh;
+	padding: 0 2rem;
 }
 
 #treeHelpHeaderClose,
@@ -294,45 +282,54 @@
 
 #treeHelpContent,
 #treeSettingsContent {
-	padding: 2vh;
+	/* padding: 2rem; */
+	overflow-y: scroll;
+	height: calc(100vh - 8rem);
 }
 
 #treeHelpFooter,
 #treeSettingsFooter {
 	display: flex;
-	justify-content: flex-end;
-	border-bottom: .2vh solid var(--dark);
-	gap: 2vh;
-	padding: 4vh;
-	width: calc(100vw - (100vw - 100%));
+	justify-content: center;
+	/* border-bottom: .2rem solid var(--dark); */
+	/* gap: 2rem; */
+	/* padding: 0 4rem; */
+	/* width: calc(100vw - 4rem); */
+	height: 4rem;
 }
 
 #treeHelpFooterClose,
 #treeSettingsFooterClose {
-	border: .2vh solid var(--dark);
-	background-color: var(--light);
+	/* border: .2rem solid var(--dark); */
+	border: none;
+	background-color: var(--gray);
 	color: var(--dark);
-	padding: 1vh;
+	padding: 1rem;
 	cursor: pointer;
+	margin: .5rem 0;
 }
 
 #treeSettingsFooterReset {
-	border: .2vh solid var(--danger);
+	/* border: .2rem solid var(--danger); */
+	border: none;
 	background-color: var(--danger);
 	color: var(--light);
-	padding: 1vh;
+	padding: 1rem;
 	cursor: pointer;
+	margin: .5rem 0;
 }
 
 #treeSettingsFooterSave {
-	border: .2vh solid var(--dark);
+	/* border: .2rem solid var(--dark); */
+	border: none;
 	background-color: var(--dark);
 	color: var(--light);
-	padding: 1vh;
+	padding: 1rem;
 	cursor: pointer;
+	margin: .5rem 0;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
 	* {
 		background-color: var(--night);
 		border-color: var(--night);
@@ -423,4 +420,4 @@
 	.success {
 		background-color: var(--day);
 	}
-}
+} */

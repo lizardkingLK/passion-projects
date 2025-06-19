@@ -41,4 +41,39 @@ internal static class Helper
 
         return string.Join(null, hexStringCharArray);
     }
+
+    internal static int[] ConvertToBitArray(char leftSideHexValue, char rightSideHexValue)
+    {
+        int[] convertedBits = ConvertToBinary(leftSideHexValue);
+
+        int[] bitArray = new int[8];
+        int i;
+        for (i = 0; i < 4; i++)
+        {
+            bitArray[i] = convertedBits[i];
+        }
+
+        convertedBits = ConvertToBinary(rightSideHexValue);
+        for (i = 0; i < 4; i++)
+        {
+            bitArray[4 + i] = convertedBits[i];
+        }
+
+        return bitArray;
+    }
+
+    private static int[] ConvertToBinary(char hexCharacter)
+    {
+        int hexCharacterInt = ConvertToDecimal([hexCharacter]);
+        int[] numberArray = new int[4];
+        int index = 3;
+        while (hexCharacterInt > 0)
+        {
+            numberArray[index] = hexCharacterInt % 2;
+            hexCharacterInt /= 2;
+            index--;
+        }
+
+        return numberArray;
+    }
 }

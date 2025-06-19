@@ -10,9 +10,6 @@ import {
   DURATION_ONE_SECOND,
   INFO_RESET_SETTINGS,
   TREE_VISUAL,
-  TREE_VISUAL_HEADER_DOWNLOAD,
-  CLASS_BLOCK,
-  CLASS_HIDDEN,
 } from "../constants";
 import { Settings } from "../settings";
 import { Input } from "../input";
@@ -110,17 +107,10 @@ export class Handler {
           return;
         }
 
-        const downloadLink = document.querySelector(
-          TREE_VISUAL_HEADER_DOWNLOAD
-        )! as HTMLAnchorElement;
-        downloadLink.href = fileReader.result as string;
-        downloadLink.download = `${Date.now()}.png`;
-        downloadLink.classList.replace(CLASS_HIDDEN, CLASS_BLOCK);
-        downloadLink.onclick = () =>
-          handlePoppedContent(downloadLink, () => {
-            downloadLink.classList.replace(CLASS_BLOCK, CLASS_HIDDEN);
-            downloadLink.style.opacity = "1";
-          });
+        const downloadButton = document.createElement("a");
+        downloadButton.href = fileReader.result as string;
+        downloadButton.download = `${Date.now()}.png`;
+        downloadButton.click();
       };
     });
   }
