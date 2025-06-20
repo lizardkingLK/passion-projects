@@ -10,11 +10,17 @@ import {
   DURATION_ONE_SECOND,
   INFO_RESET_SETTINGS,
   TREE_VISUAL,
+  TREE_SIDEBAR_CONTAINER,
+  CLASS_BLOCK,
+  CLASS_HIDDEN,
+  CLASS_ACTIVE,
+  TREE_SIDEBAR_OPTIONS_CONTAINER,
 } from "../constants";
 import { Settings } from "../settings";
 import { Input } from "../input";
 import { handlePoppedContent, popupContent } from "../notifying";
 import { Drawing } from "../drawing";
+import { sidebarContainers } from "../../values";
 
 export class Handler {
   static #inputChangeWait: number;
@@ -26,6 +32,33 @@ export class Handler {
     Handler.#inputChangePopup = null;
 
     this.#input = Input.getInstance();
+  }
+
+  toggleSidePane() {
+    const treeSidebarContainer = document.querySelector(
+      TREE_SIDEBAR_CONTAINER
+    )!;
+
+    if (treeSidebarContainer.classList.contains(CLASS_BLOCK)) {
+      treeSidebarContainer.classList.remove(CLASS_BLOCK);
+      treeSidebarContainer.classList.add(CLASS_HIDDEN);
+      return;
+    }
+
+    treeSidebarContainer.classList.remove(CLASS_HIDDEN);
+    treeSidebarContainer.classList.add(CLASS_BLOCK);
+  }
+
+  toggleActive(element: HTMLButtonElement) {
+    if (element.classList.contains(CLASS_ACTIVE)) {
+      return;
+    }
+
+    document
+      .querySelector(`${TREE_SIDEBAR_OPTIONS_CONTAINER} .${CLASS_ACTIVE}`)!
+      .classList.remove(CLASS_ACTIVE);
+
+    element.classList.add(CLASS_ACTIVE);
   }
 
   inputChanged(event: CustomEvent) {
@@ -73,6 +106,24 @@ export class Handler {
     this.#input.validate();
   }
 
+  handleSidebarOptionOpen(sidebarContent: HTMLElement) {
+    {
+      const sidebarContainer = document.querySelector(TREE_SIDEBAR_CONTAINER)!;
+      if (sidebarContainer.classList.contains(CLASS_HIDDEN)) {
+        sidebarContainer.classList.remove(CLASS_HIDDEN);
+        sidebarContainer.classList.add(CLASS_BLOCK);
+      }
+
+      sidebarContainers.forEach((elementId) => {
+        const element = document.querySelector(elementId)!;
+        element.classList.remove(CLASS_BLOCK);
+        element.classList.add(CLASS_HIDDEN);
+      });
+
+      sidebarContent.setAttribute("class", CLASS_BLOCK);
+    }
+  }
+
   numericalSettingChanged(target: HTMLInputElement) {
     const value = Number.parseInt(target.value);
     if (value < SETTING_NUMERIC_MIN) {
@@ -84,6 +135,11 @@ export class Handler {
       target.value = SETTING_NUMERIC_MAX.toString();
       return;
     }
+  }
+
+  colorSettingChanged(target: HTMLInputElement) {
+    (target.nextSibling as HTMLSpanElement).style.backgroundColor =
+      target.value;
   }
 
   handleVisualSave() {

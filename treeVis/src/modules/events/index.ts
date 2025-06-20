@@ -1,22 +1,16 @@
 import {
-  CLASS_BLOCK,
-  CLASS_HIDDEN,
+  draggableElements,
+  sidebarButtonTogglers,
+  sidebarContentTogglers,
+} from "../../values";
+import {
   TREE_INPUT,
   TREE_INPUT_OPTION_FORMAT,
   TREE_INPUT_OPTION_REDRAW,
-  TREE_SETTINGS_FOOTER_CLOSE,
-  TREE_SETTINGS_HEADER_CLOSE,
-  TREE_SETTINGS_CONTAINER,
-  TREE_SETTINGS_SAVE,
-  TREE_VISUAL,
-  TREE_VISUAL_HEADER_SETTINGS,
-  TREE_HELP_CONTAINER,
-  TREE_VISUAL_HEADER_HELP,
-  TREE_HELP_HEADER_CLOSE,
-  TREE_HELP_FOOTER_CLOSE,
-  TREE_SETTINGS_RESET,
   TREE_VISUAL_HEADER_SAVE,
   TREE_SETTINGS_NUMBER_INPUT,
+  TREE_SIDEBAR_TOGGLE,
+  TREE_SETTINGS_COLOR_INPUT,
 } from "../constants";
 import { Handler } from "./handler";
 
@@ -29,13 +23,28 @@ export class Events {
 
   static register() {
     const events = new Events();
+    events.#registerSidebarListeners();
     events.#registerTreeInputChangeListener();
     events.#registerTreeInputFocusOutListener();
     events.#registerTreeInputOptionClickListener();
-    events.#registerDialogClickListener();
+    events.#registerSidebarContentListener();
     events.#registerSaveClickListener();
-    events.#registerSettingsInputListener();
+    events.#registerSettingsInputListeners();
     events.#registerDragListeners();
+  }
+
+  #registerSidebarListeners() {
+    document
+      .querySelector(TREE_SIDEBAR_TOGGLE)!
+      .addEventListener("click", () => this.#handler.toggleSidePane());
+
+    sidebarButtonTogglers.forEach((elementId) => {
+      document
+        .querySelector(elementId)!
+        .addEventListener("click", (event) =>
+          this.#handler.toggleActive(event.currentTarget as HTMLButtonElement)
+        );
+    });
   }
 
   #registerTreeInputChangeListener() {
@@ -58,85 +67,48 @@ export class Events {
       );
   }
 
-  #registerDialogClickListener() {
-    [
-      {
-        dialogQuerySelector: TREE_SETTINGS_CONTAINER,
-        dialogOpenQuerySelector: TREE_VISUAL_HEADER_SETTINGS,
-        dialogCloseHeaderQuerySelector: TREE_SETTINGS_HEADER_CLOSE,
-        dialogCloseFooterQuerySelector: TREE_SETTINGS_FOOTER_CLOSE,
-        dialogResetQuerySelector: TREE_SETTINGS_RESET,
-        dialogSaveQuerySelector: TREE_SETTINGS_SAVE,
-      },
-      {
-        dialogQuerySelector: TREE_HELP_CONTAINER,
-        dialogOpenQuerySelector: TREE_VISUAL_HEADER_HELP,
-        dialogCloseHeaderQuerySelector: TREE_HELP_HEADER_CLOSE,
-        dialogCloseFooterQuerySelector: TREE_HELP_FOOTER_CLOSE,
-      },
-    ].forEach(
+  #registerSidebarContentListener() {
+    sidebarContentTogglers.forEach(
       ({
-        dialogQuerySelector,
-        dialogOpenQuerySelector,
-        dialogCloseHeaderQuerySelector,
-        dialogCloseFooterQuerySelector,
-        dialogResetQuerySelector,
-        dialogSaveQuerySelector,
+        sidebarContentQuerySelector,
+        sidebarOpenQuerySelector,
+        sidebarResetQuerySelector,
+        sidebarSaveQuerySelector,
       }) => {
-        let dialogModal = document.querySelector(dialogQuerySelector)!;
-
-        document.querySelector(dialogOpenQuerySelector)!.addEventListener(
-          "click",
-          () => {
-            dialogModal.setAttribute("class", CLASS_BLOCK);
-          },
-          false
-        );
+        const sidebarContent = document.querySelector(
+          sidebarContentQuerySelector
+        )! as HTMLElement;
 
         document
-          .querySelector(dialogCloseHeaderQuerySelector)!
+          .querySelector(sidebarOpenQuerySelector)!
           .addEventListener(
             "click",
-            () => {
-              dialogModal.setAttribute("class", CLASS_HIDDEN);
-            },
+            () => this.#handler.handleSidebarOptionOpen(sidebarContent),
             false
           );
 
-        document
-          .querySelector(dialogCloseFooterQuerySelector)!
-          .addEventListener(
-            "click",
-            () => {
-              dialogModal.setAttribute("class", CLASS_HIDDEN);
-            },
-            false
-          );
+        sidebarResetQuerySelector &&
+          document
+            .querySelector(sidebarResetQuerySelector)!
+            .addEventListener(
+              "click",
+              () => this.#handler.settingsResetRequested(),
+              false
+            );
 
-        dialogResetQuerySelector &&
-          document.querySelector(dialogResetQuerySelector)!.addEventListener(
-            "click",
-            () => {
-              this.#handler.settingsResetRequested();
-              dialogModal.setAttribute("class", CLASS_HIDDEN);
-            },
-            false
-          );
-
-        dialogSaveQuerySelector &&
-          document.querySelector(dialogSaveQuerySelector)!.addEventListener(
-            "click",
-            () => {
-              this.#handler.settingsSubmitted();
-              dialogModal.setAttribute("class", CLASS_HIDDEN);
-            },
-            false
-          );
+        sidebarSaveQuerySelector &&
+          document
+            .querySelector(sidebarSaveQuerySelector)!
+            .addEventListener(
+              "click",
+              () => this.#handler.settingsSubmitted(),
+              false
+            );
       }
     );
   }
 
-  #registerSettingsInputListener() {
+  #registerSettingsInputListeners() {
     document.querySelectorAll(TREE_SETTINGS_NUMBER_INPUT)!.forEach((input) =>
       input.addEventListener(
         "keyup",
@@ -148,6 +120,14 @@ export class Events {
         false
       )
     );
+
+    document
+      .querySelectorAll(TREE_SETTINGS_COLOR_INPUT)!
+      .forEach((input) =>
+        input.addEventListener("change", (event) =>
+          this.#handler.colorSettingChanged(event.target as HTMLInputElement)
+        )
+      );
   }
 
   #registerTreeInputOptionClickListener() {
@@ -185,7 +165,7 @@ export class Events {
   }
 
   #registerDragListeners() {
-    [TREE_VISUAL].forEach((container) => {
+    draggableElements.forEach((container) => {
       let previousLeft: number = 0;
       let currentLeft: number = 0;
       let previousTop: number = 0;
@@ -200,8 +180,8 @@ export class Events {
 
       const elementContainer: HTMLElement = document.querySelector(container)!;
 
-      elementContainer.setAttribute("draggable", "true");
       elementContainer.classList.add("draggable");
+      elementContainer.setAttribute("draggable", "true");
       elementContainer.addEventListener("dragstart", dragStart, false);
       elementContainer.addEventListener("dragend", dragEnd, false);
     });
