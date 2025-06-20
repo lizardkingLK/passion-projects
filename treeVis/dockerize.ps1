@@ -133,7 +133,7 @@ Write-Host `
 $portContainer = 80
 
 # port to expose web server
-$portHost = 8080
+$portHost = 8081
 
 & docker run `
     --name $containerName -d `
