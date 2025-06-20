@@ -1,6 +1,7 @@
 namespace imgtoodee.Core;
 
 using static Utility;
+using static Decoder;
 using static Generator;
 
 public static class ImageTooDee
@@ -25,7 +26,15 @@ public static class ImageTooDee
             return;
         }
 
-        Result<char[][]> image2dResult = GetImage2DResult(filePathResult.Data!);
+        Result<List<char[]>> imageDecodedResult = GetImageData(filePathResult.Data!);
+        if (imageDecodedResult.Errors != null)
+        {
+            Environment.ExitCode = 1;
+            WriteError(imageDecodedResult.Errors);
+            return;
+        }
+
+        Result<List<char[]>> image2dResult = GetImage2DResult(imageDecodedResult.Data!);
         if (image2dResult.Errors != null)
         {
             Environment.ExitCode = 1;

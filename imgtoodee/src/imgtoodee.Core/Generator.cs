@@ -1,196 +1,93 @@
-﻿namespace imgtoodee.Core;
+namespace imgtoodee.Core;
 
-using static Constants;
-using static Values;
 using static Helper;
-using static Results;
 
 internal static class Generator
 {
-    internal static Result<char[][]> GetImage2DResult(string filePath)
+    internal static Result<List<char[]>> GetImage2DResult(List<char[]> imageData)
     {
-        using FileStream imageFile = new(filePath, FileMode.Open);
-
-        Result<bool> imageHeaderResult = ValidateImageHeader(imageFile);
-        if (!imageHeaderResult.Data)
+        Result<(bool, int[]?)> imageDataHeaderResult;
+        foreach (char[] imageDataRow in imageData)
         {
-            return new Result<char[][]>(null, imageHeaderResult.Errors);
-        }
-
-        Result<bool> imageBodyResult = ValidateImageBody(imageFile);
-        if (!imageBodyResult.Data)
-        {
-            return new Result<char[][]>(null, imageBodyResult.Errors);
-        }
-
-        imageFile.Close();
-
-        return new Result<char[][]>([], null);
-    }
-
-    private static Result<bool> ValidateImageBody(FileStream imageFile)
-    {
-        Result<bool> hasMoreChunksResult = ValidateImageBodyChunkLength(imageFile, out int chunkLength);
-        if (!hasMoreChunksResult.Data)
-        {
-            return ResultEndOfRead;
-        }
-
-        hasMoreChunksResult = ValidateImageBodyChunkType(imageFile, out ChunkTypeEnum? chunkType);
-        if (hasMoreChunksResult.Errors != null || !hasMoreChunksResult.Data || chunkType == null)
-        {
-            return ErrorInvalidChunkType;
-        }
-
-        hasMoreChunksResult = ValidateImageBodyChunkContent(imageFile, chunkLength, chunkType!.Value);
-        if (!hasMoreChunksResult.Data)
-        {
-            return ResultEndOfRead;
-        }
-
-        hasMoreChunksResult = ValidateImageBodyChunkChecksum(imageFile);
-        if (!hasMoreChunksResult.Data)
-        {
-            return ResultEndOfRead;
-        }
-
-        return ValidateImageBody(imageFile);
-    }
-
-    private static Result<bool> ValidateImageBodyChunkChecksum(FileStream imageFile)
-    {
-        Result<int> hasMoreChunksResult = IgnoreImageBytes(imageFile, 4);
-        if (hasMoreChunksResult.Data == -1)
-        {
-            return ResultEndOfRead;
-        }
-
-        return ResultHasMoreToRead;
-    }
-
-    private static Result<bool> ValidateImageBodyChunkContent(FileStream imageFile, int chunkLength, ChunkTypeEnum chunkType)
-    {
-        if (chunkType == ChunkTypeEnum.IHDR && chunkLength == 13)
-        {
-            return ValidateImageBodyChunkContentIHDR(imageFile);
-        }
-
-        if (chunkType == ChunkTypeEnum.IDAT)
-        {
-            return ValidateImageBodyChunkContentIDAT(imageFile, chunkLength);
-        }
-        
-        return ResultEndOfRead;
-    }
-
-    private static Result<bool> ValidateImageBodyChunkContentIDAT(FileStream imageFile, int chunkLength)
-    {
-        Console.WriteLine(chunkLength);
-
-        return ResultEndOfRead;
-    }
-
-    private static Result<bool> ValidateImageBodyChunkContentIHDR(FileStream imageFile)
-    {
-        Result<int> hasMoreChunksResult;
-        int content;
-        foreach ((string configuration, int size) in chunkIHDRConfiguration)
-        {
-            hasMoreChunksResult = ReadImageBytes(imageFile, size, out char[] contentArray);
-            if (hasMoreChunksResult.Data == -1)
+            Console.WriteLine("\ninfo. image idat chunk found");
+            imageDataHeaderResult = ProcessImageHeaderData(imageDataRow);
+            if (!imageDataHeaderResult.Data.Item1)
             {
-                return ErrorInvalidChunkType;
+                return new Result<List<char[]>>(null, imageDataHeaderResult.Errors);
             }
 
-            content = ConvertToDecimal(contentArray);
-
-            Console.WriteLine("info. {0} is {1}", configuration, content);
+            ProcessImageBodyData(imageDataRow);
         }
 
-        return ResultHasMoreToRead;
+        return new Result<List<char[]>>([], null);
     }
 
-    private static Result<bool> ValidateImageBodyChunkType(FileStream imageFile, out ChunkTypeEnum? chunkType)
+    private static void ProcessImageBodyData(char[] imageDataRow)
     {
-        chunkType = null;
-
-        Result<int> hasMoreChunksResult = ReadImageBytes(imageFile, 4, out char[] imageBodyChunkType);
-        if (hasMoreChunksResult.Data == -1)
+        int i;
+        int length = imageDataRow.Length;
+        Console.WriteLine("\ndata bytes");
+        char[] currentHexArray;
+        for (i = 6; i < length; i += 2)
         {
-            return ErrorInvalidChunkType;
+            currentHexArray = [imageDataRow[i - 2], imageDataRow[i - 1]];
+            Console.WriteLine(string.Join(null, currentHexArray) + " = " + ConvertToDecimal(currentHexArray));
         }
 
-        if (!Enum.TryParse(typeof(ChunkTypeEnum), ConvertToHexString(imageBodyChunkType), out object? chunkTypeParsed))
+        Console.WriteLine("\nchecksum bytes");
+        for (i = length - 4; i < length; i++)
         {
-            return ErrorInvalidChunkType;
+            currentHexArray = [imageDataRow[i - 2], imageDataRow[i - 1]];
+            Console.WriteLine(string.Join(null, currentHexArray) + " = " + ConvertToDecimal(currentHexArray));
         }
-
-        chunkType = (ChunkTypeEnum?)chunkTypeParsed;
-
-        return ResultHasMoreToRead;
     }
 
-    private static Result<bool> ValidateImageBodyChunkLength(FileStream imageFile, out int chunkLength)
+    private static Result<(bool, int[]?)> ProcessImageHeaderData(char[] imageDataRow)
     {
-        chunkLength = 0;
-
-        Result<int> imageBodyChunkLengthresult = ReadImageBytes(imageFile, 4, out char[] imageBodyChunkLength);
-        if (imageBodyChunkLengthresult.Data == -1)
+        char[] currentHexArray = [imageDataRow[0], imageDataRow[1]];
+        int cmfValue = ConvertToDecimal(currentHexArray);
+        Result<(bool, int[]?)> currentHeaderResult = ProcessImageDataHeaderCMFByte(currentHexArray[0], currentHexArray[1]);
+        if (!currentHeaderResult.Data.Item1)
         {
-            return ResultEndOfRead;
+            return new Result<(bool, int[]?)>((false, null), currentHeaderResult.Errors);
         }
 
-        chunkLength = ConvertToDecimal(imageBodyChunkLength);
+        currentHexArray = [imageDataRow[2], imageDataRow[3]];
+        int flagsValue = ConvertToDecimal(currentHexArray);
+        currentHeaderResult = ProcessImageDataHeaderFlagsByte(currentHexArray[0], currentHexArray[1]);
+        if (!currentHeaderResult.Data.Item1)
+        {
+            return new Result<(bool, int[]?)>((false, null), currentHeaderResult.Errors);
+        }
 
-        return ResultHasMoreToRead;
+        if ((cmfValue * 256 + flagsValue) % 31 != 0)
+        {
+            return new Result<(bool, int[]?)>((false, null), "error. invalid idat header bytes were found");
+        }
+
+        return new Result<(bool, int[]?)>((true, null), null);
     }
 
-    private static Result<bool> ValidateImageHeader(FileStream imageFile)
+    private static Result<(bool, int[]?)> ProcessImageDataHeaderFlagsByte(char leftSideHexValue, char rightSideHexValue)
     {
-        ReadImageBytes(imageFile, 1, out char[] imageBytes);
-        if (!imageTypeTracker.TryGetValue(string.Join(null, imageBytes), out _))
+        int[] convertedBits = ConvertToBitArray(leftSideHexValue, rightSideHexValue);
+        if (convertedBits[2] != 0)
         {
-            return new Result<bool>(false, ERROR_INVALID_FILE_CONTENT);
+            return new Result<(bool, int[]?)>((false, null), "error. invalid flag byte was found");
         }
 
-        IgnoreImageBytes(imageFile, 7);
-
-        return ResultHasMoreToRead;
+        return new Result<(bool, int[]?)>((true, convertedBits), null);
     }
 
-    private static Result<int> ReadImageBytes(FileStream imageFile, int size, out char[] imageBytes)
+    private static Result<(bool, int[]?)> ProcessImageDataHeaderCMFByte(char leftSideHexValue, char rightSideHexValue)
     {
-        imageBytes = new char[size * 2];
-
-        int index = 0;
-        int currentByteAsInt;
-        for (int i = 0; i < size; i++)
+        if (leftSideHexValue != '7' || rightSideHexValue != '8')
         {
-            currentByteAsInt = imageFile.ReadByte();
-            if (currentByteAsInt == -1)
-            {
-                return new Result<int>(-1, null);
-            }
-
-            ConvertToHexChar(currentByteAsInt, imageBytes, index);
-            index += 2;
+            return new Result<(bool, int[]?)>((false, null), "error. invalid idat cmf bytes found");
         }
 
-        return new Result<int>(1, null);
-    }
+        int[] convertedBits = ConvertToBitArray(leftSideHexValue, rightSideHexValue);
 
-    private static Result<int> IgnoreImageBytes(FileStream imageFile, int length)
-    {
-        int currentByteAsInt;
-        for (int i = 0; i < length; i++)
-        {
-            currentByteAsInt = imageFile.ReadByte();
-            if (currentByteAsInt == -1)
-            {
-                return new Result<int>(-1, null);
-            }
-        }
-
-        return new Result<int>(1, null);
+        return new Result<(bool, int[]?)>((true, convertedBits), null);
     }
 }

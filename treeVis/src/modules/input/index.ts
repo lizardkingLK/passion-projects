@@ -1,5 +1,5 @@
 import { Canvas } from "../canvas";
-import { SETTING_USE_ARRAY_INPUT } from "../constants";
+import { SETTING_USE_JSON_INPUT } from "../constants";
 import { Settings } from "../settings";
 import { Json } from "../types";
 import { InputStrategy } from "./strategy";
@@ -31,9 +31,9 @@ export class Input {
   }
 
   switchInput() {
-    this.#input = Settings.get<boolean>(SETTING_USE_ARRAY_INPUT)
-      ? this.#arrayInput
-      : this.#jsonInput;
+    this.#input = Settings.get<boolean>(SETTING_USE_JSON_INPUT)
+      ? this.#jsonInput
+      : this.#arrayInput;
 
     this.#input.setHeading();
     this.#input.initialize();

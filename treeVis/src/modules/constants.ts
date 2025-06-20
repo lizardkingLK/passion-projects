@@ -26,10 +26,13 @@ export const FONT_VARIANT_CAPS = "titling-caps";
 export const FONT_FAMILY = "{0} Roboto Mono";
 
 // element ids
+export const TREE_SIDEBAR_CONTAINER = "#treeSidebarContainer";
+export const TREE_SIDEBAR_OPTIONS_CONTAINER = "#treeSidebarOptionsContainer";
+export const TREE_SIDEBAR_TOGGLE = "#treeSidebarOptionsHead";
+export const TREE_SIDEBAR_INPUT = "#treeSidebarOptionsInput";
 export const TREE_VISUAL_CONTAINER = "#treeVisualContainer";
 export const TREE_VISUAL = "#treeVisual";
 export const TREE_VISUAL_HEADER_OPTIONS = "#treeVisualHeaderOptions";
-export const TREE_VISUAL_HEADER_DOWNLOAD = "#treeVisualHeaderOptionDownload";
 export const TREE_VISUAL_HEADER_SAVE = "#treeVisualHeaderOptionSave";
 export const TREE_VISUAL_HEADER_HELP = "#treeVisualHeaderOptionHelp";
 export const TREE_VISUAL_HEADER_SETTINGS = "#treeVisualHeaderOptionSettings";
@@ -38,13 +41,9 @@ export const TREE_VISUAL_STATUS = "#treeVisualStatus";
 
 export const TREE_HELP_CONTAINER = "#treeHelpContainer";
 export const TREE_HELP_BODY = "#treeHelpContent";
-export const TREE_HELP_HEADER_CLOSE = "#treeHelpHeaderClose";
-export const TREE_HELP_FOOTER_CLOSE = "#treeHelpFooterClose";
 
 export const TREE_SETTINGS_CONTAINER = "#treeSettingsContainer";
 export const TREE_SETTINGS_BODY = "#treeSettingsContent";
-export const TREE_SETTINGS_HEADER_CLOSE = "#treeSettingsHeaderClose";
-export const TREE_SETTINGS_FOOTER_CLOSE = "#treeSettingsFooterClose";
 export const TREE_SETTINGS_SAVE = "#treeSettingsFooterSave";
 export const TREE_SETTINGS_RESET = "#treeSettingsFooterReset";
 
@@ -55,6 +54,7 @@ export const TREE_INPUT_OPTION_REDRAW = "#treeInputHeaderOptionRedraw";
 export const TREE_INPUT_OPTION_FORMAT = "#treeInputHeaderOptionFormat";
 
 export const TREE_SETTINGS_NUMBER_INPUT = ".numberSettingsFieldContainer input";
+export const TREE_SETTINGS_COLOR_INPUT = ".colorSettingsFieldContainer input";
 
 // element common classes
 export const CLASS_INFO = "info";
@@ -62,6 +62,7 @@ export const CLASS_ERROR = "error";
 export const CLASS_SUCCESS = "success";
 export const CLASS_HIDDEN = "hidden";
 export const CLASS_BLOCK = "block";
+export const CLASS_ACTIVE = "active";
 
 // animate or time durations
 export const DURATION_INFINITE = -1;
@@ -75,11 +76,9 @@ export const SETTING_NUMERIC_MAX = 10;
 
 // info messages
 export const INFO_SAVED_SETTINGS = "Settings Saved";
-export const INFO_RESET_SETTINGS =
-  "Settings Reset Done. Refresh page to apply.";
+export const INFO_RESET_SETTINGS = "Settings Reset Done";
 export const INFO_FORMATTED_INPUT = "Input Formatted";
-export const INFO_THEME_CHANGE_DETECTED =
-  "Color Mode Changed. Check colors in settings.";
+export const INFO_THEME_CHANGE_DETECTED = "System Color Mode Changed";
 export const INFO_WAITING_INPUT = "Waiting for you to finish";
 
 // error messages
@@ -92,7 +91,7 @@ export const ERROR_INPUT_COULD_NOT_BE_PARSED = "Input could not be parsed.";
 
 // setting keys
 export const SETTING_USE_GRID = "useGrid";
-export const SETTING_USE_ARRAY_INPUT = "useArrayInput";
+export const SETTING_USE_JSON_INPUT = "useJsonInput";
 export const SETTING_USE_AUTO_FORMAT = "useAutoFormat";
 export const SETTING_USE_AUTO_SAVE = "useAutoSave";
 export const SETTING_USE_IMMEDIATE_DRAW = "useImmediateDraw";

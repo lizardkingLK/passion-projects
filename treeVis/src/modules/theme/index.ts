@@ -19,7 +19,7 @@ export class Theme {
     const dayColor = computedStyles.getPropertyValue("--day");
     const nightColor = computedStyles.getPropertyValue("--night");
 
-    if (prefersDarkTheme) {
+    if (!prefersDarkTheme) {
       this.themeColor = nightColor;
       this.negateColor = dayColor;
     } else {

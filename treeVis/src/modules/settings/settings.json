@@ -8,10 +8,10 @@
         "default": false
     },
     {
-        "name": "useArrayInput",
-        "id": "settingCheckUseArrayInput",
-        "label": "Use Array Input",
-        "description": "Enable this to use array input instead of json input.\nLike this below,\n5, 0, 10...",
+        "name": "useJsonInput",
+        "id": "settingCheckUseJsonInput",
+        "label": "Use Json Input",
+        "description": "Enabling this uses Json input instead of array.\nCheck help section for json inputs.",
         "type": "checkbox",
         "default": false
     },
