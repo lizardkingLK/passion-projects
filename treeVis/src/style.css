@@ -15,13 +15,17 @@
 	font-family: 'Roboto Mono';
 }
 
+.active {
+	background-color: var(--day);
+	color: var(--night);
+}
+
 .draggable {
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	cursor: grab;
-	/* transition-duration: 500ms; */
 }
 
 .hidden {
@@ -57,29 +61,27 @@
 .settingsField {
 	margin: 2rem;
 	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	flex-direction: column;
 	gap: 1rem;
 	padding: 0 0 1rem 0;
-	border-bottom: .1rem solid var(--dark);
 }
 
 .helpField .helpFieldDescription p,
 .settingsField .settingsFieldDescription p {
 	font-weight: bold;
 	margin-bottom: 1rem;
-	font-size: 2rem;
+	font-size: 1.8rem;
 }
 
 .helpField .helpFieldDescription h5,
 .settingsField .settingsFieldDescription h5 {
 	line-height: 1.5rem;
-	font-size: 1.2rem;
+	font-size: 1rem;
 }
 
 .settingsField input[type="checkbox"] {
-	width: 1rem;
-	height: 1rem;
+	width: 2rem;
+	height: 2rem;
 }
 
 .checkboxSettingsFieldContainer {
@@ -114,13 +116,14 @@
 	font-size: 2rem;
 	font-family: 'Roboto Mono';
 	font-weight: bold;
-	text-align: right;
 	-moz-appearance: textfield;
 	appearance: none;
 	outline: none;
 	border: none;
-	padding: 1rem;
-	width: 6rem;
+	width: 4rem;
+	padding: .2rem;
+	text-align: center;
+	border: .2rem solid var(--night);
 }
 
 .numberSettingsFieldContainer input::-webkit-outer-spin-button,
@@ -130,13 +133,34 @@
 }
 
 .numberSettingsFieldContainer span {
+	width: 2rem;
+	height: 2rem;
+	background-color: transparent;
+}
+
+.colorSettingsFieldContainer {
+	position: relative;
+	width: 2rem;
+	height: 2rem;
+	cursor: pointer;
+}
+
+.colorSettingsFieldContainer input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.colorSettingsFieldContainer span {
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	width: 2rem;
 	height: 2rem;
-	background-color: transparent;
+	background-color: var(--gray);
+	border-radius: 100%;
+	border: .2rem solid var(--night);
 }
 
 #appContainer {
@@ -148,7 +172,6 @@
 	flex-direction: column;
 	height: 100vh;
 	background-color: var(--gray);
-	border-right: 1px solid var(--night);
 	z-index: 1;
 }
 
@@ -169,6 +192,8 @@
 #treeSidebarContainer {
 	background-color: var(--gray);
 	z-index: 1;
+	height: 100vh;
+	width: 20vw;
 }
 
 #treeSidebarContainer #treeSidebarHeader {
@@ -185,7 +210,6 @@
 #treeInputContainer {
 	height: max-content;
 	z-index: 2;
-	min-width: 20vw;
 }
 
 #treeInputHeader {
@@ -246,14 +270,8 @@
 
 #treeHelpContainer,
 #treeSettingsContainer {
-	position: absolute;
-	top: 0;
-	left: 4rem;
-	/* right: 4rem; */
-	/* width: calc(100vw - 4rem); */
 	background-color: var(--light);
 	z-index: 2;
-	/* overflow: scroll; */
 }
 
 #treeHelpHeader,
@@ -267,22 +285,8 @@
 	padding: 0 2rem;
 }
 
-#treeHelpHeaderClose,
-#treeSettingsHeaderClose {
-	border: none;
-	cursor: pointer;
-}
-
-#treeHelpHeaderCloseIcon,
-#treeSettingsHeaderCloseIcon {
-	width: 1.5rem;
-	height: 1.5rem;
-	vertical-align: middle;
-}
-
 #treeHelpContent,
 #treeSettingsContent {
-	/* padding: 2rem; */
 	overflow-y: scroll;
 	height: calc(100vh - 8rem);
 }
@@ -290,27 +294,12 @@
 #treeHelpFooter,
 #treeSettingsFooter {
 	display: flex;
-	justify-content: center;
-	/* border-bottom: .2rem solid var(--dark); */
-	/* gap: 2rem; */
-	/* padding: 0 4rem; */
-	/* width: calc(100vw - 4rem); */
+	justify-content: flex-end;
+	gap: 2rem;
 	height: 4rem;
 }
 
-#treeHelpFooterClose,
-#treeSettingsFooterClose {
-	/* border: .2rem solid var(--dark); */
-	border: none;
-	background-color: var(--gray);
-	color: var(--dark);
-	padding: 1rem;
-	cursor: pointer;
-	margin: .5rem 0;
-}
-
 #treeSettingsFooterReset {
-	/* border: .2rem solid var(--danger); */
 	border: none;
 	background-color: var(--danger);
 	color: var(--light);
@@ -320,7 +309,6 @@
 }
 
 #treeSettingsFooterSave {
-	/* border: .2rem solid var(--dark); */
 	border: none;
 	background-color: var(--dark);
 	color: var(--light);
@@ -329,95 +317,16 @@
 	margin: .5rem 0;
 }
 
+@media screen and (max-width: 1024px) {
+	#treeSidebarContainer {
+		width: 80vw;
+	}
+}
+
 /* @media (prefers-color-scheme: dark) {
 	* {
 		background-color: var(--night);
 		border-color: var(--night);
 		color: var(--day);
-	}
-
-	img {
-		fill: var(--day);
-	}
-
-	#treeVisualHeader {
-		background-color: var(--night);
-		color: var(--day);
-	}
-
-	#treeInputHeader {
-		background-color: var(--night);
-		color: var(--day);
-		border-color: var(--day);
-	}
-
-	#treeInputContainer {
-		background: transparent;
-	}
-
-	#treeInput {
-		border-color: var(--day);
-	}
-
-	#treeInput::placeholder {
-		color: var(--gray);
-	}
-
-	#treeHelpHeader,
-	#treeSettingsHeader {
-		background-color: var(--night);
-		color: var(--day);
-	}
-
-	#treeHelpFooter,
-	#treeSettingsFooter {
-		border-color: var(--day);
-	}
-
-	#treeHelpFooterClose,
-	#treeSettingsFooterClose {
-		border-color: var(--day);
-		background-color: var(--night);
-	}
-
-	#treeSettingsFooterReset {
-		border-color: var(--danger);
-		background-color: var(--night);
-	}
-
-	#treeSettingsFooterSave {
-		border-color: var(--day);
-		background-color: var(--night);
-	}
-
-	#treeVisual {
-		border-color: var(--day);
-	}
-
-	#treeVisualStatusContainer {
-		background-color: transparent;
-	}
-
-	.helpField,
-	.settingsField {
-		border-color: var(--day);
-	}
-
-	.checkboxSettingsFieldContainer {
-		border-color: var(--day);
-	}
-
-	.checkboxSettingsFieldContainer input:checked+span {
-		background-color: var(--day);
-	}
-
-	.numberSettingsFieldContainer input {
-		color: var(--day);
-	}
-
-	.info,
-	.error,
-	.success {
-		background-color: var(--day);
 	}
 } */

@@ -1,6 +1,4 @@
 import {
-  KEY_TREE_ARRAY_INPUT_CONTENT,
-  KEY_TREE_JSON_INPUT_CONTENT,
   KEY_TREE_VISUAL_SETTINGS,
   SETTING_CANVAS_COLOR,
   SETTING_LINE_COLOR,
@@ -15,6 +13,7 @@ import {
   setLocalStorageItem,
 } from "../storing";
 import { Theme } from "../theme";
+import { settingStorageKeys } from "../../values";
 
 export class Settings {
   static settings: Json | null = null;
@@ -39,11 +38,9 @@ export class Settings {
   }
 
   static resetSettings() {
-    [
-      KEY_TREE_VISUAL_SETTINGS,
-      KEY_TREE_ARRAY_INPUT_CONTENT,
-      KEY_TREE_JSON_INPUT_CONTENT,
-    ].forEach((key) => clearLocalStorageItem(key));
+    settingStorageKeys.forEach((settingStorageKey) =>
+      clearLocalStorageItem(settingStorageKey)
+    );
   }
 
   static saveSettings() {
@@ -112,9 +109,11 @@ export class Settings {
     const settingDialog = document.querySelector(
       TREE_SETTINGS_BODY
     )! as HTMLDivElement;
+
     let settingField: HTMLDivElement;
     let settingsFieldInputContainer: HTMLLabelElement;
     let settingsFieldDescriptionContainer: HTMLDivElement;
+
     settingsJson.map(({ id, name, label, description, type }) => {
       settingField = document.createElement("div");
       settingField.setAttribute("class", "settingsField");
@@ -207,6 +206,8 @@ export class Settings {
         element.value = settings[item] as string;
       } else if (element.type === "color") {
         element.value = settings[item] as string;
+        (element.nextSibling as HTMLSpanElement).style.backgroundColor =
+          element.value;
       }
     }
   }
