@@ -1,3 +1,8 @@
+@font-face {
+    font-family: robotoMono;
+    src:url("/robotoMono.ttf");
+}
+
 :root {
 	--day: #ffff00;
 	--light: #ffffff;
@@ -12,7 +17,7 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	font-family: 'Roboto Mono';
+	font-family: robotoMono;
 }
 
 .active {
