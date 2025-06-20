@@ -144,5 +144,4 @@ $portHost = 8081
 Write-Host `
     -ForegroundColor Cyan `
     -Message `
-
     "info. test the build with http://localhost:$portHost"
