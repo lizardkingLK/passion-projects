@@ -80,7 +80,8 @@
     "description": [
       "* Please note that html canvas API has a max size limit for width, height or area.",
       "* This max size limit may differ from client browser.",
-      "* So very large output may or may not work even with small node sizes."
+      "* So very large output may or may not work even with small node sizes.",
+      "* If that's the case then try using small node size and generate."
     ]
   }
 ]

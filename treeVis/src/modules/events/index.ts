@@ -165,7 +165,7 @@ export class Events {
   }
 
   #registerDragListeners() {
-    draggableElements.forEach((container) => {
+    draggableElements.forEach((elementId) => {
       let previousLeft: number = 0;
       let currentLeft: number = 0;
       let previousTop: number = 0;
@@ -178,10 +178,11 @@ export class Events {
         currentTop
       );
 
-      const elementContainer: HTMLElement = document.querySelector(container)!;
+      const elementContainer: HTMLElement = document.querySelector(elementId)!;
 
       elementContainer.classList.add("draggable");
       elementContainer.setAttribute("draggable", "true");
+
       elementContainer.addEventListener("dragstart", dragStart, false);
       elementContainer.addEventListener("dragend", dragEnd, false);
     });
