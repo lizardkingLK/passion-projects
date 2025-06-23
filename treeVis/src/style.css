@@ -1,6 +1,6 @@
 @font-face {
-    font-family: robotoMono;
-    src: url("/robotoMono.ttf");
+	font-family: robotoMono;
+	src: url("/robotoMono.ttf");
 }
 
 :root {
@@ -210,6 +210,8 @@
 
 #treeVisual {
 	overflow: scroll;
+	max-width: calc(100vw - 4rem - 20vw);
+	max-height: calc(100vh - .4rem);
 }
 
 #treeInputContainer {
@@ -322,9 +324,15 @@
 	margin: .5rem 0;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1600px) {
 	#treeSidebarContainer {
 		width: 80vw;
+	}
+
+	#treeVisual {
+		overflow: scroll;
+		max-width: calc(100vw - 4rem - 20vw);
+		max-height: calc(100vh);
 	}
 }
 

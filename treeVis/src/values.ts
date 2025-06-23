@@ -8,7 +8,6 @@ import {
   TREE_SETTINGS_RESET,
   TREE_SETTINGS_SAVE,
   TREE_SIDEBAR_INPUT,
-  TREE_VISUAL,
   TREE_VISUAL_HEADER_HELP,
   TREE_VISUAL_HEADER_SETTINGS,
 } from "./modules/constants";
@@ -48,4 +47,4 @@ export const sidebarContentTogglers = [
   },
 ];
 
-export const draggableElements = [TREE_VISUAL];
+export const draggableElements = [];

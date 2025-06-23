@@ -23,7 +23,7 @@ export const TEXT_RENDERING = "optimizeLegibility";
 export const FONT_KERNING = "auto";
 export const FONT_STRETCH = "ultra-expanded";
 export const FONT_VARIANT_CAPS = "titling-caps";
-export const FONT_FAMILY = "{0} Roboto Mono";
+export const FONT_FAMILY = "{0} robotoMono";
 
 // element ids
 export const TREE_SIDEBAR_CONTAINER = "#treeSidebarContainer";
