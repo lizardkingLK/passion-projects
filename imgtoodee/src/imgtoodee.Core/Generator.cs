@@ -31,10 +31,10 @@ internal static class Generator
         for (i = 6; i < length; i += 2)
         {
             currentHexArray = [imageDataRow[i - 2], imageDataRow[i - 1]];
-            Console.WriteLine(string.Join(null, currentHexArray) + " = " + ConvertToDecimal(currentHexArray));
+            Console.Write(string.Join(null, currentHexArray) + " = " + ConvertToDecimal(currentHexArray) + ", ");
         }
 
-        Console.WriteLine("\nchecksum bytes");
+        Console.WriteLine("\n\nchecksum bytes");
         for (i = length - 4; i < length; i++)
         {
             currentHexArray = [imageDataRow[i - 2], imageDataRow[i - 1]];
