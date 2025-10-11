@@ -27,5 +27,6 @@ internal static class Constants
     internal const string ERROR_INVALID_FILE_PATH = "error. invalid file path";
     internal const string ERROR_INVALID_FILE_CONTENT = "error. invalid file content";
     internal const string ERROR_INVALID_CHUNK_TYPE = "error. invalid chunk type detected";
+    internal const string ERROR_INVALID_BLOCK_TYPE = "error. invalid block type detected";
     internal const string SUCCESS_CONVERTED_IMAGE = "success. image converted. took {0} ns";
 }
