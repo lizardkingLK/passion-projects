@@ -40,21 +40,22 @@ public static class MapHelper
         int y;
         int x;
         char symbol;
-        Position position;
         for (int i = 0; i < length; i++)
         {
             y = i / width;
             x = i % width;
             symbol = SymbolWall;
-            if (y > 0 && y < height - 1 && y % 2 != 0
-            && x > 0 && x < width - 1 && x % 2 != 0)
+            if (y > 0
+            && y < height - 1
+            && y % 2 != 0
+            && x > 0
+            && x < width - 1
+            && x % 2 != 0)
             {
                 symbol = SymbolSpace;
             }
 
-            position = new(y, x);
-            visitedGrid[y, x] = false;
-            mapGrid[y, x] = new Block(position, symbol);
+            mapGrid[y, x] = new Block(new(y, x), symbol);
         }
     }
 

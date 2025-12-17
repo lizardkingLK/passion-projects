@@ -9,8 +9,7 @@ using static mazes.Core.Shared.Values;
 
 namespace mazes.Core.Library.Mazes;
 
-// Recursive Backtracker Maze
-public class RBMaze : IMaze
+public class RecursiveBacktrackerMaze : IMaze
 {
     private static Block[,]? _mapGrid;
 
@@ -20,7 +19,7 @@ public class RBMaze : IMaze
 
     public int Width { get; init; }
 
-    public RBMaze(int height, int width)
+    public RecursiveBacktrackerMaze(int height, int width)
     => (Height, Width) = (height, width);
 
     public void Generate()
@@ -93,9 +92,6 @@ public class RBMaze : IMaze
     private static void DrawStartEnd((int Y, int X) start, (int Y, int X) end)
     {
         _mapGrid![start.Y, start.X] = new(start, SymbolSpace);
-        _visitedGrid![start.Y, start.X] = true;
-
         _mapGrid![end.Y, end.X] = new(end, SymbolSpace);
-        _visitedGrid![end.Y, end.X] = true;
     }
 }

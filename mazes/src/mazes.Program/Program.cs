@@ -31,8 +31,8 @@ class Program
             width -= 1;
         }
 
-        IMaze maze = new RBMaze(height, width);
-        
+        IMaze maze = new RecursiveBacktrackerMaze(height, width);
+
         Mazes.Draw(maze);
     }
 }
