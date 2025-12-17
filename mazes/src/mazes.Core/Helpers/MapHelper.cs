@@ -78,4 +78,10 @@ public static class MapHelper
             return DirectionEnum.Left;
         }
     }
+
+    public static void DrawStartEnd((int Y, int X) start, (int Y, int X) end, Block[,] mapGrid)
+    {
+        mapGrid[start.Y, start.X] = new(start, SymbolSpace);
+        mapGrid[end.Y, end.X] = new(end, SymbolSpace);
+    }
 }

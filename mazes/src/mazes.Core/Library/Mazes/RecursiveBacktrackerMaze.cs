@@ -26,7 +26,7 @@ public class RecursiveBacktrackerMaze : IMaze
     {
         DrawBoard(Height, Width, out _mapGrid, out _visitedGrid);
         DrawPath((Height - 2, 1));
-        DrawStartEnd((Height - 2, 0), (1, Width - 1));
+        DrawStartEnd((Height - 2, 0), (1, Width - 1), _mapGrid);
         Print();
     }
 
@@ -87,11 +87,5 @@ public class RecursiveBacktrackerMaze : IMaze
 
             _visitedGrid![current.Y, current.X] = true;
         }
-    }
-
-    private static void DrawStartEnd((int Y, int X) start, (int Y, int X) end)
-    {
-        _mapGrid![start.Y, start.X] = new(start, SymbolSpace);
-        _mapGrid![end.Y, end.X] = new(end, SymbolSpace);
     }
 }
