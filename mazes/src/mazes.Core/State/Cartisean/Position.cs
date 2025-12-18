@@ -16,4 +16,7 @@ public record struct Position(int Y, int X)
 
     public static implicit operator Position((int Y, int X) position)
     => new(position.Y, position.X);
+
+    public static explicit operator (int, int)(Position position)
+    => (position.Y, position.X);
 }

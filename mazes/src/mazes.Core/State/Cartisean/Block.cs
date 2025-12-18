@@ -14,6 +14,10 @@ public record struct Block(Position Position, char Symbol)
         {
             return (int)ConsoleColor.Green;
         }
+        else if (symbol == SymbolTrail)
+        {
+            return (int)ConsoleColor.Red;
+        }
 
         return (int)ConsoleColor.White;
     }
