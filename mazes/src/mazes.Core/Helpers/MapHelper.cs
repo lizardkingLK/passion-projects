@@ -122,7 +122,11 @@ public static class MapHelper
         width = int.Parse(args[1]);
         if (height < MinHeight || width < MinWidth)
         {
-            return new((-1, -1), "error. invalid dimensions given");
+            return new((-1, -1), "error. too low dimensions were given");
+        }
+        else if (height > Console.WindowHeight || width > Console.WindowWidth)
+        {
+            return new((-1, -1), "error. too high dimensions were given");
         }
 
         if (height % 2 == 0)
