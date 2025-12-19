@@ -2,7 +2,8 @@ using mazes.Core.Enums;
 using mazes.Core.State.Cartisean;
 using static mazes.Core.Helpers.ConsoleHelper;
 using static mazes.Core.Shared.Constants;
-using static mazes.Core.Shared.Values;
+using static mazes.Core.Helpers.ArithmeticHelper;
+using mazes.Core.State.Common;
 
 namespace mazes.Core.Helpers;
 
@@ -85,7 +86,7 @@ public static class MapHelper
         {
             return DirectionEnum.Right;
         }
-        
+
         return null;
     }
 
@@ -105,20 +106,23 @@ public static class MapHelper
         out Position end)
     => (start, end) = ((height - 2, 0), (1, width - 1));
 
-    public static void GetDimensions(
-        string[] args,
-        out int height,
-        out int width)
+    public static Result<(int, int)> GetDimensions(
+        string[] args)
     {
+        int height;
+        int width;
         if (args.Length < 2)
         {
             height = Console.WindowHeight;
             width = Console.WindowWidth;
+            return new((height, width));
         }
-        else
+
+        height = int.Parse(args[0]);
+        width = int.Parse(args[1]);
+        if (height < MinHeight || width < MinWidth)
         {
-            height = int.Parse(args[0]);
-            width = int.Parse(args[1]);
+            return new((-1, -1), "error. invalid dimensions given");
         }
 
         if (height % 2 == 0)
@@ -130,5 +134,10 @@ public static class MapHelper
         {
             width -= 1;
         }
+
+        return new((height, width));
     }
+
+    public static int GetHeuristicDistance(Position start, Position end)
+    => GetAbsoluteValue(end.Y - start.Y) + GetAbsoluteValue(end.X - start.X);
 }

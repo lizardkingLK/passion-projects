@@ -1,12 +1,13 @@
 using mazes.Core.Abstractions;
 using mazes.Core.Enums;
 using mazes.Core.State.Cartisean;
+using static mazes.Core.Helpers.ArithmeticHelper;
 using static mazes.Core.Helpers.MapHelper;
 using static mazes.Core.Shared.Values;
 
 namespace mazes.Core.Library.Solvers;
 
-public class DijkstraSolver : ISolver
+public class AStarSolver : ISolver
 {
     public int Height { get; init; }
     public int Width { get; init; }
@@ -35,17 +36,25 @@ public class DijkstraSolver : ISolver
             out int[,] distances);
 
         trailPath = [];
-        PriorityQueue<(Position, DirectionEnum), int> queue = new();
+        PriorityQueue<(Position, int, DirectionEnum), int> queue = new();
+
         Position current = Start;
-        queue.Enqueue((current, DirectionEnum.Right), 0);
+        int gDistance = 0;
+        int hDistance = GetHeuristicDistance(current, End);
+        int currentDistance = gDistance + hDistance;
+
+        DirectionEnum currentDirection = DirectionEnum.Right;
+        queue.Enqueue((current, gDistance, currentDirection), currentDistance);
 
         Position neighbor;
+        int distance;
         int y;
         int x;
-        DirectionEnum currentDirection;
-        while (queue.TryDequeue(out (Position, DirectionEnum) value, out int distance))
+        while (queue.TryDequeue(
+            out (Position, int, DirectionEnum) value,
+            out _))
         {
-            (current, currentDirection) = value;
+            (current, gDistance, currentDirection) = value;
             foreach (DirectionEnum direction in _directions)
             {
                 neighbor = current + _directionPositions[direction];
@@ -56,15 +65,18 @@ public class DijkstraSolver : ISolver
                     continue;
                 }
 
-                if (distance + 1 < distances[y, x])
+                hDistance = GetHeuristicDistance(current, End);
+                distance = gDistance + 1 + hDistance;
+                if (distance < distances[y, x])
                 {
-                    distances[y, x] = distance + 1;
-                    queue.Enqueue((neighbor, direction), distance + 1);
+                    distances[y, x] = distance;
+                    queue.Enqueue((neighbor, gDistance + 1, direction), distance);
                 }
             }
 
             visited[current.Y, current.X] = true;
             trailPath.Add((current, currentDirection));
+            Helpers.ConsoleHelper.WriteAt(current.Y, current.X, Shared.Constants.SymbolWall, ConsoleColor.White);
             if (current == End)
             {
                 break;

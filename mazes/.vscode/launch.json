@@ -7,7 +7,7 @@
       "request": "launch",
       "preLaunchTask": "dotnet: build",
       "program": "${workspaceFolder}/src/mazes.Program/bin/Debug/net9.0/mazes.Program.dll",
-      "args": ["9", "9"],
+      "args": ["13", "13"],
       "cwd": "${workspaceFolder}",
       "stopAtEntry": false,
       "console": "integratedTerminal"

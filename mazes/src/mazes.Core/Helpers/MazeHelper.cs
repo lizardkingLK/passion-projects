@@ -16,7 +16,7 @@ public static class MazeHelper
         (int height, int width) = dimensions;
         (Position start, Position end) = openings;
 
-        solver = new DijkstraSolver
+        solver = new AStarSolver
         {
             Height = height,
             Width = width,
