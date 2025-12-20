@@ -113,9 +113,9 @@ public static class MapHelper
         int width;
         if (args.Length < 2)
         {
-            height = Console.WindowHeight;
-            width = Console.WindowWidth;
-            return new((height, width));
+            return new(GetAdjustedDimensions(
+                Console.WindowHeight,
+                Console.WindowWidth));
         }
 
         height = int.Parse(args[0]);
@@ -129,6 +129,11 @@ public static class MapHelper
             return new((-1, -1), "error. too high dimensions were given");
         }
 
+        return new(GetAdjustedDimensions(height, width));
+    }
+
+    private static (int, int) GetAdjustedDimensions(int height, int width)
+    {
         if (height % 2 == 0)
         {
             height -= 1;
@@ -139,7 +144,7 @@ public static class MapHelper
             width -= 1;
         }
 
-        return new((height, width));
+        return (height, width);
     }
 
     public static int GetHeuristicDistance(Position start, Position end)
