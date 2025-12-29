@@ -22,4 +22,10 @@
     <ProjectReference Include="..\..\src\treeShaker.Core\treeShaker.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="Data/**/**/*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
