@@ -2,6 +2,8 @@ using mazes.Core.Enums;
 using mazes.Core.State.Cartisean;
 using static mazes.Core.Helpers.ConsoleHelper;
 using static mazes.Core.Shared.Constants;
+using static mazes.Core.Helpers.ArithmeticHelper;
+using mazes.Core.State.Common;
 
 namespace mazes.Core.Helpers;
 
@@ -14,6 +16,14 @@ public static class MapHelper
         && position.X > 0
         && position.X < width - 1;
     }
+
+    public static bool IsValidMapPosition(
+        Position position,
+        Position[] exclusiveValids,
+        int height,
+        int width)
+    => exclusiveValids.Contains(position)
+    || IsValidMapPosition(position, height, width);
 
     public static void DrawMap(Block[,] mapGrid)
     {
@@ -30,10 +40,8 @@ public static class MapHelper
     public static void DrawBoard(
         int height,
         int width,
-        out Block[,] mapGrid,
-        out bool[,] visitedGrid)
+        out Block[,] mapGrid)
     {
-        visitedGrid = new bool[height, width];
         mapGrid = new Block[height, width];
 
         int length = height * width;
@@ -45,6 +53,7 @@ public static class MapHelper
             y = i / width;
             x = i % width;
             symbol = SymbolWall;
+            // symbol = _symbols[Random.Shared.Next(_symbols.Length)];
             if (y > 0
             && y < height - 1
             && y % 2 != 0
@@ -59,7 +68,7 @@ public static class MapHelper
         }
     }
 
-    public static DirectionEnum GetReversedDirection(DirectionEnum direction)
+    public static DirectionEnum? GetReversedDirection(DirectionEnum direction)
     {
         if (direction == DirectionEnum.Top)
         {
@@ -73,15 +82,71 @@ public static class MapHelper
         {
             return DirectionEnum.Top;
         }
-        else
+        else if (direction == DirectionEnum.Left)
         {
-            return DirectionEnum.Left;
+            return DirectionEnum.Right;
         }
+
+        return null;
     }
 
-    public static void DrawStartEnd((int Y, int X) start, (int Y, int X) end, Block[,] mapGrid)
+    public static void DrawStartEnd(
+        (int Y, int X) start,
+        (int Y, int X) end,
+        Block[,] mapGrid)
     {
         mapGrid[start.Y, start.X] = new(start, SymbolSpace);
         mapGrid[end.Y, end.X] = new(end, SymbolSpace);
     }
+
+    public static void GetOpenings(
+        int height,
+        int width,
+        out Position start,
+        out Position end)
+    => (start, end) = ((height - 2, 0), (1, width - 1));
+
+    public static Result<(int, int)> GetDimensions(
+        string[] args)
+    {
+        int height;
+        int width;
+        if (args.Length < 2)
+        {
+            return new(GetAdjustedDimensions(
+                Console.WindowHeight,
+                Console.WindowWidth));
+        }
+
+        height = int.Parse(args[0]);
+        width = int.Parse(args[1]);
+        if (height < MinHeight || width < MinWidth)
+        {
+            return new((-1, -1), "error. too low dimensions were given");
+        }
+        else if (height > Console.WindowHeight || width > Console.WindowWidth)
+        {
+            return new((-1, -1), "error. too high dimensions were given");
+        }
+
+        return new(GetAdjustedDimensions(height, width));
+    }
+
+    private static (int, int) GetAdjustedDimensions(int height, int width)
+    {
+        if (height % 2 == 0)
+        {
+            height -= 1;
+        }
+
+        if (width % 2 == 0)
+        {
+            width -= 1;
+        }
+
+        return (height, width);
+    }
+
+    public static int GetHeuristicDistance(Position start, Position end)
+    => GetAbsoluteValue(end.Y - start.Y) + GetAbsoluteValue(end.X - start.X);
 }

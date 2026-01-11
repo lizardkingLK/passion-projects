@@ -1,6 +1,10 @@
 ﻿using mazes.Core;
 using mazes.Core.Abstractions;
-using mazes.Core.Library.Mazes;
+using mazes.Core.State.Cartisean;
+using static mazes.Core.Helpers.MapHelper;
+using static mazes.Core.Helpers.MazeHelper;
+using static mazes.Core.Helpers.ConsoleHelper;
+using mazes.Core.State.Common;
 
 namespace mazes.Program;
 
@@ -8,31 +12,19 @@ class Program
 {
     static void Main(string[] args)
     {
-        int height;
-        int width;
-        if (args.Length < 2)
+        Result<(int, int)> dimensionResult = GetDimensions(args);
+        if (dimensionResult.HasErrors())
         {
-            height = Console.WindowHeight;
-            width = Console.WindowWidth;
-        }
-        else
-        {
-            height = int.Parse(args[0]);
-            width = int.Parse(args[1]);
+            Error(dimensionResult.Errors!);
         }
 
-        if (height % 2 == 0)
-        {
-            height -= 1;
-        }
-
-        if (width % 2 == 0)
-        {
-            width -= 1;
-        }
-
-        IMaze maze = new BinaryTreeMaze(height, width);
+        (int height, int width) = dimensionResult.Data;
+        GetOpenings(height, width, out Position start, out Position end);
+        GetMazeSolver((height, width), (start, end), out IMaze maze, out ISolver solver);
 
         Mazes.Draw(maze);
+        Mazes.Solve(solver);
+
+        WriteAt(height + 1, 0, '\0', ConsoleColor.White);
     }
 }

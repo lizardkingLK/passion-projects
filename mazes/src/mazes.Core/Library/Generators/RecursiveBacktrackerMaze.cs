@@ -7,43 +7,35 @@ using static mazes.Core.Helpers.MapHelper;
 using static mazes.Core.Shared.Constants;
 using static mazes.Core.Shared.Values;
 
-namespace mazes.Core.Library.Mazes;
+namespace mazes.Core.Library.Generators;
 
 public class RecursiveBacktrackerMaze : IMaze
 {
-    private static Block[,]? _mapGrid;
-
-    private static bool[,]? _visitedGrid;
-
     public int Height { get; init; }
-
     public int Width { get; init; }
+    public Position Start { get; init; }
+    public Position End { get; init; }
 
-    public RecursiveBacktrackerMaze(int height, int width)
-    => (Height, Width) = (height, width);
-
-    public void Generate()
+    public void Generate(out Block[,] mapGrid)
     {
-        DrawBoard(Height, Width, out _mapGrid, out _visitedGrid);
-        DrawPath((Height - 2, 1));
-        DrawStartEnd((Height - 2, 0), (1, Width - 1), _mapGrid);
-        Print();
+        DrawBoard(Height, Width, out mapGrid);
+        DrawPath((Height - 2, 1), mapGrid);
+        DrawStartEnd(
+            ((int, int))Start,
+            ((int, int))End, mapGrid);
+        Print(mapGrid);
     }
 
-    public void Print()
+    public void Print(Block[,] mapGrid)
     {
         Clear();
-        DrawMap(_mapGrid!);
-        WriteAt(Height + 1, 0, '\0', ConsoleColor.White);
+        DrawMap(mapGrid);
     }
 
-    public void Solve()
+    private void DrawPath(Position start, Block[,] mapGrid)
     {
-        throw new NotImplementedException();
-    }
+        bool[,] visitedGrid = new bool[Height, Width];
 
-    private void DrawPath(Position start)
-    {
         Stack<Position> positions = new();
         Position current = start;
         positions.Push(current);
@@ -67,25 +59,25 @@ public class RecursiveBacktrackerMaze : IMaze
                     continue;
                 }
 
-                if (_visitedGrid![next.Y, next.X])
+                if (visitedGrid![next.Y, next.X])
                 {
                     continue;
                 }
 
                 positions.Push(next);
 
-                direction = GetReversedDirection(direction);
+                direction = GetReversedDirection(direction)!.Value;
                 wall = next + _directionPositions[direction];
                 if (!IsValidMapPosition(wall, Height, Width))
                 {
                     continue;
                 }
 
-                _visitedGrid![wall.Y, wall.X] = true;
-                _mapGrid![wall.Y, wall.X] = new Block(next, SymbolSpace);
+                visitedGrid![next.Y, next.X] = true;
+                mapGrid![wall.Y, wall.X] = new(next, SymbolSpace);
             }
 
-            _visitedGrid![current.Y, current.X] = true;
+            visitedGrid![current.Y, current.X] = true;
         }
     }
 }

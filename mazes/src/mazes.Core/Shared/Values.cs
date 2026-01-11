@@ -20,4 +20,7 @@ public static class Values
         DirectionEnum.Down,
         DirectionEnum.Left,
     ];
+
+    public static readonly char[] _symbols =
+    ['!', '$', '%', '^', '&', '*', '(', ')', '+', '-', '_', '='];
 }

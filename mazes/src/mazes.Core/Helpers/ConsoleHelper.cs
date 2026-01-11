@@ -14,4 +14,14 @@ public static class ConsoleHelper
         Console.Write(symbol);
         Console.ResetColor();
     }
+
+    public static void Error(string message)
+    {
+        Clear();
+        Console.SetCursorPosition(0, 0);
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(message);
+        Console.ResetColor();
+        Environment.Exit(1);
+    }
 }

@@ -6,8 +6,10 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "dotnet: build",
-      "program": "${workspaceFolder}/src/mazes.Program/bin/Debug/net9.0/mazes.Program.dll",
-      "args": ["13", "13"],
+      "program": "${workspaceFolder}/src/treeShaker.Program/bin/Debug/net9.0/treeShaker.Program.dll",
+      "args": [
+        "/home/lizardkinglk/github.com/lizardkinglk/passion-projects/treeShaker/src"
+      ],
       "cwd": "${workspaceFolder}",
       "stopAtEntry": false,
       "console": "integratedTerminal"

@@ -6,44 +6,41 @@ using static mazes.Core.Helpers.MapHelper;
 using static mazes.Core.Shared.Constants;
 using static mazes.Core.Shared.Values;
 
-namespace mazes.Core.Library.Mazes;
+namespace mazes.Core.Library.Generators;
 
 public class BinaryTreeMaze : IMaze
 {
-    private static Block[,]? _mapGrid;
-
-    private static bool[,]? _visitedGrid;
+    private static readonly DirectionEnum[] _directions
+    = [DirectionEnum.Top, DirectionEnum.Right];
 
     public int Height { get; init; }
-
     public int Width { get; init; }
+    public Position Start { get; init; }
+    public Position End { get; init; }
 
-    public BinaryTreeMaze(int height, int width)
-    => (Height, Width) = (height, width);
-
-    public void Generate()
+    public void Generate(out Block[,] mapGrid)
     {
-        DrawBoard(Height, Width, out _mapGrid, out _visitedGrid);
-        DrawPath();
-        DrawStartEnd((Height - 2, 0), (1, Width - 1), _mapGrid);
-        Print();
+        DrawBoard(Height, Width, out mapGrid);
+        DrawPath(mapGrid);
+        DrawStartEnd(
+            ((int, int))Start,
+            ((int, int))End, mapGrid);
+        Print(mapGrid);
     }
 
-    public void Print()
+    public void Print(Block[,] mapGrid)
     {
         Clear();
-        DrawMap(_mapGrid!);
-        WriteAt(Height + 1, 0, '\0', ConsoleColor.White);
+        DrawMap(mapGrid);
     }
 
-    private void DrawPath()
+    private void DrawPath(Block[,] mapGrid)
     {
         int length = Height * Width - Width;
         int y;
         int x;
         Position next;
         Position wall;
-        DirectionEnum[] directions = [DirectionEnum.Top, DirectionEnum.Right];
         DirectionEnum direction;
         int directionIndex;
         for (int i = Width; i < length; i++)
@@ -57,12 +54,12 @@ public class BinaryTreeMaze : IMaze
 
             next = new Position(y, x);
             directionIndex = Random.Shared.Next(2);
-            direction = directions[directionIndex];
+            direction = _directions[directionIndex];
             wall = next + _directionPositions[direction];
             if (!IsValidMapPosition(wall, Height, Width))
             {
                 directionIndex = (directionIndex + 1) % 2;
-                direction = directions[directionIndex];
+                direction = _directions[directionIndex];
                 wall = next + _directionPositions[direction];
             }
 
@@ -71,15 +68,13 @@ public class BinaryTreeMaze : IMaze
                 continue;
             }
 
-            _visitedGrid![y, x] = true;
-            (y, x) = wall;
-
-            _mapGrid![y, x] = new Block(wall, SymbolSpace);
+            ClearWall(wall, mapGrid);
         }
     }
 
-    public void Solve()
+    private static void ClearWall(Position wall, Block[,] mapGrid)
     {
-        throw new NotImplementedException();
+        (int y, int x) = wall;
+        mapGrid[y, x] = new(wall, SymbolSpace);
     }
 }
