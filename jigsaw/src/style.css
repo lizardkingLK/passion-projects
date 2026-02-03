@@ -1,0 +1,62 @@
+:root {
+  font-family: "Roboto Mono", monospace;
+  font-style: normal;
+
+  font-optical-sizing: auto;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  color-scheme: light dark;
+  color: #213547;
+  background-color: #ffffff;
+
+  --dark: #213547;
+  --light: white;
+  --accent: red;
+
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#btnControl {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#btnControl input,
+label {
+  position: absolute;
+  left: -50%;
+  top: -50%;
+  transform: translate(-50%, -50%);
+  padding: 1rem;
+  border: .2rem var(--dark) solid;
+  background-color: var(--accent);
+  color: var(--light);
+  cursor: pointer;
+}
+
+#canvas {
+  display: flex;
+  /* position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); */
+  border: 1px solid black;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: var(--dark);
+    background-color: var(--background-color);
+  }
+}
