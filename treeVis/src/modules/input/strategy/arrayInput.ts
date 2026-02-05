@@ -11,7 +11,6 @@ import {
   SETTING_USE_AUTO_SAVE,
   INFO_FORMATTED_INPUT,
   TREE_INPUT_HEADER_TITLE,
-  DURATION_FOUR_SECONDS,
   CLASS_ERROR,
   CLASS_INFO,
   STRING_ARRAY_INPUT,
@@ -144,8 +143,6 @@ export class ArrayInput implements InputStrategy<number[]> {
   }
 
   draw(): void {
-    const now = Date.now();
-
     const inputContent = this.read();
 
     this.setVisual();
@@ -176,12 +173,6 @@ export class ArrayInput implements InputStrategy<number[]> {
     this.#canvas.setCanvas(width * screenUnit, height * screenUnit);
     this.#canvas.drawGrid(height, width);
     this.#canvas.drawNodes(nodesList, nodesMap);
-
-    popupContent({
-      className: CLASS_INFO,
-      message: `${Date.now() - now} ms`,
-      duration: DURATION_FOUR_SECONDS,
-    });
   }
 
   save(inputContent: string): void {
