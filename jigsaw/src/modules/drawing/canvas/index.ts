@@ -1,4 +1,4 @@
-import { FileHelper } from "../../../helpers/fileHelper";
+import { Files } from "../../files";
 import { CanvasGrid } from "../grid";
 import { CanvasImage } from "../image";
 
@@ -10,8 +10,8 @@ export class Canvas {
 
         image.addEventListener("load", () => {
             CanvasImage.draw(canvas, context, image);
-            CanvasGrid.draw(context);
+            CanvasGrid.draw(canvas, context);
         });
-        image.src = await FileHelper.getDataUrl(file) as string;
+        image.src = await Files.getDataUrl(file) as string;
     }
 }

@@ -1,4 +1,4 @@
-export class FileHelper {
+export class Files {
     static getDataUrl(file: File) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();

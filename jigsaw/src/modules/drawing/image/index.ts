@@ -1,5 +1,5 @@
 import { LINE_WIDTH } from "../../../shared/constants";
-import { CanvasState } from "../state";
+import { CanvasState } from "../canvas/state";
 
 export class CanvasImage {
     static draw(
@@ -22,10 +22,10 @@ export class CanvasImage {
         const width = columns * unit;
         CanvasState.grid.width = width;
 
-        canvas.height = LINE_WIDTH  + Math.max(height, document.documentElement.clientHeight);
+        canvas.height = LINE_WIDTH + Math.max(height, document.documentElement.clientHeight);
         CanvasState.height = canvas.height;
 
-        canvas.width = LINE_WIDTH  + Math.max(width, document.documentElement.clientWidth);
+        canvas.width = LINE_WIDTH + Math.max(width, document.documentElement.clientWidth);
         CanvasState.width = canvas.width;
 
         context.drawImage(image, LINE_WIDTH, LINE_WIDTH, width, height);
