@@ -28,14 +28,15 @@ export class ControlButton {
         input.addEventListener("change", ControlButton.action);
     }
 
-    static async action(event: Event) {
+    static action(event: Event) {
         const input = event.target as HTMLInputElement;
         if (!input.files || input.files.length === 0) {
             return;
         }
 
         const file = input.files[0];
-        const { type } = file;
+
+        const type = file.type;
         if (!(type === "image/png" || type === "image/jpeg")) {
             console.error("error. invalid file was given");
             return;

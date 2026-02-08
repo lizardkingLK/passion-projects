@@ -1,4 +1,4 @@
-import { App } from './modules/rendering/app';
+import { App } from './modules/elements';
 import './style.css';
 
 App.setup();
