@@ -2,6 +2,13 @@ import type { TPosition } from "../position";
 
 export type TPiece = {
     id: number,
-    from: TPosition,
-    to: TPosition,
+    origin: {
+        from: TPosition,
+        to: TPosition,
+    },
+    client: {
+        from: TPosition,
+        to: TPosition,
+    },
+    rotation: number,
 };

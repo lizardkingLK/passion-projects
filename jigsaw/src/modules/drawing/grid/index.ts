@@ -3,73 +3,88 @@ import type { TPosition } from "../../../shared/types/state/position";
 import { CanvasLine } from "../line";
 import type { TLineProps } from "../line/types";
 import { CanvasState } from "../canvas/state";
-import { CanvasEvents } from "../../events";
 import type { TPiece } from "../../../shared/types/state/tile";
+import { Cartesian } from "../../helpers/cartisean";
+
+const lineStyle: TLineProps = { width: LINE_WIDTH, color: "red" };
 
 export class CanvasGrid {
-    static draw(
-        canvas: HTMLCanvasElement,
-        context: CanvasRenderingContext2D) {
-
-        const style: TLineProps = { width: LINE_WIDTH, color: "red", commit: true };
-
+    static draw(context: CanvasRenderingContext2D) {
         const { rows, columns } = CanvasState.grid;
 
-        // TODO: make this tile generation flow linear time with a single loop
-
+        let from: TPosition;
+        let to: TPosition;
         for (let i = 0; i <= rows; i++) {
-            const from: TPosition = {
+            from = {
                 y: LINE_WIDTH / 2 + i * CanvasState.unit,
-                x: 0
+                x: 0,
             };
-            const to: TPosition = {
-                y: LINE_WIDTH / 2 + i * CanvasState.unit,
+            to = {
+                y: from.y,
                 x: LINE_WIDTH + CanvasState.grid.width
             };
-
-            const dataRow: TPiece[] = Array(columns).fill(1).map((_, index) => ({
-                id: i * columns + index,
-                from: {
-                    y: (i + 1) * LINE_WIDTH + i * CanvasState.unit,
-                    x: (index + 1) * LINE_WIDTH + index * CanvasState.unit
-                },
-                to: {
-                    y: (index + 1) * LINE_WIDTH + index * CanvasState.unit,
-                    x: (index + 1) * LINE_WIDTH + index * CanvasState.unit
-                },
-            }));
-
-            CanvasLine.draw(context, from, to, style);
-
-            dataRow.forEach(data => {
-                debugger;
-
-                const sample = data;
-                context.moveTo(sample.from.x, sample.from.y);
-                context.fillStyle = "green"
-                context.fillRect(sample.from.x, sample.from.y, CanvasState.unit, CanvasState.unit);
-                context.fill();
-
-            });
-
+            CanvasLine.draw(context, from, to, lineStyle);
         }
 
         for (let i = 0; i <= columns; i++) {
-            const from: TPosition = {
+            from = {
                 y: 0,
-                x: LINE_WIDTH / 2 + i * CanvasState.unit
+                x: LINE_WIDTH / 2 + i * CanvasState.unit,
             };
-            const to: TPosition = {
+            to = {
                 y: LINE_WIDTH + CanvasState.grid.height,
-                x: LINE_WIDTH / 2 + i * CanvasState.unit
+                x: from.x,
             };
-            CanvasLine.draw(context, from, to, style);
+            CanvasLine.draw(context, from, to, lineStyle);
         }
 
-        canvas.addEventListener("click", CanvasEvents.handleDrag);
-        canvas.addEventListener("mousemove", CanvasEvents.handleMove);
+        const length = rows * columns;
+        const tiles: TPiece[] = [];
 
-        CanvasLine.commit(context);
-        debugger;
+        const drawTiles = false;
+        const drawDiagonal = false;
+
+        let y;
+        let x;
+        for (let i = 0; i < length; i++) {
+            y = Math.round(Math.floor(i / columns));
+            x = Math.round(Math.floor(i % columns));
+
+            if (drawTiles) {
+                context.fillStyle = "green"
+                context.fillRect(
+                    (x + 1) * LINE_WIDTH + x * (CanvasState.unit - LINE_WIDTH),
+                    (y + 1) * LINE_WIDTH + y * (CanvasState.unit - LINE_WIDTH),
+                    CanvasState.unit - LINE_WIDTH,
+                    CanvasState.unit - LINE_WIDTH);
+            }
+
+            from = {
+                y: (y + 1) * LINE_WIDTH + y * (CanvasState.unit - LINE_WIDTH),
+                x: (x + 1) * LINE_WIDTH + x * (CanvasState.unit - LINE_WIDTH),
+            };
+            to = {
+                y: from.y + CanvasState.unit - LINE_WIDTH,
+                x: from.x + CanvasState.unit - LINE_WIDTH,
+            };
+
+            if (drawDiagonal) {
+                lineStyle.color = "black";
+                CanvasLine.draw(context, from, to, lineStyle);
+            }
+
+            tiles.push({
+                id: i,
+                origin: {
+                    from: Cartesian.copy(from),
+                    to: Cartesian.copy(to),
+                },
+                client: {
+                    from: Cartesian.copy(from),
+                    to: Cartesian.copy(to),
+                },
+                rotation: 0,
+            });
+        }
     }
 }

@@ -28,6 +28,6 @@ export class CanvasImage {
         canvas.width = LINE_WIDTH + Math.max(width, document.documentElement.clientWidth);
         CanvasState.width = canvas.width;
 
-        context.drawImage(image, LINE_WIDTH, LINE_WIDTH, width, height);
+        context.drawImage(image, 0, 0, width, height);
     }
 }

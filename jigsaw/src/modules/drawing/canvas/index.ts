@@ -1,4 +1,5 @@
-import { Files } from "../../files";
+import { CanvasEvents } from "../../events";
+import { Files } from "../../helpers/files";
 import { CanvasGrid } from "../grid";
 import { CanvasImage } from "../image";
 
@@ -10,8 +11,10 @@ export class Canvas {
 
         image.addEventListener("load", () => {
             CanvasImage.draw(canvas, context, image);
-            CanvasGrid.draw(canvas, context);
+            CanvasGrid.draw(context);
+            CanvasEvents.set(canvas);
         });
+
         image.src = await Files.getDataUrl(file) as string;
     }
 }
