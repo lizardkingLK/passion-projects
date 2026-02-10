@@ -14,7 +14,7 @@ export class CanvasSection {
 
     static load(file: File) {
         CanvasSection.toggle();
-        Canvas.drawImage(file);
+        Canvas.draw(file);
     }
 
     static toggle() {

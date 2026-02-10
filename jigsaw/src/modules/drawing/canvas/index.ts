@@ -4,17 +4,21 @@ import { CanvasGrid } from "../grid";
 import { CanvasImage } from "../image";
 
 export class Canvas {
-    static async drawImage(file: File) {
-        const canvas = document.querySelector("#canvas") as HTMLCanvasElement;
-        const context = canvas.getContext('2d')!;
-        const image = new Image() as HTMLImageElement;
+    // TODO: add layering logic in section and in the chains hensforth
+    static layers: Map<number, HTMLCanvasElement>;
+    static canvas: HTMLCanvasElement;
+    static context: CanvasRenderingContext2D;
+    static image: HTMLImageElement;
 
-        image.addEventListener("load", () => {
-            CanvasImage.draw(canvas, context, image);
-            CanvasGrid.draw(context);
-            CanvasEvents.set(canvas);
-        });
+    static async draw(file: File) {
+        this.canvas = document.querySelector("#canvas") as HTMLCanvasElement;
+        this.context = this.canvas.getContext('2d')!;
+        this.image = await Files.getImage(file, this.process);
+    }
 
-        image.src = await Files.getDataUrl(file) as string;
+    static process() {
+        CanvasImage.draw(Canvas.canvas, Canvas.context, Canvas.image);
+        CanvasGrid.draw(Canvas.context);
+        CanvasEvents.set(Canvas.canvas);
     }
 }
