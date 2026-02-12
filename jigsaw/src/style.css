@@ -17,14 +17,14 @@
   box-sizing: border-box;
 }
 
-#btnControl {
+#sectionControl {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-#btnControl input,
+#sectionControl input,
 label {
   position: absolute;
   left: -50%;
@@ -37,7 +37,7 @@ label {
   cursor: pointer;
 }
 
-#btnControl label:hover {
+#sectionControl label:hover {
   background-color: var(--light);
   color: var(--dark);
 }
