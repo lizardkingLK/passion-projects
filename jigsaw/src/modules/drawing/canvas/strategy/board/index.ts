@@ -10,11 +10,12 @@ export class CanvasBoard {
 
         this.canvas.height = CanvasState.height;
         this.canvas.width = CanvasState.width;
+
         this.context.fillStyle = "white";
         this.context.fillRect(
             0,
             0,
-            CanvasState.grid.width,
-            CanvasState.grid.height);
+            CanvasState.width,
+            CanvasState.height);
     }
 }

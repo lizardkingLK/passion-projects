@@ -1,10 +1,11 @@
+import { COLOR_BLACK, COLOR_GREEN } from "../../../../../shared/constants";
 import type { TPosition } from "../../../../../shared/types/state/position";
-import type { TPiece } from "../../../../../shared/types/state/tile";
 import { Cartesian } from "../../../../helpers/cartisean";
 import { CanvasLine } from "../../../line";
 import { StrokeWidth } from "../../../line/values";
 import { CanvasState } from "../../state";
 import { CanvasPuzzleEvents } from "./events";
+import { pieces } from "./state";
 import { drawLines, drawTiles, LineStyle } from "./values";
 
 export class CanvasPuzzle {
@@ -18,15 +19,14 @@ export class CanvasPuzzle {
         this.canvas.height = CanvasState.height;
         this.canvas.width = CanvasState.width;
 
-        this.drawImage(image);
-        this.drawGrid();
-        this.drawShapes();
-        this.drawTiles();
+        this.#drawImage(image);
+        this.#drawGrid();
+        this.#drawTiles();
 
         CanvasPuzzleEvents.set(this.canvas);
     }
 
-    static drawImage(image: HTMLImageElement) {
+    static #drawImage(image: HTMLImageElement) {
         this.context.drawImage(
             image,
             StrokeWidth,
@@ -35,7 +35,7 @@ export class CanvasPuzzle {
             CanvasState.grid.height);
     }
 
-    static drawGrid() {
+    static #drawGrid() {
         const { rows, columns } = CanvasState.grid;
 
         let from: TPosition;
@@ -67,16 +67,15 @@ export class CanvasPuzzle {
         }
     }
 
-    static drawTiles() {
-        const tiles: TPiece[] = [];
-
+    static #drawTiles() {
         const { rows, columns } = CanvasState.grid;
-        const length = rows * columns;
-
+        
         let y;
         let x;
         let from: TPosition;
         let to: TPosition;
+
+        const length = rows * columns;
         for (let i = 0; i < length; i++) {
             y = Math.round(Math.floor(i / columns));
             x = Math.round(Math.floor(i % columns));
@@ -90,8 +89,12 @@ export class CanvasPuzzle {
                 x: from.x + CanvasState.unit - StrokeWidth,
             };
 
+            // draw shape right
+
+            // draw shape down
+
             if (drawTiles) {
-                this.context.fillStyle = "green"
+                this.context.fillStyle = COLOR_GREEN;
                 this.context.fillRect(
                     from.x,
                     from.y,
@@ -99,52 +102,23 @@ export class CanvasPuzzle {
                     CanvasState.unit - StrokeWidth);
             }
 
-
             if (drawLines) {
-                LineStyle.color = "black";
+                LineStyle.color = COLOR_BLACK;
                 CanvasLine.draw(this.context, from, to, LineStyle);
             }
 
-            tiles.push({
+            pieces.set(i, {
                 id: i,
-                origin: {
+                target: {
                     from: Cartesian.copy(from),
                     to: Cartesian.copy(to),
                 },
-                client: {
+                puzzle: {
                     from: Cartesian.copy(from),
                     to: Cartesian.copy(to),
                 },
                 rotation: 0,
             });
         }
-    }
-
-    static drawShapes() {
-        // const { rows, columns } = CanvasState.grid;
-        // const length = rows * columns;
-
-        // let y;
-        // let x;
-        // let from: TPosition;
-        // let to: TPosition;
-        // for (let i = 0; i < length; i++) {
-        //     y = Math.round(Math.floor(i / columns));
-        //     x = Math.round(Math.floor(i % columns));
-
-        //     from = {
-        //         y: (y + 1) * LINE_WIDTH + y * (CanvasState.unit - LINE_WIDTH),
-        //         x: (x + 1) * LINE_WIDTH + x * (CanvasState.unit - LINE_WIDTH),
-        //     };
-        //     to = {
-        //         y: from.y + CanvasState.unit - LINE_WIDTH,
-        //         x: from.x + CanvasState.unit - LINE_WIDTH,
-        //     };
-
-        //     // draw right if not right most
-
-
-        //     // draw down if not low most
-        // }
     }
 }
