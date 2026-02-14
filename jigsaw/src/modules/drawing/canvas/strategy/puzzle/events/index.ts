@@ -1,4 +1,4 @@
-export class CanvasEvents {
+export class CanvasPuzzleEvents {
     static isDragging: boolean = false
 
     static set(canvas: HTMLCanvasElement) {

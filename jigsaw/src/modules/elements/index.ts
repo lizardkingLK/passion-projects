@@ -3,7 +3,7 @@ import { ControlSection } from "./components/sections/control";
 
 export class App {
     static setup() {
-        CanvasSection.setup();
-        ControlSection.setup();
+        CanvasSection.initialize();
+        ControlSection.initialize();
     }
 }

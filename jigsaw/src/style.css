@@ -42,8 +42,8 @@ label {
   color: var(--dark);
 }
 
-#canvas {
-  display: flex;
+.canvas {
+  position: absolute;
 }
 
 .hidden {

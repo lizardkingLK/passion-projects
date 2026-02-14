@@ -1,24 +1,25 @@
 import { Canvas } from "../../../../drawing/canvas";
+import { ElementHelper } from "../../../../helpers/elements";
 
 export class CanvasSection {
-    static setup() {
-        this.initialize();
-    }
-
     static initialize() {
         document.querySelector<HTMLDivElement>('#app')!.innerHTML += `
-        <main class="hidden" id="sectionCanvas">
-            <canvas id="canvas" />
+        <main class="hidden" id="mainSection">
+            <section>
+                <canvas class="canvas" id="canvasTarget" />
+            </section>
+            <section>
+                <canvas class="canvas" id="canvasBoard" />
+            </section>
+            <section>
+                <canvas class="canvas" id="canvasPuzzle" />
+            </section>
         </main>`;
     }
 
     static load(file: File) {
-        CanvasSection.toggle();
-        Canvas.draw(file);
-    }
+        ElementHelper.toggleClass("#mainSection", "hidden");
 
-    static toggle() {
-        (document.querySelector("#sectionCanvas") as HTMLDivElement)
-            .classList.toggle("hidden");
+        Canvas.load(file);
     }
 }
