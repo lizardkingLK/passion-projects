@@ -1,12 +1,14 @@
 import { COLOR_BLACK, COLOR_GREEN } from "../../../../../shared/constants";
 import type { TPosition } from "../../../../../shared/types/state/position";
 import { Cartesian } from "../../../../helpers/cartisean";
+import { Arc } from "../../../arc";
+import type { TArcProps } from "../../../arc/types";
 import { CanvasLine } from "../../../line";
 import { StrokeWidth } from "../../../line/values";
 import { CanvasState } from "../../state";
 import { CanvasPuzzleEvents } from "./events";
 import { pieces } from "./state";
-import { drawLines, drawTiles, LineStyle } from "./values";
+import { ArcStyle, drawLines, drawTiles, LineStyle } from "./values";
 
 export class CanvasPuzzle {
     static canvas: HTMLCanvasElement;
@@ -69,29 +71,83 @@ export class CanvasPuzzle {
 
     static #drawTiles() {
         const { rows, columns } = CanvasState.grid;
-        
+
         let y;
         let x;
         let from: TPosition;
         let to: TPosition;
+        let rightCenter: TPosition;
+        let bottomCenter: TPosition;
+        let arcProps: TArcProps;
 
         const length = rows * columns;
+        // const tileSize = ;
         for (let i = 0; i < length; i++) {
             y = Math.round(Math.floor(i / columns));
             x = Math.round(Math.floor(i % columns));
 
             from = {
-                y: (y + 1) * StrokeWidth + y * (CanvasState.unit - StrokeWidth),
-                x: (x + 1) * StrokeWidth + x * (CanvasState.unit - StrokeWidth),
+                y: StrokeWidth + y * CanvasState.unit,
+                x: StrokeWidth + x * CanvasState.unit,
             };
             to = {
                 y: from.y + CanvasState.unit - StrokeWidth,
                 x: from.x + CanvasState.unit - StrokeWidth,
             };
 
-            // draw shape right
+            if (x !== columns - 1) {
+                rightCenter = {
+                    y: from.y + (to.y - from.y) / 2,
+                    x: to.x,
+                }
 
-            // draw shape down
+                arcProps = {
+                    center: rightCenter,
+                    radius: CanvasState.unit / 5,
+                    fromAngle: 0,
+                    toAngle: 0,
+                    lineStyle: ArcStyle,
+                };
+
+                if (Math.round(Math.random())) {
+                    arcProps.fromAngle = -Math.PI / 2;
+                    arcProps.toAngle = Math.PI / 2;
+                }
+                else {
+                    rightCenter.x += StrokeWidth;
+                    arcProps.fromAngle = Math.PI / 2;
+                    arcProps.toAngle = -Math.PI / 2;
+                }
+
+                Arc.draw(this.context, arcProps);
+            }
+
+            if (y !== rows - 1) {
+                bottomCenter = {
+                    y: to.y,
+                    x: from.x + (to.x - from.x) / 2,
+                }
+
+                arcProps = {
+                    center: bottomCenter,
+                    radius: CanvasState.unit / 5,
+                    fromAngle: 0,
+                    toAngle: 0,
+                    lineStyle: ArcStyle,
+                };
+
+                if (Math.round(Math.random())) {
+                    arcProps.fromAngle = 0;
+                    arcProps.toAngle = Math.PI;
+                }
+                else {
+                    bottomCenter.y += StrokeWidth;
+                    arcProps.fromAngle = Math.PI;
+                    arcProps.toAngle = 0;
+                }
+
+                Arc.draw(this.context, arcProps);
+            }
 
             if (drawTiles) {
                 this.context.fillStyle = COLOR_GREEN;

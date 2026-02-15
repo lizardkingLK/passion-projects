@@ -1,6 +1,7 @@
 import { LINE_WIDTH } from "../../../../../shared/constants";
 import { StrokeWidth } from "../../../line/values";
 import { CanvasState } from "../../state";
+import { unitCount } from "./values";
 
 export class CanvasTarget {
     static canvas: HTMLCanvasElement;
@@ -10,7 +11,7 @@ export class CanvasTarget {
         CanvasTarget.canvas = document.querySelector("#canvasTarget") as HTMLCanvasElement;
         CanvasTarget.context = this.canvas.getContext("2d") as CanvasRenderingContext2D;
 
-        const unit = window.innerHeight / 10;
+        const unit = window.innerHeight / unitCount;
         CanvasState.unit = unit;
 
         const rows = Math.round(Math.ceil(image.height / unit));

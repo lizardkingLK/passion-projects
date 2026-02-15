@@ -17,7 +17,7 @@ export class ControlSection {
         }
 
         ElementHelper.toggleClass("#sectionControl", "hidden");
-        
+
         CanvasSection.load(file);
     }
 
