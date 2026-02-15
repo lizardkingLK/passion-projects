@@ -9,7 +9,9 @@ export class CanvasTarget {
 
     static draw(image: HTMLImageElement) {
         CanvasTarget.canvas = document.querySelector("#canvasTarget") as HTMLCanvasElement;
-        CanvasTarget.context = this.canvas.getContext("2d") as CanvasRenderingContext2D;
+        CanvasTarget.context = this.canvas.getContext("2d", {
+            willReadFrequently: true
+        }) as CanvasRenderingContext2D;
 
         const unit = window.innerHeight / unitCount;
         CanvasState.unit = unit;

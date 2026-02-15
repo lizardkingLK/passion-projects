@@ -1,4 +1,4 @@
-import { COLOR_GREEN, COLOR_RED } from "../../../../../../shared/constants";
+import { COLOR_RED } from "../../../../../../shared/constants";
 import type { TLineProps } from "../../../../line/types";
 import { StrokeWidth } from "../../../../line/values";
 
@@ -8,7 +8,7 @@ export const LineStyle: TLineProps = {
 };
 export const ArcStyle: TLineProps = {
     width: StrokeWidth,
-    color: COLOR_GREEN,
+    color: COLOR_RED,
 };
 export const drawTiles = false;
 export const drawLines = false;

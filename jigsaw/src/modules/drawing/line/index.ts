@@ -16,4 +16,29 @@ export class CanvasLine {
         context.lineTo(to.x, to.y);
         context.stroke();
     }
+
+    static replace(
+        contexts: {
+            fromContext: CanvasRenderingContext2D,
+            toContext: CanvasRenderingContext2D,
+        },
+        positions: {
+            fromPosition: TPosition,
+            toPosition: TPosition,
+        }
+    ) {
+        const { fromContext, toContext } = contexts;
+        const { fromPosition, toPosition } = positions;
+
+        const imageData = fromContext.getImageData(
+            fromPosition.x,
+            fromPosition.y,
+            toPosition.x - fromPosition.x,
+            toPosition.y - fromPosition.y);
+
+        toContext.putImageData(
+            imageData,
+            fromPosition.x,
+            fromPosition.y);
+    }
 }

@@ -1,11 +1,12 @@
 import { COLOR_BLACK, COLOR_GREEN } from "../../../../../shared/constants";
 import type { TPosition } from "../../../../../shared/types/state/position";
 import { Cartesian } from "../../../../helpers/cartisean";
-import { Arc } from "../../../arc";
+import { CanvasArc } from "../../../arc";
 import type { TArcProps } from "../../../arc/types";
 import { CanvasLine } from "../../../line";
 import { StrokeWidth } from "../../../line/values";
 import { CanvasState } from "../../state";
+import { CanvasTarget } from "../target";
 import { CanvasPuzzleEvents } from "./events";
 import { pieces } from "./state";
 import { ArcStyle, drawLines, drawTiles, LineStyle } from "./values";
@@ -81,7 +82,6 @@ export class CanvasPuzzle {
         let arcProps: TArcProps;
 
         const length = rows * columns;
-        // const tileSize = ;
         for (let i = 0; i < length; i++) {
             y = Math.round(Math.floor(i / columns));
             x = Math.round(Math.floor(i % columns));
@@ -119,7 +119,23 @@ export class CanvasPuzzle {
                     arcProps.toAngle = -Math.PI / 2;
                 }
 
-                Arc.draw(this.context, arcProps);
+                CanvasLine.replace(
+                    {
+                        fromContext: CanvasTarget.context,
+                        toContext: this.context,
+                    },
+                    {
+                        fromPosition: {
+                            y: rightCenter.y - arcProps.radius,
+                            x: to.x - arcProps.radius,
+                        },
+                        toPosition: {
+                            y: rightCenter.y + arcProps.radius,
+                            x: to.x + 2 * arcProps.radius,
+                        },
+                    });
+
+                CanvasArc.draw(this.context, arcProps);
             }
 
             if (y !== rows - 1) {
@@ -146,7 +162,23 @@ export class CanvasPuzzle {
                     arcProps.toAngle = 0;
                 }
 
-                Arc.draw(this.context, arcProps);
+                CanvasLine.replace(
+                    {
+                        fromContext: CanvasTarget.context,
+                        toContext: this.context,
+                    },
+                    {
+                        fromPosition: {
+                            y: to.y - arcProps.radius,
+                            x: bottomCenter.x - arcProps.radius,
+                        },
+                        toPosition: {
+                            y: to.y + 2 * arcProps.radius,
+                            x: bottomCenter.x + arcProps.radius,
+                        },
+                    });
+
+                CanvasArc.draw(this.context, arcProps);
             }
 
             if (drawTiles) {

@@ -1,6 +1,6 @@
 import type { TArcProps } from "./types";
 
-export class Arc {
+export class CanvasArc {
     static draw(
         context: CanvasRenderingContext2D,
         { center, radius, fromAngle, toAngle, lineStyle }: TArcProps
