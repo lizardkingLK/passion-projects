@@ -9,9 +9,6 @@ export class CanvasSection {
                 <canvas class="canvas" id="canvasTarget" />
             </section>
             <section>
-                <canvas class="canvas" id="canvasBoard" />
-            </section>
-            <section>
                 <canvas class="canvas" id="canvasPuzzle" />
             </section>
         </main>`;

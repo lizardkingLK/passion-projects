@@ -6,7 +6,6 @@ import type { TArcProps } from "../../../arc/types";
 import { CanvasLine } from "../../../line";
 import { StrokeWidth } from "../../../line/values";
 import { CanvasState } from "../../state";
-import { CanvasBoard } from "../board";
 import { CanvasTarget } from "../target";
 import { CanvasPuzzleEvents } from "./events";
 import { pieces } from "./state";
