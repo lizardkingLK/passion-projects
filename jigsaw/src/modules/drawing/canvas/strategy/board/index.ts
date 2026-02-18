@@ -1,3 +1,4 @@
+import { StrokeWidth } from "../../../line/values";
 import { CanvasState } from "../../state";
 
 export class CanvasBoard {
@@ -13,8 +14,8 @@ export class CanvasBoard {
 
         this.context.fillStyle = "white";
         this.context.fillRect(
-            0,
-            0,
+            StrokeWidth,
+            StrokeWidth,
             CanvasState.width,
             CanvasState.height);
     }

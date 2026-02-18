@@ -6,6 +6,7 @@ import type { TArcProps } from "../../../arc/types";
 import { CanvasLine } from "../../../line";
 import { StrokeWidth } from "../../../line/values";
 import { CanvasState } from "../../state";
+import { CanvasBoard } from "../board";
 import { CanvasTarget } from "../target";
 import { CanvasPuzzleEvents } from "./events";
 import { pieces } from "./state";
@@ -26,7 +27,7 @@ export class CanvasPuzzle {
         this.#drawGrid();
         this.#drawTiles();
 
-        CanvasPuzzleEvents.set(this.canvas);
+        CanvasPuzzleEvents.set();
     }
 
     static #drawImage(image: HTMLImageElement) {
@@ -80,6 +81,7 @@ export class CanvasPuzzle {
         let rightCenter: TPosition;
         let bottomCenter: TPosition;
         let arcProps: TArcProps;
+        let isOut;
 
         const length = rows * columns;
         for (let i = 0; i < length; i++) {
@@ -109,7 +111,8 @@ export class CanvasPuzzle {
                     lineStyle: ArcStyle,
                 };
 
-                if (Math.round(Math.random())) {
+                isOut = Math.round(Math.random());
+                if (isOut) {
                     arcProps.fromAngle = -Math.PI / 2;
                     arcProps.toAngle = Math.PI / 2;
                 }
@@ -152,7 +155,8 @@ export class CanvasPuzzle {
                     lineStyle: ArcStyle,
                 };
 
-                if (Math.round(Math.random())) {
+                isOut = Math.round(Math.random());
+                if (isOut) {
                     arcProps.fromAngle = 0;
                     arcProps.toAngle = Math.PI;
                 }
