@@ -1,6 +1,5 @@
 import { COLOR_BLACK, COLOR_GREEN } from "../../../../../shared/constants";
 import type { TPosition } from "../../../../../shared/types/state/position";
-import { TilePatternEnum } from "../../../../../shared/types/state/tile/enums";
 import { Cartesian } from "../../../../helpers/cartisean";
 import { CanvasArc } from "../../../arc";
 import type { TArcProps } from "../../../arc/types";
@@ -9,6 +8,7 @@ import { StrokeWidth } from "../../../line/values";
 import { CanvasState } from "../../state";
 import { CanvasTarget } from "../target";
 import { CanvasPuzzleEvents } from "./events";
+import { Tiles } from "./helpers/tiles";
 import { pieces } from "./state";
 import { ArcStyle, drawLines, drawTiles, LineStyle } from "./values";
 
@@ -211,45 +211,13 @@ export class CanvasPuzzle {
                     from: Cartesian.copy(from),
                     to: Cartesian.copy(to),
                 },
-                top: this.#setTopTilePattern(y, i, x, columns),
-                right: this.#setRightTilePattern(x, columns, isOutRight),
-                down: this.#setDownTilePattern(y, rows, isOutDown),
-                left: this.#setLeftTilePattern(x, i),
+                top: Tiles.setTopTilePattern(y, i, x, columns),
+                right: Tiles.setRightTilePattern(x, columns, isOutRight),
+                down: Tiles.setDownTilePattern(y, rows, isOutDown),
+                left: Tiles.setLeftTilePattern(x, i),
                 rotation: 0,
             });
         }
-    }
-
-    static #setTopTilePattern(y: number, i: number, x: number, columns: number) {
-        return y === 0 ? TilePatternEnum.None : pieces.get(i - x - columns)!.down;
-    }
-
-    static #setRightTilePattern(x: number, columns: number, isOutRight: boolean) {
-        if (x === columns - 1) {
-            return TilePatternEnum.None;
-        }
-        else if (isOutRight) {
-            return TilePatternEnum.Outward;
-        }
-        else {
-            return TilePatternEnum.Inward;
-        }
-    }
-
-    static #setDownTilePattern(y: number, rows: number, isOutDown: boolean) {
-        if (y === rows - 1) {
-            return TilePatternEnum.None;
-        }
-        else if (isOutDown) {
-            return TilePatternEnum.Outward;
-        }
-        else {
-            return TilePatternEnum.Inward;
-        }
-    }
-
-    static #setLeftTilePattern(x: number, i: number) {
-        return x === 0 ? TilePatternEnum.None : pieces.get(i - 1)!.right;
     }
 
     static #drawTiles() {
