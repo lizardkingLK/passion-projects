@@ -17,6 +17,18 @@ export class CanvasLine {
         context.stroke();
     }
 
+    static drawPath(
+        context: CanvasRenderingContext2D,
+        path: Path2D,
+        { color, width }: TLineProps) {
+            
+        context.beginPath();
+        context.lineWidth = width;
+        context.strokeStyle = color;
+
+        context.stroke(path);
+    }
+
     static replace(
         contexts: {
             fromContext: CanvasRenderingContext2D,

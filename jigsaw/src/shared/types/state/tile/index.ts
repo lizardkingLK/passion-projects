@@ -10,5 +10,9 @@ export type TPiece = {
         from: TPosition,
         to: TPosition,
     },
+    top: number,
+    right: number,
+    down: number,
+    left: number,
     rotation: number,
 };
