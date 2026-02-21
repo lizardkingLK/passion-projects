@@ -10,5 +10,3 @@ export const ArcStyle: TLineProps = {
     width: StrokeWidth,
     color: COLOR_RED,
 };
-export const drawTiles = false;
-export const drawLines = false;
