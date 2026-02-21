@@ -12,7 +12,7 @@ export type TPiece = {
     },
     top: number,
     right: number,
-    down: number,
+    bottom: number,
     left: number,
     rotation: number,
 };
