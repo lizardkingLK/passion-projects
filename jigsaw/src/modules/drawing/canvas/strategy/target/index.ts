@@ -1,7 +1,6 @@
 import { LINE_WIDTH } from "../../../../../shared/constants";
-import { StrokeWidth } from "../../../line/values";
 import { CanvasState } from "../../state";
-import { unitCount } from "./values";
+import { StrokeWidth, UnitCount } from "../puzzle/values";
 
 export class CanvasTarget {
     static canvas: HTMLCanvasElement;
@@ -13,7 +12,7 @@ export class CanvasTarget {
             willReadFrequently: true
         }) as CanvasRenderingContext2D;
 
-        const unit = window.innerHeight / unitCount;
+        const unit = window.innerHeight / UnitCount;
         CanvasState.unit = unit;
 
         const rows = Math.round(Math.ceil(image.height / unit));

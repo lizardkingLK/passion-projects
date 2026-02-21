@@ -1,7 +1,7 @@
 import type { TPosition } from "../../../../../../../shared/types/state/position";
 import { TilePatternEnum } from "../../../../../../../shared/types/state/tile/enums";
-import { StrokeWidth } from "../../../../../line/values";
 import { CanvasState } from "../../../../state";
+import { StrokeWidth } from "../../values";
 
 export class Patterns {
     static drawTopLeft(path: Path2D, y: number, position: TPosition) {

@@ -1,13 +1,12 @@
 import type { TPosition } from "../../../../../shared/types/state/position";
 import { Cartesian } from "../../../../helpers/cartisean";
 import { CanvasLine } from "../../../line";
-import { StrokeWidth } from "../../../line/values";
 import { CanvasState } from "../../state";
 import { CanvasPuzzleEvents } from "./events";
 import { Patterns } from "./helpers/patterns";
 import { Tiles } from "./helpers/tiles";
 import { pieces } from "./state";
-import { LineStyle } from "./values";
+import { LineStyle, StrokeWidth } from "./values";
 
 export class CanvasPuzzle {
     static canvas: HTMLCanvasElement;
@@ -120,6 +119,8 @@ export class CanvasPuzzle {
             Patterns.drawLeftUpper(path, x, position);
 
             // LineStyle.width = 1;
+            path.closePath();
+            
             CanvasLine.drawPath(this.context, path, LineStyle);
         }
     }
