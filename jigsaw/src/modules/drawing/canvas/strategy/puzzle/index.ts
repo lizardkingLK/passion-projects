@@ -119,6 +119,7 @@ export class CanvasPuzzle {
                 radius);
             Patterns.drawLeftUpper(path, x, position);
 
+            // LineStyle.width = 1;
             CanvasLine.drawPath(this.context, path, LineStyle);
         }
     }
