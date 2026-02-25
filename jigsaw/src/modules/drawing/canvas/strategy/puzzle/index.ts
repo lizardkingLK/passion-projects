@@ -11,6 +11,7 @@ import { LineStyle, StrokeWidth } from "./values";
 export class CanvasPuzzle {
     static canvas: HTMLCanvasElement;
     static context: CanvasRenderingContext2D;
+    static isDragging?: boolean;
 
     static draw(image: HTMLImageElement) {
         CanvasPuzzle.canvas = document.querySelector("#canvasPuzzle") as HTMLCanvasElement;
@@ -22,7 +23,9 @@ export class CanvasPuzzle {
         this.#drawImage(image);
         this.#drawTiles();
 
-        CanvasPuzzleEvents.set();
+        CanvasPuzzleEvents.setMouseDown(this.handleMouseDown);
+        CanvasPuzzleEvents.setMouseUp(this.handleMouseUp);
+        CanvasPuzzleEvents.setMouseMove(this.handleMouseMove);
     }
 
     static #drawImage(image: HTMLImageElement) {
@@ -118,10 +121,41 @@ export class CanvasPuzzle {
                 radius);
             Patterns.drawLeftUpper(path, x, position);
 
-            // LineStyle.width = 1;
+            LineStyle.width = 1;
             path.closePath();
-            
+
             CanvasLine.drawPath(this.context, path, LineStyle);
         }
+    }
+
+    static handleMouseDown(event: MouseEvent) {
+        CanvasPuzzle.isDragging = true;
+
+        const { clientY: y, clientX: x } = event;
+
+        console.log("drag started", y, x);
+
+        pieces.forEach(piece => {
+            if (y >= piece.puzzle.from.y && y <= piece.puzzle.to.y && x >= piece.puzzle.from.x && x <= piece.puzzle.to.x) {
+                console.log(piece.id);
+            }
+        });
+    }
+
+    static handleMouseUp(event: MouseEvent) {
+        CanvasPuzzle.isDragging = false;
+        console.log("drag ended");
+    }
+
+    static handleMouseMove(event: MouseEvent) {
+        if (!CanvasPuzzle.isDragging) {
+            return;
+        }
+
+        // console.log("dragging");
+
+        // const { clientY: y, clientX: x } = event;
+
+        // console.log({ y, x });
     }
 }

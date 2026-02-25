@@ -1,23 +1,14 @@
 export class CanvasPuzzleEvents {
-    static isDragging: boolean = false
-
-    static set() {
-        document.addEventListener("mousedown", this.handleMouseToggle);
-        document.addEventListener("mouseup", this.handleMouseToggle);
-        document.addEventListener("mousemove", this.handleMove);
+    static setMouseDown(handler: (event: MouseEvent, isDragging: boolean) => void) {
+        document.addEventListener("mousedown", (event: MouseEvent) => handler(event, true));
     }
 
-    static handleMouseToggle() {
-        this.isDragging = !this.isDragging;
+    static setMouseUp(handler: (event: MouseEvent, isDragging: boolean) => void) {
+
+        document.addEventListener("mouseup", (event: MouseEvent) => handler(event, false));
     }
 
-    static handleMove(event: MouseEvent) {
-        if (!this.isDragging) {
-            return;
-        }
-
-        const { clientY: y, clientX: x } = event;
-
-        console.log({ y, x });
+    static setMouseMove(handler: (event: MouseEvent) => void) {
+        document.addEventListener("mousemove", (event: MouseEvent) => handler(event));
     }
 }
