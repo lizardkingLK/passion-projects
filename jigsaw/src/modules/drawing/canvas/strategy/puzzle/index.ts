@@ -23,9 +23,9 @@ export class CanvasPuzzle {
         this.#drawImage(image);
         this.#drawTiles();
 
-        CanvasPuzzleEvents.setMouseDown(this.handleMouseDown);
-        CanvasPuzzleEvents.setMouseUp(this.handleMouseUp);
-        CanvasPuzzleEvents.setMouseMove(this.handleMouseMove);
+        CanvasPuzzleEvents.setMouseDown(this.#handleMouseDown);
+        CanvasPuzzleEvents.setMouseUp(this.#handleMouseUp);
+        CanvasPuzzleEvents.setMouseMove(this.#handleMouseMove);
     }
 
     static #drawImage(image: HTMLImageElement) {
@@ -87,48 +87,62 @@ export class CanvasPuzzle {
                 x: x * CanvasState.unit + StrokeWidth / 2,
             };
 
-            const path = new Path2D();
 
-            Patterns.drawTopLeft(path, y, position);
-            Patterns.drawTopCurve(
-                path,
-                Tiles.getTopTilePattern(y, i, columns),
-                position,
-                radius);
-            Patterns.drawTopRight(path, y, position);
-
-            Patterns.drawRightUpper(path, x, position);
-            Patterns.drawRightCurve(
-                path,
-                Tiles.getRightTilePattern(x, i, columns),
-                position,
-                radius);
-            Patterns.drawRightLower(path, x, position);
-
-            Patterns.drawBottomRight(path, y, position);
-            Patterns.drawBottomCurve(
-                path,
-                Tiles.getBottomTilePattern(y, i, rows),
-                position,
-                radius);
-            Patterns.drawBottomLeft(path, y, position);
-
-            Patterns.drawLeftLower(path, x, position);
-            Patterns.drawLeftCurve(
-                path,
-                Tiles.getLeftTilePattern(x, i),
-                position,
-                radius);
-            Patterns.drawLeftUpper(path, x, position);
-
-            LineStyle.width = 1;
-            path.closePath();
+            const path = this.#createPath({ y, x }, position, { radius, i }, { rows, columns });
 
             CanvasLine.drawPath(this.context, path, LineStyle);
         }
     }
 
-    static handleMouseDown(event: MouseEvent) {
+    static #createPath(
+        index: { y: number; x: number; },
+        position: TPosition,
+        options: { i: number, radius: number, },
+        dimensions: { rows: number; columns: number; }) {
+        const { y, x } = index;
+        const { i, radius } = options;
+        const { rows, columns } = dimensions;
+        const path = new Path2D();
+
+        Patterns.drawTopLeft(path, y, position);
+        Patterns.drawTopCurve(
+            path,
+            Tiles.getTopTilePattern(y, i, columns),
+            position,
+            radius);
+        Patterns.drawTopRight(path, y, position);
+
+        Patterns.drawRightUpper(path, x, position);
+        Patterns.drawRightCurve(
+            path,
+            Tiles.getRightTilePattern(x, i, columns),
+            position,
+            radius);
+        Patterns.drawRightLower(path, x, position);
+
+        Patterns.drawBottomRight(path, y, position);
+        Patterns.drawBottomCurve(
+            path,
+            Tiles.getBottomTilePattern(y, i, rows),
+            position,
+            radius);
+        Patterns.drawBottomLeft(path, y, position);
+
+        Patterns.drawLeftLower(path, x, position);
+        Patterns.drawLeftCurve(
+            path,
+            Tiles.getLeftTilePattern(x, i),
+            position,
+            radius);
+        Patterns.drawLeftUpper(path, x, position);
+
+        // LineStyle.width = 1;
+        path.closePath();
+
+        return path;
+    }
+
+    static #handleMouseDown(event: MouseEvent) {
         CanvasPuzzle.isDragging = true;
 
         const { clientY: y, clientX: x } = event;
@@ -142,12 +156,12 @@ export class CanvasPuzzle {
         });
     }
 
-    static handleMouseUp(event: MouseEvent) {
+    static #handleMouseUp(event: MouseEvent) {
         CanvasPuzzle.isDragging = false;
         console.log("drag ended");
     }
 
-    static handleMouseMove(event: MouseEvent) {
+    static #handleMouseMove(event: MouseEvent) {
         if (!CanvasPuzzle.isDragging) {
             return;
         }
@@ -159,3 +173,4 @@ export class CanvasPuzzle {
         // console.log({ y, x });
     }
 }
+
