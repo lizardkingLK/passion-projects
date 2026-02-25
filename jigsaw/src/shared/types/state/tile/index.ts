@@ -2,13 +2,17 @@ import type { TPosition } from "../position";
 
 export type TPiece = {
     id: number,
-    origin: {
+    target: {
         from: TPosition,
         to: TPosition,
     },
-    client: {
+    puzzle: {
         from: TPosition,
         to: TPosition,
     },
+    top: number,
+    right: number,
+    bottom: number,
+    left: number,
     rotation: number,
 };

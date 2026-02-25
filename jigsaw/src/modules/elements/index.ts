@@ -1,9 +1,9 @@
-import { ControlButton } from "./components/buttons/control";
 import { CanvasSection } from "./components/sections/canvas";
+import { ControlSection } from "./components/sections/control";
 
 export class App {
     static setup() {
-        CanvasSection.setup();
-        ControlButton.setup();
+        CanvasSection.initialize();
+        ControlSection.initialize();
     }
 }

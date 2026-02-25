@@ -21,6 +21,5 @@ export class Files {
 
             reader.readAsDataURL(file);
         });
-
     }
 }

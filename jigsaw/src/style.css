@@ -17,33 +17,41 @@
   box-sizing: border-box;
 }
 
-#btnControl {
+#sectionControl {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  height: 100%;
+  width: 100%;
 }
 
-#btnControl input,
+#sectionControl input,
 label {
   position: absolute;
-  left: -50%;
-  top: -50%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  padding: 2rem 1rem;
-  border: .2rem var(--dark) solid;
   background-color: var(--accent);
   color: var(--light);
   cursor: pointer;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: xx-large;
+  transition: .5s;
 }
 
-#btnControl label:hover {
+#sectionControl label:hover {
   background-color: var(--light);
   color: var(--dark);
 }
 
-#canvas {
-  display: flex;
+.canvas {
+  position: absolute;
 }
 
 .hidden {
