@@ -3,7 +3,7 @@ import type { TLineProps } from "../../../../line/types";
 
 export const UnitCount = 5;
 
-export const StrokeWidth = LINE_WIDTH * 5;
+export const StrokeWidth = LINE_WIDTH * 8;
 
 export const LineStyle: TLineProps = {
     width: StrokeWidth,

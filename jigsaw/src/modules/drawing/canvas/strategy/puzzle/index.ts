@@ -1,3 +1,4 @@
+import { COLOR_GREEN } from "../../../../../shared/constants";
 import type { TPosition } from "../../../../../shared/types/state/position";
 import { Cartesian } from "../../../../helpers/cartisean";
 import { CanvasLine } from "../../../line";
@@ -12,6 +13,7 @@ export class CanvasPuzzle {
     static canvas: HTMLCanvasElement;
     static context: CanvasRenderingContext2D;
     static isDragging?: boolean;
+    static radius: number;
 
     static draw(image: HTMLImageElement) {
         CanvasPuzzle.canvas = document.querySelector("#canvasPuzzle") as HTMLCanvasElement;
@@ -40,7 +42,7 @@ export class CanvasPuzzle {
     static #drawTiles() {
         const { rows, columns } = CanvasState.grid;
         const length = rows * columns;
-        const radius = CanvasState.unit / 4 - StrokeWidth / 2;
+        this.radius = CanvasState.unit / 4 - StrokeWidth / 2;
 
         let y;
         let x;
@@ -87,8 +89,9 @@ export class CanvasPuzzle {
                 x: x * CanvasState.unit + StrokeWidth / 2,
             };
 
+            // debugger;
 
-            const path = this.#createPath({ y, x }, position, { radius, i }, { rows, columns });
+            const path = this.#createPath({ y, x }, position, { radius: this.radius, i }, { rows, columns });
 
             CanvasLine.drawPath(this.context, path, LineStyle);
         }
@@ -145,20 +148,42 @@ export class CanvasPuzzle {
     static #handleMouseDown(event: MouseEvent) {
         CanvasPuzzle.isDragging = true;
 
-        const { clientY: y, clientX: x } = event;
+        const { pageY: cY, pageX: cX } = event;
 
-        console.log("drag started", y, x);
+        console.log("drag started", cY, cX);
 
-        pieces.forEach(piece => {
-            if (y >= piece.puzzle.from.y && y <= piece.puzzle.to.y && x >= piece.puzzle.from.x && x <= piece.puzzle.to.x) {
-                console.log(piece.id);
+        const { rows, columns } = CanvasState.grid;
+
+        for (let i = 0; i < pieces.size; i++) {
+            // add quad tree search here from library
+            const piece = pieces.get(i)!;
+            if (cY >= piece.puzzle.from.y && cY <= piece.puzzle.to.y && cX >= piece.puzzle.from.x && cX <= piece.puzzle.to.x) {
+                // debugger;
+                console.log(piece);
+
+                const y = Math.round(Math.floor(i / columns));
+                const x = Math.round(Math.floor(i % columns));
+
+                const position = {
+                    y: y * CanvasState.unit + StrokeWidth / 2,
+                    x: x * CanvasState.unit + StrokeWidth / 2,
+                };
+
+                const path = CanvasPuzzle.#createPath({ y, x }, position, { radius: CanvasPuzzle.radius, i }, { rows, columns });
+
+                LineStyle.color = COLOR_GREEN;
+                CanvasLine.drawPath(CanvasPuzzle.context, path, LineStyle);
+
+                break;
             }
-        });
+        }
     }
 
     static #handleMouseUp(event: MouseEvent) {
         CanvasPuzzle.isDragging = false;
-        console.log("drag ended");
+        const { clientY: y, clientX: x } = event;
+
+        console.log("drag ended", y, x);
     }
 
     static #handleMouseMove(event: MouseEvent) {
